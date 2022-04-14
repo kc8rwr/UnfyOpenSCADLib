@@ -20,7 +20,7 @@
 use <unfy_lists.scad>
 use <unfy_math.scad>
 
-parm_part = "Collection"; // ["Collection", "Bolt_Distortion_Test"]
+parm_part = "Collection"; // ["Collection", "Heatset_Test_Block", "Bolt_Distortion_Test"]
 
 parm_size = "m3"; // ["m2", "m2.5", "m3", "m4", "#00", "#000", "#0000", "#6", "#8", "1/4\"", "1/2\""]
 
@@ -128,7 +128,8 @@ function unf_cap_head_diameter(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[3, 5.05], //verified
+			     [[0, 0],
+			      [3, 5.05], //verified
 			      [4, 7], //verified
 			      [5, 8.5],
 			      [6, 10],
@@ -148,7 +149,8 @@ function unf_cap_head_diameter(in) = is_list(in) ? in[2] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[4.763, 7.925], // 3/16", 0.312"
+			       [[0, 0],
+				[4.763, 7.925], // 3/16", 0.312"
 				[6.35, 9.525], // 1/4", 0.375"
 				[7.938, 11.1], // 5/16", 0.437"
 				[9.525, 14.275], // 3/8", 0.562"
@@ -220,7 +222,8 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			 [[3, 6], // verified
+			 [[0, 0],
+			  [3, 6], // verified
 			  [4, 8], // verified
 			  [5, 10],
 			  [6, 12],
@@ -236,7 +239,8 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[3.175, 5.461], // 1/8", 0.215"
+			       [[0, 0],
+				[3.175, 5.461], // 1/8", 0.215"
 				[4.763, 8.204], // 3/16", 0.323"
 				[6.35, 10.973], // 1/4", 0.432"
 				[7.938, 13.767], // 5/16", 0.542"
@@ -274,7 +278,8 @@ function unf_csk_head_height(in) = is_list(in) ? in[3] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[3, 2], // verified
+			     [[0, 0],
+			      [3, 2], // verified
 			      [4, 2.3], // verified
 			      [5, 2.8],
 			      [6, 3.3],
@@ -290,7 +295,8 @@ function unf_csk_head_height(in) = is_list(in) ? in[3] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[3.175, 1.448], // 1/8", 0.057"
+			       [[0, 0],
+				[3.175, 1.448], // 1/8", 0.057"
 				[4.763, 2.134], // 3/16", 0.084"
 				[6.35, 2.845], // 1/4", 0.112"
 				[7.938, 3.556], // 5/16", 0.140"
@@ -363,7 +369,8 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			 [[3, 6.1], // verified
+			 [[0, 0],
+			  [3, 6.1], // verified
 			  [4, 7.66], // verified
 			  [5, 8.79],
 			  [6, 11.05],
@@ -386,7 +393,8 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 12.45], // 1/4", lst .55
+			       [[0, 0],
+				[6.35, 12.45], // 1/4", lst .55
 				[7.938, 14.224], // 5/16", 0.56" verified
 				[9.525, 16.078], // 3/8", 0.633" verified
 				[11.113, 20.828], // 7/16", 0.82"
@@ -421,7 +429,8 @@ function unf_hex_head_height(in) = is_list(in) ? in[3] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[3, 2], // verified
+			     [[0, 0],
+			      [3, 2], // verified
 			      [4, 2.8], // verified
 			      [5, 3.5],
 			      [6, 4.0],
@@ -447,7 +456,8 @@ function unf_hex_head_height(in) = is_list(in) ? in[3] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 4.2], // 1/4", last 4.3
+			       [[0, 0],
+				[6.35, 4.2], // 1/4", last 4.3
 				[7.938, 5.530], // 5/16" 0.218" // verified
 				[9.525, 6.604], // 3/8" 0.26" // verified
 				[11.113, 7.671], // 7/16" 0.302"
@@ -521,10 +531,11 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[2, 2.6],
-			      [2.5, 3.2],
+			     [[0, 0],
+			      [2, 2.6], //verified
+			      [2.5, 3.5], // verified? much variance, this size hole is almost to small for some, almost too big for others
 			      [3, 4.5], // verified
-			      [4, 5.5]])
+			      [4, 5]]) // verified
     )
   ) : (
     "\"" == in[len(in)-1] ? (
@@ -536,10 +547,11 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[2] : (
 	    "#" != in[0] ? unf_hst_diameter("M3") : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-				       [[4, 3.25],
-					[6, 4.5],
-					[8, 5],
-					[10, 6]]) 
+				       [[0, unf_hst_diameter(str("M", unf_fnr_shaft_diameter("#0")))], // No Data
+					[4, 3.5], // verified
+					[6, 4.5], // verified
+					[8, 5.5], // verified
+					[10, 6.1]]) // verified
 	      )
 	    )
 	  )
@@ -555,18 +567,21 @@ function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
       unf_round(place=-3,
 		num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 			       "small" == length ?
-			       [[2, 3],
+			       [[0, 0],
+				[2, 3],
 				[2.5, 3],
 				[3, 3.1],
 				[4, 4.1]]
 			       :
 			       ("large" == length ?
-				[[2, 8.1],
+				[[0, 0],
+				 [2, 8.1],
 				 [2.5, 5.1],
-				 [3, 8.1],
-				 [4, 8]]
+				 [3, 8],
+				 [4, 8.1]]
 				:
-				[[2, 4],
+				[[0, 0],
+				 [2, 4],
 				 [2.5, 4],
 				 [3, 5],
 				 [4, 6.2]])
@@ -583,7 +598,8 @@ function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
 	      "#" != in[0] ? unf_hst_length("M3") : (
 		unf_round(place=-3,
 			  num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-					 [[4, 5.8],
+					 [[0, unf_hst_length(str("M", unf_fnr_shaft_diameter("#0")), length=length)], // No Data
+					  [4, 5.8],
 					  [6, 7.14],
 					  [8, 9.06],
 					  [10, 10.64]])
@@ -610,7 +626,7 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
       length = unf_hst_length(size),
       head_ext = (0 <= head_ext) ? head_ext : $over
     ) {
-      echo(size);
+      echo(str("HST: ", size));
       //main body
       cylinder(h=length, d1=opening_diameter, d2=diameter);
       //head extension
@@ -656,7 +672,8 @@ function unf_nut_diameter(in) = is_list(in) ? in[1] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			 [[1.6, 3.7],
+			 [[0, 0],
+			  [1.6, 3.7],
 			  [2, 4.62],
 			  [2.5, 5.77],
 			  [3, 6.35],
@@ -678,7 +695,8 @@ function unf_nut_diameter(in) = is_list(in) ? in[1] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 15.723], // 1/4", 0.619"
+			       [[0, 0],
+				[6.35, 15.723], // 1/4", 0.619"
 				[7.938, 20.193], // 5/16", 0.795"
 				[9.525, 22.454]]) // 3/8", 0.884"
       )
@@ -712,7 +730,8 @@ function unf_nut_height(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[1.6, 1.3],
+			     [[0, 0],
+			      [1.6, 1.3],
 			      [2, 1.6],
 			      [2.5, 2],
 			      [3, 2.4],
@@ -734,7 +753,8 @@ function unf_nut_height(in) = is_list(in) ? in[2] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 4.902], // 1/4", 0.193"
+			       [[0, 0],
+				[6.35, 4.902], // 1/4", 0.193"
 				[7.938, 5.625], // 5/16", 0.225"
 				[9.525, 6.528]]) // 3/8", 0.257"
       )
@@ -796,7 +816,8 @@ function unf_sqr_length(in) = is_list(in) ? in[1] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			 [[5, 8],
+			 [[0, 0],
+			  [5, 8],
 			  [6, 10],
 			  [8, 13],
 			  [10, 17],
@@ -807,7 +828,8 @@ function unf_sqr_length(in) = is_list(in) ? in[1] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 11.125], // 1/4", 0.438"
+			       [[0, 0],
+				[6.35, 11.125], // 1/4", 0.438"
 				[7.938, 14.275], // 5/16", 0.562"
 				[9.525, 15.875]]) // 3/8", 0.625"
       )
@@ -916,7 +938,8 @@ function unf_wsh_diameter(in) = is_list(in) ? in[1] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			 [[1, 3.2],
+			 [[0, 0],
+			  [1, 3.2],
 			  [1.2, 3.8],
 			  [1.4, 3.8],
 			  [1.6, 4],
@@ -955,7 +978,8 @@ function unf_wsh_diameter(in) = is_list(in) ? in[1] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 15.875], // 1/4", 5/8"
+			       [[0, 0],
+				[6.35, 15.875], // 1/4", 5/8"
 				[7.938, 17.463], // 5/16", 11/16"
 				[9.525, 20.638], // 3/8", 13/16"
 				[11.113, 23.813], // 7/16", 15/16"
@@ -973,7 +997,8 @@ function unf_wsh_diameter(in) = is_list(in) ? in[1] : (
 	    "#" != in[0] ? unf_wsh_diameter("M3") : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-				       [[2, 6.35], // 1/4"
+				       [[0, unf_wsh_diameter(str("M", unf_fnr_shaft_diameter("#0")))],
+					[2, 6.35], // 1/4"
 					[4, 7.738], // 5/16"
 					[6, 9.525], // 3/8"
 					[8, 11.113], // 7/16"
@@ -992,7 +1017,8 @@ function unf_wsh_height(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[1, 0.3],
+			     [[0, 0],
+			      [1, 0.3],
 			      [1.2, 0.3],
 			      [1.4, 0.3],
 			      [1.6, 0.3],
@@ -1031,7 +1057,8 @@ function unf_wsh_height(in) = is_list(in) ? in[2] : (
     "\"" == in[len(in)-1] ? (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[6.35, 1.651], // 1/4", 0.065"
+			       [[0, 0],
+				[6.35, 1.651], // 1/4", 0.065"
 				[7.938, 1.651], // 5/16", 0.065"
 				[9.525, 1.651], // 3/8", 0.065"
 				[11.113, 1.651], // 7/16", 0.065"
@@ -1169,8 +1196,48 @@ module distortion_test_block(
   }
 }
 
+module hst_test_block(size="M3"){
+  height = unf_hst_length(size, "large") + 0.2*unf_fnr_shaft_diameter(size)+2;
+  spacing = unf_hst_width(size) + 4;
+  length = 4 + (3*spacing) + unf_hst_width(size);
+  width = unf_hst_width(size) + 5;
+
+  translate([0, width/2, height]){
+    rotate([0, 180, 180]){
+      difference(){
+
+	translate([0, -width/2, 0]){
+	  cube([length, width, height]);
+	}
+	translate([4, 0, 0]){
+	  translate([-3, 01.5, -1]){
+	    linear_extrude(2){
+	      rotate([180, 0]){
+		text(size, size=3);
+	      }
+	    }
+	  }
+	  translate([spacing, 0, 0]){
+	    unf_hst(size, length="small");
+	    translate([spacing, 0, 0]){
+	      unf_hst(size, length="medium");
+	      translate([spacing, 0, 0]){
+		unf_hst(size, length="large");
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+
 if (parm_part == "Collection") {
   collection(size=parm_size);
+ }
+
+if (parm_part == "Heatset_Test_Block") {
+  hst_test_block(size=parm_size);
  }
 
 if (parm_part == "Bolt_Distortion_Test"){
