@@ -22,7 +22,7 @@ use <unfy_math.scad>
 
 parm_part = "Collection"; // ["Collection", "HexHeadBolt_Test_Block", "CapHeadBolt_Test_Block", "CountersunkBolt_Test_Block", "HexNut_Test_Block", "SquareNut_Test_Block", "Washer_Test_Block", "Heatset_Test_Block", "Bolt_Distortion_Test"]
 
-parm_size = "m3"; // ["m2", "m2.5", "m3", "m4", "m8", "#00", "#000", "#0000", "#6", "#8", "#10", "1/4\"", "5/16\"", "3/8\""]
+parm_size = "m3"; // ["m2", "m2.5", "m3", "m4", "m8", "#00", "#000", "#0000", "#4", "#6", "#8", "#10", "#12", "1/4\"", "5/16\"", "3/8\""]
 
 //horizontal bolt shaft distortion height (as percentage of diameter)
 $unf_hdist_y = 10; //[0:100]
@@ -63,7 +63,7 @@ $fn = $preview ? 36 : 360;
 
 /************************ Common *********************************************/
 
-function unf_fnr_name(in) = is_list(in) ? in[0] : in;
+function unf_fnr_name(in) = is_list(in) ? in[0] : unf_stToUpper(in);
 
 function unf_fnr_shaft_diameter(in) = is_list(in) ? in[1] : (
   "m" == in[0] || "M" == in[0] ? (
@@ -259,13 +259,9 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 				       [[0, 3.023], //0.119"
-					[1, 3.708], //0.146"
-					[2, 4.369], //0.172"
-					[3, 5.055], //0.199"
-					[4, 5.715], //0.225"
-					[6, 7.087], //0.279"
-					[8, 8.433], //0.332"
-					[10, 9.779]]) //0.385"
+					[6, 6.6], // verified 
+					[10, 8.6], //verified
+					[12, 10.47]]) //verified
 	      )
 	    )
 	  )
@@ -315,13 +311,9 @@ function unf_csk_head_height(in) = is_list(in) ? in[3] : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 				       [[0, 0.660], // 0.026"
-					[1, 0.787], // 0.031"
-					[2, 0.94], // 0.037"
-					[3, 1.092], // 0.043"
-					[4, 1.245], // 0.049"
-					[6, 1.524], // 0.060"
-					[8, 1.83], // 0.072"
-					[10, 2.108]]) // 0.083"
+					[6, 2.5], 
+					[10, 3.4],
+					[12, 4.2]]) 
 	      )
 	    )
 	  )
@@ -413,9 +405,9 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
 				[50.8, 81.026]]) // 2", 3.19"
       )
     ) : (
-      "#0000" == in ? unf_hex_head_diameter(str("M", in)) : ( // no real data
-	"#000" == in ? unf_hex_head_diameter(str("M", in)) : ( // no real data
-	  "#00" == in ? unf_hex_head_diameter(str("M", in)) : ( // no real data
+      "#0000" == in ? unf_hex_head_diameter(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
+	"#000" == in ? unf_hex_head_diameter(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
+	  "#00" == in ? unf_hex_head_diameter(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
 	    "#" != in[0] ? unf_hex_head_diameter("M3") : (
 	      unf_hex_head_diameter(str("M", unf_fnr_shaft_diameter(in))) // no real data
 	    )
@@ -476,9 +468,9 @@ function unf_hex_head_height(in) = is_list(in) ? in[3] : (
 				[50.8, 33.782]]) // 2", 1.33"
       )
     ) : (
-      "#0000" == in ? unf_hex_head_height(str("M", in)) : ( // no real data
-	"#000" == in ? unf_hex_head_height(str("M", in)) : ( // no real data
-	  "#00" == in ? unf_hex_head_height(str("M", in)) : ( // no real data
+      "#0000" == in ? unf_hex_head_height(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
+	"#000" == in ? unf_hex_head_height(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
+	  "#00" == in ? unf_hex_head_height(str("M", unf_fnr_shaft_diameter(in))) : ( // no real data
 	    "#" != in[0] ? unf_hex_head_height("M3") : (
 	      unf_hex_head_height(str("M", unf_fnr_shaft_diameter(in))) // no real data
 	    )
@@ -709,16 +701,11 @@ function unf_nut_diameter(in) = is_list(in) ? in[2] : (
 	    "#" != in[0] ? unf_nut_diameter("M3") : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-				       [[0, 5.613], //0.221"
-					[1, 5.613], //0.221"
-					[2, 6.731], //0.265"
-					[3, 6.731], //0.265"
-					[4, 8.992], //0.354"
-					[5, 11.227], //0.442"
-					[6, 11.227], //0.442"
+				       [[0, 5.613], //
+					[6, 8.5], // verified
 					[8, 9.525], // verified
-					[10, 13.462], //0.530"
-					[12, 15.723]]) //0.619"
+					[10, 10.25], // verified 
+					[12, 12]]) // verified
 	      )
 	    )
 	  )
@@ -767,16 +754,11 @@ function unf_nut_height(in) = is_list(in) ? in[3] : (
 	    "#" != in[0] ? unf_nut_height("M3") : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-				       [[0, 1.27], // 0.050"
-					[1, 1.27], // 0.050"
-					[2, 1.676], // 0.066"
-					[3, 1.676], // 0.066"
-					[4, 2.489], // 0.098"
-					[5, 2.896], // 0.114"
-					[6, 2.896], // 0.114"
-					[8, 3.302], // 0.130"
-					[10, 3.302], // 0.130"
-					[12, 4.089]]) // 0.161"
+				       [[0, 1.27], //
+					[6, 2.76], // verified
+					[8, 3.23], // verified (stainless)
+					[10, 3.5], // verified
+					[12, 4.25]]) // verified
 	      )
 	    )
 	  )
@@ -955,7 +937,7 @@ function unf_wsh_diameter(in) = is_list(in) ? in[2] : (
 			  [5, 10],
 			  [6, 12],
 			  [7, 14],
-			  [8, 16.5],
+			  [8, 16.8],
 			  [10, 20],
 			  [11, 24],
 			  [12, 24],
@@ -983,7 +965,7 @@ function unf_wsh_diameter(in) = is_list(in) ? in[2] : (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
 			       [[0, 0],
-				[6.35, 15.875], // 1/4", 5/8"
+				[6.35, 18.75], // 1/4" verified
 				[7.938, 17.463], // 5/16", 11/16"
 				[9.525, 20.638], // 3/8", 13/16"
 				[11.113, 23.813], // 7/16", 15/16"
@@ -1002,10 +984,9 @@ function unf_wsh_diameter(in) = is_list(in) ? in[2] : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 				       [[0, unf_wsh_diameter(str("M", unf_fnr_shaft_diameter("#0")))],
-					[2, 6.35], // 1/4"
-					[4, 7.738], // 5/16"
-					[6, 9.525], // 3/8"
-					[8, 11.33], // verified
+					[4, 9.6], // verified
+					[6, 9.8], // verified
+					[8, 11.36], // verified
 					[10, 12.7], // 1/2"
 					[12, 14.288]]) // 9/16"
 	      )
@@ -1062,7 +1043,7 @@ function unf_wsh_height(in) = is_list(in) ? in[3] : (
       unf_round(place=-3,
 		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
 			       [[0, 0],
-				[6.35, 1.651], // 1/4", 0.065"
+				[6.35, 2.1], // 1/4" verified
 				[7.938, 1.651], // 5/16", 0.065"
 				[9.525, 1.651], // 3/8", 0.065"
 				[11.113, 1.651], // 7/16", 0.065"
@@ -1081,11 +1062,8 @@ function unf_wsh_height(in) = is_list(in) ? in[3] : (
 	      unf_round(place=-3,
 			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 				       [[0, 0.660], // 0.026"
-					[1, 0.787], // 0.031"
-					[2, 0.94], // 0.037"
-					[3, 1.092], // 0.043"
-					[4, 1.245], // 0.049"
-					[6, 1.524], // 0.060"
+					[4, 1.33], // verified
+					[6, 1.33], // verified
 					[8, 1.33], // verified
 					[10, 2.108]]) // 0.083"
 	      )
@@ -1254,7 +1232,7 @@ module unf_nut_test_block(size="M3"){
 	    translate([-3, 01.5, -1]){
 	      linear_extrude(2){
 		rotate([180, 0]){
-		  text(unf_fnr_name(size), size=3);
+		  text(unf_fnr_name(size), size=5);
 		}
 	      }
 	    }
@@ -1291,7 +1269,7 @@ module unf_wsh_test_block(size="M3"){
 	    translate([-3, 01.5, -1]){
 	      linear_extrude(2){
 		rotate([180, 0]){
-		  text(unf_fnr_name(size), size=3);
+		  text(unf_fnr_name(size), size=6);
 		}
 	      }
 	    }
@@ -1402,7 +1380,7 @@ module unf_csk_test_block(size="M3"){
 	    translate([-3, 01.5, -1]){
 	      linear_extrude(2){
 		rotate([180, 0]){
-		  text(unf_fnr_name(size), size=3);
+		  text(unf_fnr_name(size), size=5);
 		}
 	      }
 	    }
@@ -1425,32 +1403,50 @@ module unf_hex_test_block(size="M3"){
   let (size=unf_hex_v(size)){
     height = unf_hex_head_height(size) + 5;
     spacing = unf_hex_head_diameter(size) + $wall;
-    length = 4 + (2*spacing) + unf_hex_head_diameter(size);
+    length = 2*spacing;
     width = unf_hex_head_diameter(size) + (2*$wall);
 
-    translate([0, width/2, height]){
-      rotate([0, 180, 180]){
-	difference(){
-
-	  translate([0, -width/2, 0]){
-	    cube([length, width, height]);
+    difference(){
+      linear_extrude(height){
+	
+	hull(){
+	  
+	  translate([-length, 0]){
+	    square([length, width]);
 	  }
-	  translate([4, 0, 0]){
-	    translate([-3, 01.5, -1]){
-	      linear_extrude(2){
-		rotate([180, 0]){
-		  text(unf_fnr_name(size), size=3);
-		}
+	  
+	  offset(delta=$wall){
+	    hull(){
+	      translate([$wall, $wall, 0]){
+		for (tv = [[0, 0, 0], [0, width-(2*$wall), 0]]){
+		  translate(tv){
+		    projection(){
+		      rotate([-90, 0, 0]){
+			resize([0, width-(2*$wall), 0], auto=true){
+			  linear_extrude($over){
+			    text(text=unf_fnr_name(size));
+			  }
+  		        }
+		      }
+		    }
+		  }
+	        }
 	      }
-	    }
-	    translate([spacing, 0, 0]){
-	      unf_hex(size);
-	      unf_shaft(unf_fnr_shaft_diameter(size), height + (2*$over));
-	      translate([spacing, 0, 0]){
-		unf_hex(size);
-		unf_shaft(unf_fnr_shaft_diameter(size), height + (2*$over));
-	      }
-	    }
+	    }	  
+	  }
+        }
+      }
+      translate([$wall, $wall, height-$wall]){
+        linear_extrude($wall + $over){
+	  resize([0, width-(2*$wall)], auto=true){
+	    text(text=unf_fnr_name(size));
+	  }
+	}
+      }
+      for(tv=[[-spacing/2, width/2, height], [-3/2*spacing, width/2, height]]){
+        translate(tv){
+	  rotate([0, 180, 0]){
+	    unf_hex(size, length=height);
 	  }
 	}
       }
