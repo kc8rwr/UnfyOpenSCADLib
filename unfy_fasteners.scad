@@ -63,9 +63,13 @@ $fn = $preview ? 36 : 360;
 
 /************************ Common *********************************************/
 
-function unf_fnr_name(in) = is_list(in) ? in[0] : unf_stToUpper(in);
+function unf_fnr_type(in) = is_list(in) ? in[0] : unf_stToUpper(in);
+					
+function unf_fnr_name(in) = is_list(in) ? in[1] : unf_stToUpper(in);
 
-function unf_fnr_shaft_diameter(in) = is_list(in) ? in[1] : (
+function unf_fnr_diameter(in) = is_list(in) ? in[2] : (is_num(in) ? in : 5);
+
+function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_stToNum(unf_sub(in, 1))
   ) : (
@@ -118,11 +122,12 @@ module unf_shaft(diameter=3, length=10, distorted=false){
 //[name, bolt_diameter, head_diameter, head_height, default_length]
 
 function unf_cap_v(size) = is_list(size) ? size : [
-  unf_fnr_name(size),
-  unf_fnr_shaft_diameter(size),
-  unf_cap_head_diameter(size),
-  unf_cap_head_height(size),
-  unf_cap_default_length(size)
+  "CAP", //0
+  unf_fnr_name(size), //1
+  unf_cap_head_diameter(size), //2
+  unf_fnr_shaft_diameter(size), //3
+  unf_cap_head_height(size), //4
+  unf_cap_default_length(size) //5
 ];
 
 function unf_cap_head_diameter(in) = is_list(in) ? in[2] : (
@@ -181,9 +186,9 @@ function unf_cap_head_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_cap_head_height(in) = is_list(in) ? in[3] : unf_fnr_shaft_diameter(in);
+function unf_cap_head_height(in) = is_list(in) ? in[4] : unf_fnr_shaft_diameter(in);
 
-function unf_cap_default_length(in) = is_list(in) ? in[4] : unf_fnr_shaft_diameter(in) * 15 / 3;
+function unf_cap_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
 module unf_cap(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
@@ -212,11 +217,12 @@ module unf_cap(screw = "m3", length = -1, head_ext = -1, distorted = false){
 //[name, bolt_diameter, head_diameter, head_height, default_length]
 
 function unf_csk_v(size) = is_list(size) ? size : [
-  unf_fnr_name(size),
-  unf_fnr_shaft_diameter(size),
-  unf_csk_head_diameter(size),
-  unf_csk_head_height(size),
-  unf_csk_default_length(size)
+  "CSK", //0
+  unf_fnr_name(size), //1
+  unf_csk_head_diameter(size), //2
+  unf_fnr_shaft_diameter(size), //3
+  unf_csk_head_height(size), //4
+  unf_csk_default_length(size) //5
 ];
 
 function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
@@ -271,7 +277,7 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_csk_head_height(in) = is_list(in) ? in[3] : (
+function unf_csk_head_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -323,7 +329,7 @@ function unf_csk_head_height(in) = is_list(in) ? in[3] : (
   )
 );
 
-function unf_csk_default_length(in) = is_list(in) ? in[4] : unf_fnr_shaft_diameter(in) * 15 / 3;
+function unf_csk_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
 module unf_csk(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
@@ -351,11 +357,12 @@ module unf_csk(screw = "m3", length = -1, head_ext = -1, distorted = false){
 //[name, bolt_diameter, head_diameter, head_height, default_length]
 
 function unf_hex_v(size) = is_list(size) ? size : [
-  unf_fnr_name(size),
-  unf_fnr_shaft_diameter(size),
-  unf_hex_head_diameter(size),
-  unf_hex_head_height(size),
-  unf_hex_default_length(size)
+  "HEX", //0
+  unf_fnr_name(size), //1
+  unf_hex_head_diameter(size), //2
+  unf_fnr_shaft_diameter(size), //3
+  unf_hex_head_height(size), //4
+  unf_hex_default_length(size) //5
 ];
 
 function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
@@ -418,7 +425,7 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_hex_head_height(in) = is_list(in) ? in[3] : (
+function unf_hex_head_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -481,7 +488,7 @@ function unf_hex_head_height(in) = is_list(in) ? in[3] : (
   )
 );
 
-function unf_hex_default_length(in) = is_list(in) ? in[4] : unf_fnr_shaft_diameter(in) * 15 / 3;
+function unf_hex_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
 module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
@@ -511,16 +518,19 @@ module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
 //[name, shaft_diameter, insert_diameter, length]
 // note - these are pilot hole dimensions, not dimensions of the actual insert
 
-function unf_hst_v(size="m3", length="medium") = is_list(size) ? size : (
-  [unf_fnr_name(size),
-   unf_fnr_shaft_diameter(size),
-   unf_hst_diameter(size),
-   unf_hst_length(size, length)]
+function unf_hst_v(size="m3", length="medium", opening_taper_percent=10) = is_list(size) ? size : (
+  ["HST", //0
+   unf_fnr_name(size), //1
+   unf_hst_diameter(size)+(unf_hst_diameter(size)*opening_taper_percent/100), //2
+   unf_fnr_shaft_diameter(size), //3
+   opening_taper_percent, //4
+   unf_hst_diameter(size), //5
+   unf_hst_length(size, length)] //6
 );
   
 
 
-function unf_hst_diameter(in="m3") = is_list(in) ? in[2] : (
+function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -555,7 +565,7 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[2] : (
 );
 
 function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
-  is_list(in) ? in[3] : (
+  is_list(in) ? in[6] : (
     "m" == in[0] || "M" == in[0] ? (
       unf_round(place=-3,
 		num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -606,15 +616,13 @@ function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
   )
 );
 
-function unf_hst_width(size, opening_taper_percent=10) =
-  unf_hst_diameter(size)+(unf_hst_diameter(size)*opening_taper_percent/100);
 
 module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1, extra_room=true, bolt_hole_depth=0){
   let (
     size = is_list(size) ? size : unf_hst_v(size=size, length=length)){
     let (
       bolt_diameter = unf_fnr_shaft_diameter(size),
-      opening_diameter = unf_hst_width(size, opening_taper_percent),
+      opening_diameter = unf_fnr_diameter(size, opening_taper_percent),
       diameter = unf_hst_diameter(size),
       length = unf_hst_length(size),
       head_ext = (0 <= head_ext) ? head_ext : $over
@@ -656,10 +664,11 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
 //[name, nut_diameter, height]
 
 function unf_nut_v(size) = is_list(size) ? size : [
-  unf_fnr_name(size),
-  unf_fnr_shaft_diameter(size),
-  unf_nut_diameter(size),
-  unf_nut_height(size)
+  "NUT", //0
+  unf_fnr_name(size), //1
+  unf_nut_diameter(size), //2
+  unf_fnr_shaft_diameter(size), //3
+  unf_nut_height(size) //4
 ];
 
 function unf_nut_diameter(in) = is_list(in) ? in[2] : (
@@ -715,7 +724,7 @@ function unf_nut_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_nut_height(in) = is_list(in) ? in[3] : (
+function unf_nut_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -791,13 +800,14 @@ module unf_nut(size = "m3", ext = -1){
 //[name, side_length, height]
 
 function unf_sqr_v(size) = is_list(size) ? size : [
-  unf_fnr_name(size),
-  unf_fnr_shaft_diameter(size),
-  unf_sqr_length(size),
-  unf_sqr_height(size)
+  "SQR", //0
+  unf_fnr_name(size), //1
+  unf_fnr_shaft_diameter(size), //2
+  unf_sqr_length(size), //3
+  unf_sqr_height(size) //4
 ];
 
-function unf_sqr_length(in) = is_list(in) ? in[2] : (
+function unf_sqr_length(in) = is_list(in) ? in[3] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -844,7 +854,7 @@ function unf_sqr_length(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_sqr_height(in) = is_list(in) ? in[3] : (
+function unf_sqr_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -914,13 +924,15 @@ module unf_sqr(size = "m3", ext = -1){
 //[name, washer_diameter, height]
 
 function unf_wsh_v(size) = is_list(size) ? size : [
+  "WSH",
   unf_fnr_name(size),
+  unf_wsh_diameter(size),
   unf_fnr_shaft_diameter(size),
   unf_wsh_diameter(size),
   unf_wsh_height(size)
 ];
 
-function unf_wsh_diameter(in) = is_list(in) ? in[2] : (
+function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -998,7 +1010,7 @@ function unf_wsh_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
-function unf_wsh_height(in) = is_list(in) ? in[3] : (
+function unf_wsh_height(in) = is_list(in) ? in[5] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
 	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1116,9 +1128,9 @@ module collection(size="m3", spacing=2){
       unf_cap(screw = cap);
       translate([(unf_cap_head_diameter(cap) + unf_hex_head_diameter(hex))/2 + spacing, 0, 0]){
 	unf_hex(hex);
-	translate([(unf_hex_head_diameter(hex) + unf_hst_width(hst))/2 + spacing, 0, 0]){
+	translate([(unf_hex_head_diameter(hex) + unf_fnr_diameter(hst))/2 + spacing, 0, 0]){
 	  unf_hst(hst);
-	  translate([(unf_hst_width(hst) + unf_nut_diameter(nut))/2 + spacing, 0, 0]){
+	  translate([(unf_fnr_diameter(hst) + unf_nut_diameter(nut))/2 + spacing, 0, 0]){
 	    unf_nut(nut);
 	    translate([(unf_nut_diameter(nut) + unf_wsh_diameter(wsh))/2 + spacing, 0, 0]){
 	      unf_wsh(wsh);
@@ -1180,9 +1192,9 @@ module distortion_test_block(
 
 module unf_hst_test_block(size="M3"){
   height = unf_hst_length(size, "large") + 0.2*unf_fnr_shaft_diameter(size)+2;
-  spacing = unf_hst_width(size) + 4;
-  length = 4 + (3*spacing) + unf_hst_width(size);
-  width = unf_hst_width(size) + 5;
+  spacing = unf_fnr_diammeter(size) + 4;
+  length = 4 + (3*spacing) + unf_fnr_diameter(size);
+  width = unf_fnr_diameter(size) + 5;
 
   translate([0, width/2, height]){
     rotate([0, 180, 180]){
@@ -1414,25 +1426,52 @@ module unf_hex_test_block(size="M3"){
 	  translate([-length, 0]){
 	    square([length, width]);
 	  }
+
+	  unf_enbox(margin=$wall){
+	    resize([0, width-(2*$wall)], auto=true){
+	      text(text=unf_fnr_name(size));
+	    }
+	  }
+        }
+      }
+      translate([$wall, $wall, height-$wall]){
+        linear_extrude($wall + $over){
+	  resize([0, width-(2*$wall)], auto=true){
+	    text(text=unf_fnr_name(size));
+	  }
+	}
+      }
+      for(tv=[[-spacing/2, width/2, height], [-3/2*spacing, width/2, height]]){
+        translate(tv){
+	  rotate([0, 180, 0]){
+	    unf_hex(size, length=height);
+	  }
+	}
+      }
+    }
+  }
+}
+
+module unf_fastener_test_block(type="hex", size="M3"){
+  let (size=unf_hex_v(size)){
+    height = unf_hex_head_height(size) + 5;
+    spacing = unf_hex_head_diameter(size) + $wall;
+    length = 2*spacing;
+    width = unf_hex_head_diameter(size) + (2*$wall);
+
+    difference(){
+      linear_extrude(height){
+	
+	hull(){
 	  
-	  offset(delta=$wall){
-	    hull(){
-	      translate([$wall, $wall, 0]){
-		for (tv = [[0, 0, 0], [0, width-(2*$wall), 0]]){
-		  translate(tv){
-		    projection(){
-		      rotate([-90, 0, 0]){
-			resize([0, width-(2*$wall), 0], auto=true){
-			  linear_extrude($over){
-			    text(text=unf_fnr_name(size));
-			  }
-  		        }
-		      }
-		    }
-		  }
-	        }
-	      }
-	    }	  
+	  translate([-length, 0]){
+	    square([length, width]);
+	  }
+
+	  unf_enbox(margin=$wall){
+	    resize([0, width-(2*$wall)], auto=true){
+	      text(text=unf_fnr_name(size));
+	    }
 	  }
         }
       }
