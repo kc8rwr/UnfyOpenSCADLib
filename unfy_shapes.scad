@@ -19,7 +19,6 @@
 
 use <unfy_fasteners.scad>
 
-$fn = $preview ? 36 : 360;
 $over = 1;
 
 module unfy_roundedRectangle(v=[18, 5], r=1){
