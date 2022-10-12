@@ -60,6 +60,24 @@ function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
     ) length
   );
 
+// Adapted from Post by MichaelAtOz https://openscad.rocklinux.narkive.com/jhqIIcOm/fn-fa-and-fs
+// Since which of $fa, $fs, $fn determines curve resolution varies depending on their respective values these methods allow one to calculate one which will be correct for use within modules
+
+//Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fn value
+function unf_effective_fn(radius, angle=360) = 0 < $fn ? $fn : let (
+  pfa = 360 / $fa,
+  pfs = (2*PI*radius)/$fs) ceil(max(min(pfa, pfs), 5) * (angle/360));
+
+//Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fa value
+function unf_effective_fa(radius) = 360 / unf_effective_fn(radius);
+
+//Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fs value
+function unf_effective_fs(radius) = 2*PI*radius / unf_effective_fn(radius);
+
+
+
+// ******************************* Demo Stuff
+
 if (demonstrate_unf_distance_to_bounding_circle) {
   echo("Set steps to 360 to animate");
 
