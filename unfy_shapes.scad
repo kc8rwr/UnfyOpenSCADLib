@@ -18,6 +18,7 @@
 //
 
 use <unfy_fasteners.scad>
+use <unfy_math.scad>
 
 $over = 1;
 
@@ -37,3 +38,12 @@ module unfy_roundedRectangle(v=[18, 5], r=1){
     }
   }
 }
+
+module unfy_bezier_wedge(width=1, height=1, v=[[0.5, 0]]){
+  h = concat([[0, height]], v, [[width, 0]]);
+  echo(str(h));
+  bez = unfy_bezier(h);
+  echo(str(bez));
+  polygon(concat([[0, 0]], bez, [[0, 0]]));
+}
+

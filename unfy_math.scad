@@ -74,6 +74,36 @@ function unf_effective_fa(radius) = 360 / unf_effective_fn(radius);
 //Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fs value
 function unf_effective_fs(radius) = 2*PI*radius / unf_effective_fn(radius);
 
+//Determine the bounding size of a vector of 2 dimensional vectors
+function unfy_bound_size2(v) =
+  len(v) < 2 ? 0 :
+    let (
+      mnx = min([for(i=v)i.x]),
+      mxx = max([for(i=v)i.x]),
+      mny = min([for(i=v)i.y]),
+      mxy = max([for(i=v)i.y])
+    )
+  [mxx - mnx, mxy, mny];
+
+//take a vector of control points, return a vector of points on the curve
+function unfy_bezier(v) =
+  assert(len(v) < 5, "Sorry, curves with order > 3 are not yet supported")
+  assert(len(v) > 0, "Empty vector!")
+    1 == len(v) ? [v[0]] :
+    let(
+      bounds = unfy_bound_size2(v), //not necessarily accurate as control points may be outside
+      radius = sqrt(pow(bounds.x, 2) + pow(bounds.y, 2)),
+      count = unf_effective_fn(radius, 90),
+      steps = [0: 1/count: 1]
+    )
+  len(v) == 2 ? v : //[for(t = steps) [((1-t)*v[0].x)+(t*v[1].x), ((1-t)*v[0].y)+(t*v[1].y)]] :
+  3 == len(v) ? [for(t = steps) [
+    (pow((1-t),2)*v[0].x) + (2*(1-t)*t*v[1].x) + (pow(t, 2)*v[2].x),
+    (pow((1-t),2)*v[0].y) + (2*(1-t)*t*v[1].y) + (pow(t, 2)*v[2].y)]] :
+  4 == len(v) ? [for(t = steps) [
+    (pow(1-t, 3)*v[0].x) + (3*pow(1-t, 2)*t*v[1].x) + (3*(1-t)*pow(t, 2)*v[2].x) + (pow(t, 3)*v[3].x),
+    (pow(1-t, 3)*v[0].y) + (3*pow(1-t, 2)*t*v[1].y) + (3*(1-t)*pow(t, 2)*v[2].y) + (pow(t, 3)*v[3].y)]] :
+    [[0, 0]];
 
 
 // ******************************* Demo Stuff
@@ -100,7 +130,7 @@ if (demonstrate_unf_distance_to_bounding_circle) {
       text(text=str("Angle: ", angle), size=4);
     }
   }
- } else {
+} else {
   echo(str("unf_round(52.43, 3)=", unf_round(52.43, 3)));
   echo(str("unf_round(52.43, 2)=", unf_round(52.4, 2)));
   echo(str("unf_round(52.43, 1)=", unf_round(52.4, 1)));
@@ -108,5 +138,17 @@ if (demonstrate_unf_distance_to_bounding_circle) {
   echo(str("unf_round(52.43, -1)=", unf_round(52.43, -1)));
   echo(str("unf_round(52.43, -2)=", unf_round(52.43, -2)));
   echo(str("unf_round(52.43, -3)=", unf_round(52.43, -3)));
- }
-
+  
+  control = [[0, 5],  [5, 1], [14, 15],[20, 8]];
+  bez=unfy_bezier(v=control);
+  v = concat([[0, 0]], bez, [[20, 0]]);
+  echo(str(v));
+  linear_extrude(0.5) polygon(v);
+  color("red"){
+    for(p = control){
+      translate(p){
+	cylinder(d=0.5, h=1);
+      }
+    }
+  }
+}
