@@ -21,13 +21,17 @@ demonstrate_unf_distance_to_bounding_circle = false; //grapgical demo of unf_dis
 
 $fn = $preview ? 36 : 360;
 
+// adapted from https://forums.openscad.org/is-nan-td28336.html
+function unf_INF() = 1/0;
+function unf_ia_nan(x) = x!=x;
+
 //A rounding function that allows rounding to places other than ones
 function unf_round(num, place=0) = round(num / pow(10, place)) * pow(10, place);
 
 function unf_signum(x) = x < 0 ? -1 : (x ==0 ? 0 : 1);
 
 // convert any angle to an equivalent positive (or 0) angle within a single circle
-function unf_normalize_angle(angle) = 0 < angle ? (angle % 360) : (360 - (angle % 360));
+function unf_normalize_angle(angle) = let(a = angle % 360) 0 > a ? 360 + a  : a;
 
 //Use quadratic formula to solve a quadratic equation, returns vector with both answers
 function unf_quadratic(a, b, c) = let(m = sqrt(pow(b, 2) - (4 * a * c)),
@@ -104,6 +108,8 @@ function unfy_bezier(v) =
     (pow(1-t, 3)*v[0].x) + (3*pow(1-t, 2)*t*v[1].x) + (3*(1-t)*pow(t, 2)*v[2].x) + (pow(t, 3)*v[3].x),
     (pow(1-t, 3)*v[0].y) + (3*pow(1-t, 2)*t*v[1].y) + (3*(1-t)*pow(t, 2)*v[2].y) + (pow(t, 3)*v[3].y)]] :
     [[0, 0]];
+
+function unf_cartesian_from_polar(r=1, theta=90) = let (theta=unf_normalize_angle(theta)) [r*cos(theta), r*sin(theta)];
 
 
 // ******************************* Demo Stuff
