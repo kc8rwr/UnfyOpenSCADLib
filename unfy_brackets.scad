@@ -18,13 +18,72 @@
 // If not, see <https://www.gnu.org/licenses/>.
 //
 
+/*[ Main ] */
+width = 50;
+thickness = 2;
+fillet = 2;
+rounded_corners = true;
+rounded_edges = true;
+leg_count = 8; //[1:8]
+
+/*[ Leg-1 ] */
+leg1_enable = true;
+leg1_angle = 0;
+leg1_length = 30;
+leg1_color = "Gray";
+
+/*[ Leg-2 ] */
+leg2_enable = true;
+leg2_angle = 45;
+leg2_length = 30;
+leg2_color = "Blue";
+
+/*[ Leg-3 ] */
+leg3_enable = true;
+leg3_angle = 90;
+leg3_length = 30;
+leg3_color = "Grey";
+
+/*[ Leg-4 ] */
+leg4_enable = true;
+leg4_angle = 135;
+leg4_length = 30;
+leg4_color = "Yellow";
+
+/*[ Leg-5 ] */
+leg5_enable = true;
+leg5_angle = 180;
+leg5_length = 30;
+leg5_color = "Gray";
+
+/*[ Leg-6 ] */
+leg6_enable = true;
+leg6_angle = 225;
+leg6_length = 30;
+leg6_color = "Blue";
+
+/*[ Leg-7 ] */
+leg7_enable = true;
+leg7_angle = 270;
+leg7_length = 30;
+leg7_color = "Gray";
+
+/*[ Leg-8 ] */
+leg8_angle = 315;
+leg8_length = 30;
+leg8_color = "Yellow";
+
+/*[ Webs ] */
+web_height = 30;
+web_thickness = 5;
+
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
 use <unfy_lists.scad>
 
-$fn = $preview ? 360 : 360;
+$fn = $preview ? 36 : 360;
 
-module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [], "red"], [45, 10, [], "blue"]]){
+module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yellow"], [45, 10, [], [], "blue"]], rounded_corners = true, rounded_edges = true){
   // functions which read from the leg vectors
   //[angle, length, hole_type, holes, leg_color]
   function leg_angle(v) = v[0];
@@ -43,6 +102,8 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
   //functions which read from the calcs2 vector
   function opening(v) = v[0];
   function inside(v) = v[1];
+  function inner_length1(v) = v[2];
+  function inner_length2(v) = v[3];
 
   //as leg angle travels around the circle need to offset so that legs still come to a clean point
   function h_offset(leg_angle, thickness) = 180 < leg_angle ? 0 : thickness*cos(90 - leg_angle); //offset = adj hyp = thickness cos(theta)=adj/hyp  hyp*cos(theta) = adj
@@ -89,6 +150,8 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 	    prev_leg = legs[prev_index],
 	    cur_calcs1 = calcs1[index],
 	    prev_calcs1 = calcs1[prev_index],
+	    cur_len = leg_adj_len(cur_calcs1),
+	    prev_len = leg_adj_len(prev_calcs1),
 	    cur_offset = leg_offset(cur_calcs1),
 	    prev_offset = leg_offset(prev_calcs1),
 	    cur_slope = leg_slope(cur_calcs1),
@@ -100,7 +163,7 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 	    prev_b = leg_b2(prev_calcs1),
 	    
 	    inside = 90 == prev_angle ? (
-	      [0, (cur_slope * cur_offset.x) + cur_b]
+	      [0, cur_b]
 	    ) : (
 	      270 == prev_angle ? (
 		[thickness, (cur_slope * thickness) + cur_b]
@@ -116,10 +179,14 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 		  )
 		)
 	      )
-	    )
+	    ),
+	    prev_inner_length = prev_len,
+	    cur_inner_length = cur_len
 	  )[
 	    opening_angle,
-	    inside
+	    inside,
+	    prev_inner_length,
+	    cur_inner_length
 	  ]];
 	
 	//Draw each leg
@@ -130,8 +197,42 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 	  leg_length = leg_adj_len(calcs1[leg_index]);
 	  translate([leg_offset.x, 0, leg_offset.y]){
 	    rotate([0, -leg_angle, 0]){
-	      //	      translate([-(thickness/20), -(thickness/20), 0]) color("black") cube([leg_length+(thickness/10), width+(thickness/10), thickness/10]);
-	      color(leg_color(leg)) cube([leg_length, width, thickness]);
+	      //translate([-(thickness/20), -(thickness/20), 0]) color("black") cube([leg_length+(thickness/10), width+(thickness/10), thickness/10]);
+	      color(leg_color(leg)){
+		let(
+		  adj_leg_length = rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? leg_length - (thickness/2) : leg_length,
+		  adj_width = rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? width - (thickness) : width,
+		  shift = [0, rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? thickness/2 : 0, rounded_edges && len(legs)-1 == leg_index ? thickness/2 : (rounded_edges && 0 == leg_index ? -thickness/2 : 0)]
+		){
+		  intersection(){
+		    if (0 == leg_index || len(legs)-1 == leg_index){
+		      cube([leg_length, width, thickness]);
+		    }
+		    translate(shift){
+		      minkowski(){
+			if (rounded_corners){
+			  hull(){
+			    cube([0.001, adj_width, thickness]);
+			    translate([adj_leg_length-thickness, adj_width-thickness, 0])
+			      cylinder(h=thickness, r=thickness);
+			    translate([adj_leg_length-thickness, thickness, 0])
+			      cylinder(h=thickness, r=thickness);
+			  }
+			} else {
+			  if(rounded_edges && (0 == leg_index || len(legs)-1 == leg_index)){
+			    cube([adj_leg_length, adj_width, thickness]);
+			  } else {
+			    cube([leg_length, width, thickness]);
+			  }
+			}
+			if(rounded_edges && (0 == leg_index || len(legs)-1 == leg_index)){
+			  sphere(d = thickness);
+			}
+		      }
+		    }
+		  }
+		}
+	      }
 	    }
 	  }
 	}
@@ -145,26 +246,32 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 	      cur_calcs1 = calcs1[leg_index];
 	      prev_calcs1 = calcs1[leg_index-1];
 	      calcs2 = calcs2[leg_index];
-	      
-	      leg_angle = leg_angle(leg);
+
+	      cur_length = leg_length(leg);
+	      prev_length = leg_length(prev_leg);
+	      cur_angle = leg_angle(leg);
 	      prev_angle = leg_angle(prev_leg);
 	      leg_adj_len = leg_adj_len(cur_calcs1);
 	      prev_adj_len = leg_adj_len(prev_calcs1);
+	      cur_fillet = min(leg_adj_len, fillet);
+	      prev_fillet = min(prev_adj_len, fillet);
 	      opening_angle = opening(calcs2);
 	      opening_inside = inside(calcs2);
+	      prev_inner_length = inner_length1(calcs2);
+	      cur_inner_length = inner_length2(calcs2);
 	      
 	      if (180 > opening_angle && atan(thickness/min(leg_adj_len, prev_adj_len)) < opening_angle){
-		leg_offset = leg_offset(cur_calcs1);
+		cur_offset = leg_offset(cur_calcs1);
 		prev_offset = leg_offset(prev_calcs1);
 	      
 		cur_m = leg_slope(cur_calcs1);
 		prev_m = leg_slope(prev_calcs1);
 		prev_b = leg_b2(prev_calcs1);
-		
+	
 		fillet_bez = let(
-		  top = [fillet*cos(leg_angle) + opening_inside.x, fillet*sin(leg_angle) + opening_inside.y],
-		  bottom = [fillet*cos(prev_angle) + opening_inside.x, fillet*sin(prev_angle) + opening_inside.y]
-		) concat([opening_inside], unfy_bezier([top, opening_inside, bottom]), [opening_inside]);
+		  top = [cur_fillet*cos(cur_angle) + opening_inside.x, cur_fillet*sin(cur_angle) + opening_inside.y],
+		  bottom = [prev_fillet*cos(prev_angle) + opening_inside.x, prev_fillet*sin(prev_angle) + opening_inside.y]
+		) concat([opening_inside], unfy_bezier([top, opening_inside, bottom], $fn = $fn), [opening_inside]);
 		color("green"){
 		  //fillet
 		  translate([0, width, 0]){
@@ -177,8 +284,10 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 		  //webs
 		  for(web = leg_webs(leg)){
 		    web_bez = let(
-		      top = [web[2]*cos(leg_angle) + opening_inside.x, web[2]*sin(leg_angle) + opening_inside.y],
-		      bottom = [web[2]*cos(prev_angle) + opening_inside.x, web[2]*sin(prev_angle) + opening_inside.y]
+		      adj_web1 = min(unf_distance_to_bounding_circle(cur_length, opening_inside, cur_angle)-(rounded_corners ? thickness : 0), web[2]),
+		      adj_web2 = min(unf_distance_to_bounding_circle(prev_length, opening_inside, prev_angle)-(rounded_corners ? thickness : 0), web[2]),
+		      top = [adj_web1*cos(cur_angle) + opening_inside.x, adj_web1*sin(cur_angle) + opening_inside.y],
+		      bottom = [adj_web2*cos(prev_angle) + opening_inside.x, adj_web2*sin(prev_angle) + opening_inside.y]
 		    ) concat([opening_inside], unfy_bezier([top, opening_inside, bottom]), [opening_inside]);
 		    translate([0, width-web[0], 0]){
 		      rotate([90, 0, 0]){
@@ -199,23 +308,20 @@ module multi_bracket(width=6, web_pct=66, thickness=2, fillet=2, legs=[[0, 10, [
 }
 
 
-start = 90;
-a1 = 0;
-end = 180;
-a2 = (a1 + start + $t*end) % end;
+webs = [[0, web_thickness, web_height], [(width/2)+(web_thickness/2), web_thickness, web_height], [width-web_thickness, web_thickness, web_height]];
+holes = [];
 
-multi_bracket(width=50, web_pct=66, thickness=2, legs=[
-		[a1, 40, [], [], "blue"],
-		[a2, 40, [], [[0, 4, 30], [22.5, 5, 30], [45, 5, 30]], "yellow"],
-		[180, 40, [], [[0, 4, 30], [22.5, 5, 30], [45, 5, 30]], "orange"],
-		/*[0, 40, [], [], "gray"],
-		  [45, 40, [], [], "blue"],
-		  [90, 40, [], [], "gray"],
-		  [135, 40, [], [], "yellow"],
-		  [180, 40, [], [], "gray"],
-		  [225, 40, [], [], "blue"],
-		  [270, 40, [], [], "gray"],
-		  [315, 40, [], [], "yellow"]*/
-	      ]);
-//translate([0, 20, 0]) rotate([90, 0, 0]) circle(r=40);
+
+legs = unf_sub([
+  [leg1_angle, leg1_length, holes, webs, leg1_color],
+  [leg2_angle, leg2_length, holes, webs, leg2_color],
+  [leg3_angle, leg3_length, holes, webs, leg3_color],
+  [leg4_angle, leg4_length, holes, webs, leg4_color],
+  [leg5_angle, leg5_length, holes, webs, leg5_color],
+  [leg6_angle, leg6_length, holes, webs, leg6_color],
+  [leg7_angle, leg7_length, holes, webs, leg7_color],
+  [leg8_angle, leg8_length, holes, webs, leg8_color],
+	       ], 0, leg_count);
+
+multi_bracket(width=width, thickness=thickness, rounded_corners=rounded_corners, rounded_edges=rounded_edges, legs=legs, fillet=fillet);
 
