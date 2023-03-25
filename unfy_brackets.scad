@@ -233,33 +233,31 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 	// fillet & webs
 	if (1 < len(legs)){
 	  for (leg_index = [1:len(legs)-1]){
-	    if (0 < fillet){
-	      leg = legs[leg_index];
-	      prev_leg = legs[leg_index-1];
-	      cur_calcs1 = calcs1[leg_index];
-	      prev_calcs1 = calcs1[leg_index-1];
-	      calcs2 = calcs2[leg_index];
-
-	      cur_length = leg_length(leg);
-	      prev_length = leg_length(prev_leg);
-	      cur_angle = leg_angle(leg);
-	      prev_angle = leg_angle(prev_leg);
-	      leg_adj_len = leg_adj_len(cur_calcs1);
-	      prev_adj_len = leg_adj_len(prev_calcs1);
-	      cur_fillet = min(leg_adj_len, fillet);
-	      prev_fillet = min(prev_adj_len, fillet);
-	      opening_angle = opening(calcs2);
-	      opening_inside = inside(calcs2);
-	      prev_inner_length = inner_length1(calcs2);
-	      cur_inner_length = inner_length2(calcs2);
+	    leg = legs[leg_index];
+	    prev_leg = legs[leg_index-1];
+	    cur_calcs1 = calcs1[leg_index];
+	    prev_calcs1 = calcs1[leg_index-1];
+	    calcs2 = calcs2[leg_index];
+	    
+	    cur_length = leg_length(leg);
+	    prev_length = leg_length(prev_leg);
+	    cur_angle = leg_angle(leg);
+	    prev_angle = leg_angle(prev_leg);
+	    leg_adj_len = leg_adj_len(cur_calcs1);
+	    prev_adj_len = leg_adj_len(prev_calcs1);
+	    cur_fillet = min(leg_adj_len, fillet);
+	    prev_fillet = min(prev_adj_len, fillet);
+	    opening_angle = opening(calcs2);
+	    opening_inside = inside(calcs2);
+	    prev_inner_length = inner_length1(calcs2);
+	    cur_inner_length = inner_length2(calcs2);
+	    cur_offset = leg_offset(cur_calcs1);
+	    prev_offset = leg_offset(prev_calcs1);
+	    cur_across = [thickness*cos(cur_angle+90), thickness*sin(cur_angle+90)];
+	    mid = cur_offset + cur_across;
 	      
+	    if (0 < fillet || 0 < len(leg_webs(leg))){
 	      if (180 > opening_angle && atan(thickness/min(leg_adj_len, prev_adj_len)) < opening_angle){
-		cur_offset = leg_offset(cur_calcs1);
-		prev_offset = leg_offset(prev_calcs1);
-	      
-		cur_m = leg_slope(cur_calcs1);
-		prev_m = leg_slope(prev_calcs1);
-		prev_b = leg_b2(prev_calcs1);
 
  		color("green"){
 		  for(web = 0 < fillet ? concat([[0, width, fillet]], leg_webs(leg)) : leg_webs(leg)){
@@ -267,18 +265,29 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 		      adj_web1 = min(unf_distance_to_bounding_circle(cur_length, opening_inside, cur_angle)-(rounded_corners ? thickness : 0), web[2]),
 		      adj_web2 = min(unf_distance_to_bounding_circle(prev_length, opening_inside, prev_angle)-(rounded_corners ? thickness : 0), web[2]),
 		      top_front = [adj_web1*cos(cur_angle) + opening_inside.x, adj_web1*sin(cur_angle) + opening_inside.y],
-		      bottom = [adj_web2*cos(prev_angle) + opening_inside.x, adj_web2*sin(prev_angle) + opening_inside.y],
-		      cur_across = [thickness*cos(cur_angle+90), thickness*sin(cur_angle+90)],
 		      cur_back = top_front + cur_across,
-		      mid = cur_offset + cur_across,
-		      bottom_angle = prev_angle-90,
-		      bottom_back = bottom + [thickness*cos(bottom_angle), thickness*sin(bottom_angle)]
+		      bottom = [adj_web2*cos(prev_angle) + opening_inside.x, adj_web2*sin(prev_angle) + opening_inside.y],
+		      bottom_back = bottom + [thickness*cos(prev_angle-90), thickness*sin(prev_angle-90)]
 		    ) concat([prev_offset, mid, cur_back], unfy_bezier([top_front, opening_inside, bottom], $fn = $fn), [bottom_back, prev_offset]);
 		    translate([0, width-web[0], 0]){
 		      rotate([90, 0, 0]){
 			linear_extrude(web[1]){
 			  polygon(web_bez);
 			}
+		      }
+		    }
+		  }
+		}
+	      }
+	    } else { //no fillet
+	      // Joint
+	      if (rounded_edged && 90 > opening_angle){
+		bottom = opening_inside + [thickness*cos(prev_angle-90), thickness*sin(prev_angle-90)];
+		color("purple"){
+		  translate([0, width, 0]){
+		    rotate([90, 0, 0]){
+		      linear_extrude(width){
+			polygon([prev_offset, mid, opening_inside, bottom]);
 		      }
 		    }
 		  }
@@ -293,9 +302,8 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 }
 
 
-test_webs = [[0, web_thickness, web_height], [(width/2)-(web_thickness/2), web_thickness, web_height], [width-web_thickness, web_thickness, web_height]];
+test_webs = 0 < web_thickness && 0 < web_height ? [[0, web_thickness, web_height], [(width/2)-(web_thickness/2), web_thickness, web_height], [width-web_thickness, web_thickness, web_height]] : [];
 holes = [];
-
 
 legs = unf_sub([
   [leg1_angle, leg1_length, holes, test_webs, leg1_color],
