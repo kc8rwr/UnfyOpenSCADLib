@@ -651,7 +651,7 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
       if (0 < bolt_hole_depth){
 	translate([0, 0, length]){
 	  color("orange"){
-	    cylinder(d=bolt_diameter, h=olt_hole_depth);
+	    cylinder(d=bolt_diameter, h=bolt_hole_depth);
 	  }
 	}
       }
