@@ -22,190 +22,307 @@
 width = 50;
 thickness = 2;
 fillet = 2;
-rounded_corners = true;
-rounded_edges = true;
+rounded = true;
 leg_count = 2; //[1:8]
-hole_diameter="m3";
 
 /*[ Leg-1 ] */
 leg1_angle = 0; //[0:359]
 leg1_length = 30;
-leg1_mount_group = 1;//[0:4]
+leg1_mounts_count = 2;
+leg1_mount1_position = [15, 16.66];
+leg1_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg1_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg1_mount1_backside = false;
+leg1_mount1_height = 2;
+//size - for heatset only
+leg1_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg1_mount2_position = [15, 33.33];
+leg1_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg1_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg1_mount2_backside = false;
+leg1_mount2_height = 2;
+//size - for heatset only
+leg1_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg1_mount3_position = [22.5, 16.66];
+leg1_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg1_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg1_mount3_backside = false;
+leg1_mount3_height = 2;
+//size - for heatset only
+leg1_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg1_mount4_position = [22.5, 33.33];
+leg1_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg1_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg1_mount4_backside = false;
+leg1_mount4_height = 2;
+//size - for heatset only
+leg1_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-2 ] */
 leg2_angle = 90; //[0:359]
 leg2_length = 30;
 leg2_mount_group = 1;//[0:4]
+leg2_mounts_count = 2;
+leg2_mount1_position = [15, 16.66];
+leg2_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg2_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg2_mount1_backside = false;
+leg2_mount1_height = 2;
+//size - for heatset only
+leg2_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg2_mount2_position = [15, 33.33];
+leg2_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg2_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg2_mount2_backside = false;
+leg2_mount2_height = 2;
+//size - for heatset only
+leg2_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg2_mount3_position = [22.5, 16.66];
+leg2_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg2_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg2_mount3_backside = false;
+leg2_mount3_height = 2;
+//size - for heatset only
+leg2_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg2_mount4__position = [22.5, 33.33];
+leg2_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg2_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg2_mount4_backside = false;
+leg2_mount4_height = 2;
+//size - for heatset only
+leg2_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-3 ] */
 leg3_angle = 45; //[0:359]
 leg3_length = 30;
-leg3_mount_group = 0;//[0:4]
+leg3_mount_group = 1;//[0:4]
+leg3_mounts_count = 2;
+leg3_mount1_position = [15, 16.66];
+leg3_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg3_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg3_mount1_backside = false;
+leg3_mount1_height = 2;
+//size - for heatset only
+leg3_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg3_mount2_position = [15, 33.33];
+leg3_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg3_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg3_mount2_backside = false;
+leg3_mount2_height = 2;
+//size - for heatset only
+leg3_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg3_mount3_position = [22.5, 16.66];
+leg3_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg3_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg3_mount3_backside = false;
+leg3_mount3_height = 2;
+//size - for heatset only
+leg3_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg3_mount4_position = [22.5, 33.33];
+leg3_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg3_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg3_mount4_backside = false;
+leg3_mount4_height = 2;
+//size - for heatset only
+leg3_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-4 ] */
 leg4_angle = 135; //[0:359]
 leg4_length = 30;
-leg4_mount_group = 0;//[0:4]
+leg4_mount_group = 1;//[0:4]
+leg4_mountz_count = 2;
+leg4_mount1_position = [15, 16.66];
+leg4_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg4_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg4_mount1_backside = false;
+leg4_mount1_height = 2;
+//size - for heatset only
+leg4_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg4_mount2_position = [15, 33.33];
+leg4_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg4_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg4_mount2_backside = false;
+leg4_mount2_height = 2;
+//size - for heatset only
+leg4_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg4_mount3_position = [22.5, 16.66];
+leg4_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg4_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg4_mount3_backside = false;
+leg4_mount3_height = 2;
+//size - for heatset only
+leg4_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg4_mount4__position = [22.5, 33.33];
+leg4_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg4_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg4_mount4_backside = false;
+leg4_mount4_height = 2;
+//size - for heatset only
+leg4_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-5 ] */
 leg5_angle = 180; //[0:359]
 leg5_length = 30;
-leg5_mount_group = 0;//[0:4]
+leg5_mount_group = 1;//[0:4]
+leg5_mounts_count = 2;
+leg5_mount1_position = [15, 16.66];
+leg5_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg5_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg5_mount1_backside = false;
+leg5_mount1_height = 2;
+//size - for heatset only
+leg5_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg5_mount2_position = [15, 33.33];
+leg5_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg5_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg5_mount2_backside = false;
+leg5_mount2_height = 2;
+//size - for heatset only
+leg5_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg5_mount3_position = [22.5, 16.66];
+leg5_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg5_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg5_mount3_backside = false;
+leg5_mount3_height = 2;
+//size - for heatset only
+leg5_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg5_mount4__position = [22.5, 33.33];
+leg5_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg5_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg5_mount4_backside = false;
+leg5_mount4_height = 2;
+//size - for heatset only
+leg5_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-6 ] */
 leg6_angle = 225; //[0:359]
 leg6_length = 30;
-leg6_mount_group = 0;//[0:4]
+leg6_mount_group = 1;//[0:4]
+leg6_mounts_count = 2;
+leg6_mount1_position = [15, 16.66];
+leg6_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg6_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg6_mount1_backside = false;
+leg6_mount1_height = 2;
+//size - for heatset only
+leg6_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg6_mount2_position = [15, 33.33];
+leg6_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg6_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg6_mount2_backside = false;
+leg6_mount2_height = 2;
+//size - for heatset only
+leg6_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg6_mount3_position = [22.5, 16.66];
+leg6_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg6_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg6_mount3_backside = false;
+leg6_mount3_height = 2;
+//size - for heatset only
+leg6_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg6_mount4__position = [22.5, 33.33];
+leg6_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg6_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg6_mount4_backside = false;
+leg6_mount4_height = 2;
+//size - for heatset only
+leg6_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-7 ] */
 leg7_angle = 270; //[0:359]
 leg7_length = 30;
-leg7_mount_group = 0;//[0:4]
+leg7_mount_group = 1;//[0:4]
+leg7_mounts_count = 2;
+leg7_mount1_position = [15, 16.66];
+leg7_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg7_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg7_mount1_backside = false;
+leg7_mount1_height = 2;
+//size - for heatset only
+leg7_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg7_mount2_position = [15, 33.33];
+leg7_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg7_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg7_mount2_backside = false;
+leg7_mount2_height = 2;
+//size - for heatset only
+leg7_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg7_mount3_position = [22.5, 16.66];
+leg7_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg7_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg7_mount3_backside = false;
+leg7_mount3_height = 2;
+//size - for heatset only
+leg7_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg7_mount4__position = [22.5, 33.33];
+leg7_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg7_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg7_mount4_backside = false;
+leg7_mount4_height = 2;
+//size - for heatset only
+leg7_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Leg-8 ] */
 leg8_angle = 315; //[0:359]
 leg8_length = 30;
-leg8_mount_group = 0;//[0:4]
+leg8_mount_group = 1;//[0:4]
+leg8_mounts_count = 2;
+leg8_mount1_position = [15, 16.66];
+leg8_mount1_type = "hole"; //["hole", "heatset", "post"]
+leg8_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg8_mount1_backside = false;
+leg8_mount1_height = 2;
+//size - for heatset only
+leg8_mounts1_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg8_mount2_position = [15, 33.33];
+leg8_mount2_type = "hole"; //["hole", "heatset", "post"]
+leg8_mount2_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg8_mount2_backside = false;
+leg8_mount2_height = 2;
+//size - for heatset only
+leg8_mount2_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg8_mount3_position = [22.5, 16.66];
+leg8_mount3_type = "hole"; //["hole", "heatset", "post"]
+leg8_mount3_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg8_mount3_backside = false;
+leg8_mount3_height = 2;
+//size - for heatset only
+leg8_mount3_size = "medium";//["small","medium","large"]
+//(X, Y)
+leg8_mount4__position = [22.5, 33.33];
+leg8_mount4_type = "hole"; //["hole", "heatset", "post"]
+leg8_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
+leg8_mount4_backside = false;
+leg8_mount4_height = 2;
+//size - for heatset only
+leg8_mount4_size = "medium";//["small","medium","large"]
 
 /*[ Webs ] */
 web_height = 30; //[0:359]
 web_thickness = 5;
-
-/*[ Mounts Group 1 ] */
-mounts1_count = 2;
-mounts1_position1 = [15, 16.66];
-mounts1_type1 = "hole"; //["hole", "heatset", "post"]
-mounts1_diameter1 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts1_backside1 = false;
-mounts1_height1 = 2;
-//size - for heatset only
-mounts1_size1 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts1_position2 = [15, 33.33];
-mounts1_type2 = "hole"; //["hole", "heatset", "post"]
-mounts1_diameter2 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts1_backside2 = false;
-mounts1_height2 = 2;
-//size - for heatset only
-mounts1_size2 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts1_position3 = [15, 16.66];
-mounts1_type3 = "hole"; //["hole", "heatset", "post"]
-mounts1_diameter3 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts1_backside3 = false;
-mounts1_height3 = 2;
-//size - for heatset only
-mounts1_size3 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts1_position4 = [15, 16.66];
-mounts1_type4 = "hole"; //["hole", "heatset", "post"]
-mounts1_diameter4 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts1_backside4 = false;
-mounts1_height4 = 2;
-//size - for heatset only
-mounts1_size4 = "medium";//["small","medium","large"]
-
-/*[ Mounts Group 2 ] */
-mounts2_count = 2;
-mounts2_position1 = [15, 16.66];
-mounts2_type1 = "hole"; //["hole", "heatset", "post"]
-mounts2_diameter1 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts2_backside1 = false;
-mounts2_height1 = 2;
-//size - for heatset only
-mounts2_size1 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts2_position2 = [15, 16.66];
-mounts2_type2 = "hole"; //["hole", "heatset", "post"]
-mounts2_diameter2 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts2_backside2 = false;
-mounts2_height2 = 2;
-//size - for heatset only
-mounts2_size2 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts2_position3 = [15, 16.66];
-mounts2_type3 = "hole"; //["hole", "heatset", "post"]
-mounts2_diameter3 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts2_backside3 = false;
-mounts2_height3 = 2;
-//size - for heatset only
-mounts2_size3 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts2_position4 = [15, 16.66];
-mounts2_type4 = "hole"; //["hole", "heatset", "post"]
-mounts2_diameter4 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts2_backside4 = false;
-mounts2_height4 = 2;
-//size - for heatset only
-mounts2_size4 = "medium";//["small","medium","large"]
-
-/*[ Mounts Group 3 ] */
-mounts3_count = 2;
-mounts3_position1 = [15, 16.66];
-mounts3_type1 = "hole"; //["hole", "heatset", "post"]
-mounts3_diameter1 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts3_backside1 = false;
-mounts3_height1 = 2;
-//size - for heatset only
-mounts3_size1 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts3_position2 = [15, 16.66];
-mounts3_type2 = "hole"; //["hole", "heatset", "post"]
-mounts3_diameter2 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts3_backside2 = false;
-mounts3_height2 = 2;
-//size - for heatset only
-mounts3_size2 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts3_position3 = [15, 16.66];
-mounts3_type3 = "hole"; //["hole", "heatset", "post"]
-mounts3_diameter3 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts3_backside3 = false;
-mounts3_height3 = 2;
-//size - for heatset only
-mounts3_size3 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts3_position4 = [15, 16.66];
-mounts3_type4 = "hole"; //["hole", "heatset", "post"]
-mounts3_diameter4 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts3_backside4 = false;
-mounts3_height4 = 2;
-//size - for heatset only
-mounts3_size4 = "medium";//["small","medium","large"]
-
-/*[ Mounts Group 4 ] */
-mounts4_count = 2;
-mounts4_position1 = [15, 16.66];
-mounts4_type1 = "hole"; //["hole", "heatset", "post"]
-mounts4_diameter1 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts4_backside1 = false;
-mounts4_height1 = 2;
-//size - for heatset only
-mounts4_size1 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts4_position2 = [15, 16.66];
-mounts4_type2 = "hole"; //["hole", "heatset", "post"]
-mounts4_diameter2 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts4_backside2 = false;
-mounts4_height2 = 2;
-//size - for heatset only
-mounts4_size2 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts4_position3 = [15, 16.66];
-mounts4_type3 = "hole"; //["hole", "heatset", "post"]
-mounts4_diameter3 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts4_backside3 = false;
-mounts4_height3 = 2;
-//size - for heatset only
-mounts4_size3 = "medium";//["small","medium","large"]
-//(X, Y)
-mounts4_position4 = [15, 16.66];
-mounts4_type4 = "hole"; //["hole", "heatset", "post"]
-mounts4_diameter4 = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
-mounts4_backside4 = false;
-mounts4_height4 = 2;
-//size - for heatset only
-mounts4_size4 = "medium";//["small","medium","large"]
 
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
@@ -213,7 +330,7 @@ use <unfy_lists.scad>
 
 $fn = $preview ? 36 : 360;
 
-module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yellow"], [45, 10, [], [], "blue"]], rounded_corners = true, rounded_edges = true){
+module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yellow"], [45, 10, [], [], "blue"]], rounded = true){
   // functions which read from the leg vectors
   //[angle, length, hole_type, holes]
   function leg_angle(v) = v[0];
@@ -337,9 +454,9 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 	  translate([leg_offset.x, 0, leg_offset.y]){
 	    rotate([0, -leg_angle, 0]){
 	      let(
-		adj_leg_length = rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? leg_length - (thickness/2) : leg_length,
-		adj_width = rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? width - (thickness) : width,
-		shift = [0, rounded_edges && (0 == leg_index || len(legs)-1 == leg_index) ? thickness/2 : 0, rounded_edges && len(legs)-1 == leg_index ? thickness/2 : (rounded_edges && 0 == leg_index ? -thickness/2 : 0)]
+		adj_leg_length = rounded && (0 == leg_index || len(legs)-1 == leg_index) ? leg_length - (thickness/2) : leg_length,
+		adj_width = rounded && (0 == leg_index || len(legs)-1 == leg_index) ? width - (thickness) : width,
+		shift = [0, rounded && (0 == leg_index || len(legs)-1 == leg_index) ? thickness/2 : 0, rounded && len(legs)-1 == leg_index ? thickness/2 : (rounded && 0 == leg_index ? -thickness/2 : 0)]
 	      ){
 		difference(){
 		  union(){
@@ -350,7 +467,7 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 		      }
 		      translate(shift){
 			minkowski(){
-			  if (rounded_corners){
+			  if (rounded){
 			    hull(){
 			      cube([0.001, adj_width, thickness]);
 			      translate([adj_leg_length-thickness, adj_width-thickness, 0])
@@ -359,13 +476,13 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 				cylinder(h=thickness, r=thickness);
 			    }
 			  } else {
-			    if(rounded_edges && (0 == leg_index || len(legs)-1 == leg_index)){
+			    if(rounded && (0 == leg_index || len(legs)-1 == leg_index)){
 			      cube([adj_leg_length, adj_width, thickness]);
 			    } else {
 			      cube([leg_length, width, thickness]);
 			    }
 			  }
-			  if(rounded_edges && (0 == leg_index || len(legs)-1 == leg_index)){
+			  if(rounded && (0 == leg_index || len(legs)-1 == leg_index)){
 			    sphere(d = thickness);
 			  }
 			}
@@ -468,8 +585,8 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 
 		for(web = 0 < fillet ? concat([[0, width, fillet]], leg_webs(leg)) : leg_webs(leg)){
 		  web_bez = let(
-		    adj_web1 = min(unf_distance_to_bounding_circle(cur_length, opening_inside, cur_angle)-(rounded_corners ? thickness : 0), web[2]),
-		    adj_web2 = min(unf_distance_to_bounding_circle(prev_length, opening_inside, prev_angle)-(rounded_corners ? thickness : 0), web[2]),
+		    adj_web1 = min(unf_distance_to_bounding_circle(cur_length, opening_inside, cur_angle)-(rounded ? thickness : 0), web[2]),
+		    adj_web2 = min(unf_distance_to_bounding_circle(prev_length, opening_inside, prev_angle)-(rounded ? thickness : 0), web[2]),
 		    top_front = [adj_web1*cos(cur_angle) + opening_inside.x, adj_web1*sin(cur_angle) + opening_inside.y],
 		    cur_back = top_front + cur_across,
 		    bottom = [adj_web2*cos(prev_angle) + opening_inside.x, adj_web2*sin(prev_angle) + opening_inside.y],
@@ -486,7 +603,7 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 	      }
 	    } else { //no fillet
 	      // Joint
-	      if (rounded_edged && 90 > opening_angle){
+	      if (rounded && 90 > opening_angle){
 		bottom = opening_inside + [thickness*cos(prev_angle-90), thickness*sin(prev_angle-90)];
 		translate([0, width, 0]){
 		  rotate([90, 0, 0]){
@@ -504,50 +621,74 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
   }
 }
 
-mounts1 = unf_sub([
-		    [mounts1_type1, mounts1_backside1, mounts1_position1, mounts1_diameter1, "heatset" == mounts1_type1 ? mounts1_size1 : mounts1_height1],
-		    [mounts1_type2, mounts1_backside2, mounts1_position2, mounts1_diameter2, "heatset" == mounts1_type2 ? mounts1_size2 : mounts1_height2],
-		    [mounts1_type3, mounts1_backside3, mounts1_position3, mounts1_diameter3, "heatset" == mounts1_type3 ? mounts1_size3 : mounts1_height3],
-		    [mounts1_type4, mounts1_backside4, mounts1_position4, mounts1_diameter4, "heatset" == mounts1_type4 ? mounts1_size4 : mounts1_height4]
-		  ], 0, mounts1_count);
+leg1_mounts = unf_sub([
+		    [leg1_mount1_type, leg1_mount1_backside, leg1_mount1_position, leg1_mount1_diameter, "heatset" == leg1_mount1_type ? leg1_mount1_size : leg1_mount1_height],
+		    [leg1_mount2_type, leg1_mount2_backside, leg1_mount2_position, leg1_mount2_diameter, "heatset" == leg1_mount2_type ? leg1_mount2_size : leg1_mount2_height],
+		    [leg1_mount3_type, leg1_mount3_backside, leg1_mount3_position, leg1_mount3_diameter, "heatset" == leg1_mount3_type ? leg1_mount3_size : leg1_mount3_height],
+		    [leg1_mount4_type, leg1_mount4_backside, leg1_mount4_position, leg1_mount4_diameter, "heatset" == leg1_mount4_type ? leg1_mount4_size : leg1_mount4_height]
+		  ], 0, leg1_mounts_count);
 
-mounts2 = unf_sub([
-		    [mounts2_type1, mounts2_backside1, mounts2_position1, mounts2_diameter1, "heatset" == mounts2_type1 ? mounts2_size1 : mounts2_height1],
-		    [mounts2_type2, mounts2_backside2, mounts2_position2, mounts2_diameter2, "heatset" == mounts2_type2 ? mounts2_size2 : mounts2_height2],
-		    [mounts2_type3, mounts2_backside3, mounts2_position3, mounts2_diameter3, "heatset" == mounts2_type3 ? mounts2_size3 : mounts2_height3],
-		    [mounts2_type4, mounts2_backside4, mounts2_position4, mounts2_diameter4, "heatset" == mounts2_type4 ? mounts2_size4 : mounts2_height4]
-		  ], 0, mounts2_count);
+leg2_mounts = unf_sub([
+		    [leg2_mount1_type, leg2_mount1_backside, leg2_mount1_position, leg2_mount1_diameter, "heatset" == leg2_mount1_type ? leg2_mount1_size : leg2_mount1_height],
+		    [leg2_mount2_type, leg2_mount2_backside, leg2_mount2_position, leg2_mount2_diameter, "heatset" == leg2_mount2_type ? leg2_mount2_size : leg2_mount2_height],
+		    [leg2_mount3_type, leg2_mount3_backside, leg2_mount3_position, leg2_mount3_diameter, "heatset" == leg2_mount3_type ? leg2_mount3_size : leg2_mount3_height],
+		    [leg2_mount4_type, leg2_mount4_backside, leg2_mount4_position, leg2_mount4_diameter, "heatset" == leg2_mount4_type ? leg2_mount4_size : leg2_mount4_height]
+		  ], 0, leg2_mounts_count);
 
-mounts3 = unf_sub([
-		    [mounts3_type1, mounts3_backside1, mounts3_position1, mounts3_diameter1, "heatset" == mounts3_type1 ? mounts3_size1 : mounts3_height1],
-		    [mounts3_type2, mounts3_backside2, mounts3_position2, mounts3_diameter2, "heatset" == mounts3_type2 ? mounts3_size2 : mounts3_height2],
-		    [mounts3_type3, mounts3_backside3, mounts3_position3, mounts3_diameter3, "heatset" == mounts3_type3 ? mounts3_size3 : mounts3_height3],
-		    [mounts3_type4, mounts3_backside4, mounts3_position4, mounts3_diameter4, "heatset" == mounts3_type4 ? mounts3_size4 : mounts3_height4]
-		  ], 0, mounts3_count);
+leg3_mounts = unf_sub([
+		    [leg3_mount1_type, leg3_mount1_backside, leg3_mount1_position, leg3_mount1_diameter, "heatset" == leg3_mount1_type ? leg3_mount1_size : leg3_mount1_height],
+		    [leg3_mount2_type, leg3_mount2_backside, leg3_mount2_position, leg3_mount2_diameter, "heatset" == leg3_mount2_type ? leg3_mount2_size : leg3_mount2_height],
+		    [leg3_mount3_type, leg3_mount3_backside, leg3_mount3_position, leg3_mount3_diameter, "heatset" == leg3_mount3_type ? leg3_mount3_size : leg3_mount3_height],
+		    [leg3_mount4_type, leg3_mount4_backside, leg3_mount4_position, leg3_mount4_diameter, "heatset" == leg3_mount4_type ? leg3_mount4_size : leg3_mount4_height]
+		  ], 0, leg3_mounts_count);
 
-mounts4 = unf_sub([
-		    [mounts4_type1, mounts4_backside1, mounts4_position1, mounts4_diameter1, "heatset" == mounts4_type1 ? mounts4_size1 : mounts4_height1],
-		    [mounts4_type2, mounts4_backside2, mounts4_position2, mounts4_diameter2, "heatset" == mounts4_type2 ? mounts4_size2 : mounts4_height2],
-		    [mounts4_type3, mounts4_backside3, mounts4_position3, mounts4_diameter3, "heatset" == mounts4_type3 ? mounts4_size3 : mounts4_height3],
-		    [mounts4_type4, mounts4_backside4, mounts4_position4, mounts4_diameter4, "heatset" == mounts4_type4 ? mounts4_size4 : mounts4_height4]
-		  ], 0, mounts4_count);
+leg4_mounts = unf_sub([
+		    [leg4_mount1_type, leg4_mount1_backside, leg4_mount1_position, leg4_mount1_diameter, "heatset" == leg4_mount1_type ? leg4_mount1_size : leg4_mount1_height],
+		    [leg4_mount2_type, leg4_mount2_backside, leg4_mount2_position, leg4_mount2_diameter, "heatset" == leg4_mount2_type ? leg4_mount2_size : leg4_mount2_height],
+		    [leg4_mount3_type, leg4_mount3_backside, leg4_mount3_position, leg4_mount3_diameter, "heatset" == leg4_mount3_type ? leg4_mount3_size : leg4_mount3_height],
+		    [leg4_mount4_type, leg4_mount4_backside, leg4_mount4_position, leg4_mount4_diameter, "heatset" == leg4_mount4_type ? leg4_mount4_size : leg4_mount4_height]
+		  ], 0, leg4_mounts_count);
 
-function getMount(num) = num==1 ? mounts1 : (num==2 ? mounts2 : (num==3 ? mounts3 : mounts4));
+leg5_mounts = unf_sub([
+		    [leg5_mount1_type, leg5_mount1_backside, leg5_mount1_position, leg5_mount1_diameter, "heatset" == leg5_mount1_type ? leg5_mount1_size : leg5_mount1_height],
+		    [leg5_mount2_type, leg5_mount2_backside, leg5_mount2_position, leg5_mount2_diameter, "heatset" == leg5_mount2_type ? leg5_mount2_size : leg5_mount2_height],
+		    [leg5_mount3_type, leg5_mount3_backside, leg5_mount3_position, leg5_mount3_diameter, "heatset" == leg5_mount3_type ? leg5_mount3_size : leg5_mount3_height],
+		    [leg5_mount4_type, leg5_mount4_backside, leg5_mount4_position, leg5_mount4_diameter, "heatset" == leg5_mount4_type ? leg5_mount4_size : leg5_mount4_height]
+		  ], 0, leg5_mounts_count);
 
-echo(str(getMount(4)));
+leg6_mounts = unf_sub([
+		    [leg6_mount1_type, leg6_mount1_backside, leg6_mount1_position, leg6_mount1_diameter, "heatset" == leg6_mount1_type ? leg6_mount1_size : leg6_mount1_height],
+		    [leg6_mount2_type, leg6_mount2_backside, leg6_mount2_position, leg6_mount2_diameter, "heatset" == leg6_mount2_type ? leg6_mount2_size : leg6_mount2_height],
+		    [leg6_mount3_type, leg6_mount3_backside, leg6_mount3_position, leg6_mount3_diameter, "heatset" == leg6_mount3_type ? leg6_mount3_size : leg6_mount3_height],
+		    [leg6_mount4_type, leg6_mount4_backside, leg6_mount4_position, leg6_mount4_diameter, "heatset" == leg6_mount4_type ? leg6_mount4_size : leg6_mount4_height]
+		  ], 0, leg6_mounts_count);
+
+leg7_mounts = unf_sub([
+		    [leg7_mount1_type, leg7_mount1_backside, leg7_mount1_position, leg7_mount1_diameter, "heatset" == leg7_mount1_type ? leg7_mount1_size : leg7_mount1_height],
+		    [leg7_mount2_type, leg7_mount2_backside, leg7_mount2_position, leg7_mount2_diameter, "heatset" == leg7_mount2_type ? leg7_mount2_size : leg7_mount2_height],
+		    [leg7_mount3_type, leg7_mount3_backside, leg7_mount3_position, leg7_mount3_diameter, "heatset" == leg7_mount3_type ? leg7_mount3_size : leg7_mount3_height],
+		    [leg7_mount4_type, leg7_mount4_backside, leg7_mount4_position, leg7_mount4_diameter, "heatset" == leg7_mount4_type ? leg7_mount4_size : leg7_mount4_height]
+		  ], 0, leg7_mounts_count);
+
+leg8_mounts = unf_sub([
+		    [leg8_mount1_type, leg8_mount1_backside, leg8_mount1_position, leg8_mount1_diameter, "heatset" == leg8_mount1_type ? leg8_mount1_size : leg8_mount1_height],
+		    [leg8_mount2_type, leg8_mount2_backside, leg8_mount2_position, leg8_mount2_diameter, "heatset" == leg8_mount2_type ? leg8_mount2_size : leg8_mount2_height],
+		    [leg8_mount3_type, leg8_mount3_backside, leg8_mount3_position, leg8_mount3_diameter, "heatset" == leg8_mount3_type ? leg8_mount3_size : leg8_mount3_height],
+		    [leg8_mount4_type, leg8_mount4_backside, leg8_mount4_position, leg8_mount4_diameter, "heatset" == leg8_mount4_type ? leg8_mount4_size : leg8_mount4_height]
+		  ], 0, leg8_mounts_count);
 
 test_webs = 0 < web_thickness && 0 < web_height ? [[0, web_thickness, web_height], [(width/2)-(web_thickness/2), web_thickness, web_height], [width-web_thickness, web_thickness, web_height]] : [];
 
 legs = unf_sub([
-		 [leg1_angle, leg1_length, getMount(leg1_mount_group), test_webs],
-		 [leg2_angle, leg2_length, getMount(leg2_mount_group), test_webs],
-		 [leg3_angle, leg3_length, getMount(leg3_mount_group), test_webs],
-		 [leg4_angle, leg4_length, getMount(leg4_mount_group), test_webs],
-		 [leg5_angle, leg5_length, getMount(leg5_mount_group), test_webs],
-		 [leg6_angle, leg6_length, getMount(leg6_mount_group), test_webs],
-		 [leg7_angle, leg7_length, getMount(leg7_mount_group), test_webs],
-		 [leg8_angle, leg8_length, getMount(leg8_mount_group), test_webs],
+		 [leg1_angle, leg1_length, leg1_mounts, test_webs],
+		 [leg2_angle, leg2_length, leg2_mounts, test_webs],
+		 [leg3_angle, leg3_length, leg3_mounts, test_webs],
+		 [leg4_angle, leg4_length, leg4_mounts, test_webs],
+		 [leg5_angle, leg5_length, leg5_mounts, test_webs],
+		 [leg6_angle, leg6_length, leg6_mounts, test_webs],
+		 [leg7_angle, leg7_length, leg7_mounts, test_webs],
+		 [leg8_angle, leg8_length, leg8_mounts, test_webs],
 	       ], 0, leg_count);
 
-multi_bracket(width=width, thickness=thickness, rounded_corners=rounded_corners, rounded_edges=rounded_edges, legs=legs, fillet=fillet);
+multi_bracket(width=width, thickness=thickness, rounded=rounded, legs=legs, fillet=fillet);
 
