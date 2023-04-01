@@ -35,7 +35,7 @@ leg1_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg1_mount1_backside = false;
 leg1_mount1_height = 2;
 //size - for heatset only
-leg1_mounts1_size = "medium";//["small","medium","large"]
+leg1_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg1_mount2_position = [15, 33.33];
 leg1_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -72,7 +72,7 @@ leg2_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg2_mount1_backside = false;
 leg2_mount1_height = 2;
 //size - for heatset only
-leg2_mounts1_size = "medium";//["small","medium","large"]
+leg2_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg2_mount2_position = [15, 33.33];
 leg2_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -90,7 +90,7 @@ leg2_mount3_height = 2;
 //size - for heatset only
 leg2_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg2_mount4__position = [22.5, 33.33];
+leg2_mount4_position = [22.5, 33.33];
 leg2_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg2_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg2_mount4_backside = false;
@@ -109,7 +109,7 @@ leg3_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg3_mount1_backside = false;
 leg3_mount1_height = 2;
 //size - for heatset only
-leg3_mounts1_size = "medium";//["small","medium","large"]
+leg3_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg3_mount2_position = [15, 33.33];
 leg3_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -139,14 +139,14 @@ leg3_mount4_size = "medium";//["small","medium","large"]
 leg4_angle = 135; //[0:359]
 leg4_length = 30;
 leg4_mount_group = 1;//[0:4]
-leg4_mountz_count = 2;
+leg4_mounts_count = 2;
 leg4_mount1_position = [15, 16.66];
 leg4_mount1_type = "hole"; //["hole", "heatset", "post"]
 leg4_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg4_mount1_backside = false;
 leg4_mount1_height = 2;
 //size - for heatset only
-leg4_mounts1_size = "medium";//["small","medium","large"]
+leg4_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg4_mount2_position = [15, 33.33];
 leg4_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -164,7 +164,7 @@ leg4_mount3_height = 2;
 //size - for heatset only
 leg4_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg4_mount4__position = [22.5, 33.33];
+leg4_mount4_position = [22.5, 33.33];
 leg4_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg4_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg4_mount4_backside = false;
@@ -183,7 +183,7 @@ leg5_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg5_mount1_backside = false;
 leg5_mount1_height = 2;
 //size - for heatset only
-leg5_mounts1_size = "medium";//["small","medium","large"]
+leg5_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg5_mount2_position = [15, 33.33];
 leg5_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -201,7 +201,7 @@ leg5_mount3_height = 2;
 //size - for heatset only
 leg5_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg5_mount4__position = [22.5, 33.33];
+leg5_mount4_position = [22.5, 33.33];
 leg5_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg5_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg5_mount4_backside = false;
@@ -220,7 +220,7 @@ leg6_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg6_mount1_backside = false;
 leg6_mount1_height = 2;
 //size - for heatset only
-leg6_mounts1_size = "medium";//["small","medium","large"]
+leg6_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg6_mount2_position = [15, 33.33];
 leg6_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -238,7 +238,7 @@ leg6_mount3_height = 2;
 //size - for heatset only
 leg6_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg6_mount4__position = [22.5, 33.33];
+leg6_mount4_position = [22.5, 33.33];
 leg6_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg6_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg6_mount4_backside = false;
@@ -257,7 +257,7 @@ leg7_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg7_mount1_backside = false;
 leg7_mount1_height = 2;
 //size - for heatset only
-leg7_mounts1_size = "medium";//["small","medium","large"]
+leg7_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg7_mount2_position = [15, 33.33];
 leg7_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -275,7 +275,7 @@ leg7_mount3_height = 2;
 //size - for heatset only
 leg7_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg7_mount4__position = [22.5, 33.33];
+leg7_mount4_position = [22.5, 33.33];
 leg7_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg7_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg7_mount4_backside = false;
@@ -294,7 +294,7 @@ leg8_mount1_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg8_mount1_backside = false;
 leg8_mount1_height = 2;
 //size - for heatset only
-leg8_mounts1_size = "medium";//["small","medium","large"]
+leg8_mount1_size = "medium";//["small","medium","large"]
 //(X, Y)
 leg8_mount2_position = [15, 33.33];
 leg8_mount2_type = "hole"; //["hole", "heatset", "post"]
@@ -312,7 +312,7 @@ leg8_mount3_height = 2;
 //size - for heatset only
 leg8_mount3_size = "medium";//["small","medium","large"]
 //(X, Y)
-leg8_mount4__position = [22.5, 33.33];
+leg8_mount4_position = [22.5, 33.33];
 leg8_mount4_type = "hole"; //["hole", "heatset", "post"]
 leg8_mount4_diameter = "m3"; //["M2", "M2.5", "M3", "M4", "#4", "#6", "#8"]
 leg8_mount4_backside = false;
@@ -508,7 +508,7 @@ module multi_bracket(width=6, thickness=2, fillet=2, legs=[[0, 10, [], [], "yell
 			}
 		      } else if ("heatset" == type){
 			height = unf_hst_length(size, size2);
-			stud_diameter = unf_hst_diameter(size, size2);
+			stud_diameter = unf_hst_diameter(size);
 			if (backside){//backward
 			  translate([position.x, position.y, -height]){
 			    cylinder(d=stud_diameter+(2*thickness), h=height+thickness);

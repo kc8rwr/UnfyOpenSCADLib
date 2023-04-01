@@ -194,7 +194,6 @@ module unf_cap(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
        screw = is_list(screw) ? screw : unf_cap_v(screw),
        length = 0 < length ? length : unf_cap_default_length(screw)){
-    echo (str("CAP: ", screw));
     head_d = unf_cap_head_diameter(screw);
     head_height = unf_cap_head_height(screw);
     shaft_d = unf_fnr_shaft_diameter(screw);
@@ -335,7 +334,6 @@ module unf_csk(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
        screw = is_list(screw) ? screw : unf_csk_v(screw),
        length = 0 < length ? length : unf_csk_default_length(screw)){
-    echo (str("CSK: ", screw));
     head_d = unf_csk_head_diameter(screw);
     head_height = unf_csk_head_height(screw);
     shaft_d = unf_fnr_shaft_diameter(screw);
@@ -494,7 +492,6 @@ module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
        screw = is_list(screw) ? screw : unf_hex_v(screw),
        length = 0 < length ? length : unf_hex_default_length(screw)){
-    echo (str("HEX: ", screw));
     head_d = unf_hex_head_diameter(screw);
     head_height = unf_hex_head_height(screw);
     shaft_d = unf_fnr_shaft_diameter(screw);
@@ -622,12 +619,11 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
     size = is_list(size) ? size : unf_hst_v(size=size, length=length)){
     let (
       bolt_diameter = unf_fnr_shaft_diameter(size),
-      opening_diameter = unf_fnr_diameter(size, opening_taper_percent),
+      opening_diameter = unf_fnr_diameter(size),
       diameter = unf_hst_diameter(size),
       length = unf_hst_length(size),
       head_ext = (0 <= head_ext) ? head_ext : $over
     ) {
-      echo(str("HST: ", size));
       //main body
       cylinder(h=length, d1=opening_diameter, d2=diameter);
       //head extension
@@ -780,7 +776,6 @@ function unf_nut_height(in) = is_list(in) ? in[4] : (
 module unf_nut(size = "m3", ext = -1){
   let (ext = (0 <= ext) ? ext : $over,
        size = is_list(size) ? size : unf_nut_v(size)){
-    echo (str("Nut: ", size));
     diameter = unf_nut_diameter(size);
     height = unf_nut_height(size);
     if (0 < ext){
@@ -902,7 +897,6 @@ function unf_sqr_height(in) = is_list(in) ? in[4] : (
 module unf_sqr(size = "m3", ext = -1){
   let (ext = (0 <= ext) ? ext : $over,
        size = is_list(size) ? size : unf_nut_v(size)){
-    echo (str("Sqr: ", size));
     length = unf_sqr_length(size);
     height = unf_nut_height(size);
     translate([-length/2, -length/2, 0]){
@@ -1090,7 +1084,6 @@ function unf_wsh_height(in) = is_list(in) ? in[5] : (
 module unf_wsh(size = "m3", ext = -1){
   let (ext = (0 <= ext) ? ext : $over,
        size = is_list(size) ? size : unf_wsh_v(size)){
-    echo (str("Wsh: ", size));
     diameter = unf_wsh_diameter(size);
     height = unf_wsh_height(size);
     if (0 < ext){
