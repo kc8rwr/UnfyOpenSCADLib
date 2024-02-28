@@ -18,15 +18,22 @@
 // If not, see <https://www.gnu.org/licenses/>.
 //
 
+use <../unfy_lists.scad>
+
+//Device - RLEIL_R2-Rleil R2 Series rRwitch | YB4835VA-Digital Volt/Amp Panel Meter
+device="rleil_r2"; //["RLEIL_R2", "YB4835VA"]
+wall = 3;
+margin = 5;
+
 $over = 1;
 
-module unfy_popin_cutout(size=[10, 5], ridge=[2, 1], wall_thickness=2){
+module unf_popin_cutout_custom(size=[10, 5], ridge=[2, 1], wall_thickness=2){
   translate([0, 0, -$over]){
     cube([size.x+(2*ridge.x), size.y+(2*ridge.y), wall_thickness + (2*$over)]);
   }
 }
 
-module unfy_popin(size=[10, 5], catch_thickness=1.2, ridge=[2,1], wall_thickness=2){
+module unf_popin_custom(size=[10, 5], catch_thickness=1.2, ridge=[2,1], wall_thickness=2){
   z_offset = 0 < (wall_thickness-catch_thickness) ? wall_thickness-catch_thickness : 0;
   translate([0, 0, z_offset]){
     difference(){
@@ -38,35 +45,83 @@ module unfy_popin(size=[10, 5], catch_thickness=1.2, ridge=[2,1], wall_thickness
   }
 }
 
+
+//call a popin switch module by name
+module unf_popin(model, wall_thickness=2){
+  let(model = unf_stToLower(model)){
+    if ("rleil_r2" == model){
+      unf_rleil_rl2_popin(wall_thickness);
+    } else if ("yb4835va" == model){
+      unf_yb4835va_popin(wall_thickness);
+    }
+  }
+}
+
+//call a popin switch cutout module by name
+module unf_popin_cutout(model, wall_thickness=2){
+  let(model = unf_stToLower(model)){
+    echo(str("CUTOUT: ", model));
+    if ("rleil_r2" == model){
+      unf_rleil_rl2_cutout(wall_thickness);
+    } else if ("yb4835va" == model){
+      unf_yb4835va_cutout(wall_thickness);
+    }
+  }
+}
+
+//get a popin switch's dimensions by name
+function unf_popin_dims(model) =
+  let(model = unf_stToLower(model)) (
+    "rleil_r2" == model ? unf_rleil_r2_dims() : (
+      "yb4835va" == model ? unf_yb4835va_dims() : [0, 0]
+    )
+  );
+
+
 //**********************Switches****************************
 
 //RLEIL RL2 series Rocker Switch
-module unfy_rleil_rl2_popin(wall_thickness=2){
-  unfy_popin(size=[30.2, 22], catch_thickness=1.75, ridge=[1.5, 0], wall_thickness=wall_thickness);
+module unf_rleil_rl2_popin(wall_thickness=2){
+  unf_popin_custom(size=[30.2, 22], catch_thickness=1.75, ridge=[1.5, 0], wall_thickness=wall_thickness);
 }
 
 //RLEIL RL2 series Rocker Switch
-module unfy_rleil_rl2_cutout(wall_thickness=2){
-  unfy_popin_cutout(size=[30.2, 22], ridge=[1.5, 0], wall_thickness=wall_thickness);
+module unf_rleil_rl2_cutout(wall_thickness=2){
+  unf_popin_cutout_custom(size=[30.2, 22], ridge=[1.5, 0], wall_thickness=wall_thickness);
 }
 
+//RLEIL RL2 series Rocker Switch
+function unf_rleil_r2_dims() = [33, 25];
 
 //********************End Switches**************************
 
 
 //********************Random Items**************************
 
-//YB4835VA Volt/Amp meter - common on Amazon, Alibaba, etc...
-module unfy_yb4835va_cutout(wall_thickness=2){
-  unfy_popin_cutout(size=[66, 37], wall_thickness=wall_thickness, ridge=[3, 0]);
+//YB4835VA Volt/Amp meter
+module unf_yb4835va_cutout(wall_thickness=2){
+  unf_popin_cutout_custom(size=[66, 37], wall_thickness=wall_thickness, ridge=[3, 0]);
 }
 
-//YB4835VA Volt/Amp meter - common on Amazon, Alibaba, etc...
-module unfy_yb4835va_popin(wall_thickness=2){
-  unfy_popin(size=[66, 37], wall_thickness=wall_thickness, ridge=[3, 0]);
+//YB4835VA Volt/Amp meter
+module unf_yb4835va_popin(wall_thickness=2){
+  unf_popin_custom(size=[66, 37], wall_thickness=wall_thickness, ridge=[3, 0]);
 }
 
+//YB4835VA Volt/Amp meter
+function unf_yb4835va_dims() = [70, 40];
 
 //******************End Random Items************************
 
 
+panel_dim = unf_popin_dims(model=device);
+
+difference(){
+  cube([panel_dim.x + (2*margin), panel_dim.y + (2*margin), wall]);
+  translate([margin, margin, 0]){
+    unf_popin_cutout(model=device, wall_thickness=wall);
+  }
+}
+translate([margin, margin, 0]){
+  unf_popin(model=device, wall_thickness=wall);
+}
