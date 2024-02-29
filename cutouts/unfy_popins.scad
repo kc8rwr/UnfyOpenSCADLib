@@ -20,12 +20,15 @@
 
 use <../unfy_lists.scad>
 
-//Device - RLEIL_R2-Rleil R2 Series rRwitch | YB4835VA-Digital Volt/Amp Panel Meter
-device="rleil_r2"; //["RLEIL_R2", "YB4835VA"]
+//Device 
+device="rleil_r2"; //["RLEIL_R2 | RLEIL_R2-Rleil R2 Series Switch", "YB4835VA | Digital Volt/Amp Panel Meter"]
 wall = 3;
 margin = 5;
 
 $over = 1;
+
+bob = unf_stCutAfter("aaa | bbb", "|");
+echo(str("BOB: ", bob));
 
 module unf_popin_cutout_custom(size=[10, 5], ridge=[2, 1], wall_thickness=2){
   translate([0, 0, -$over]){
@@ -48,7 +51,7 @@ module unf_popin_custom(size=[10, 5], catch_thickness=1.2, ridge=[2,1], wall_thi
 
 //call a popin switch module by name
 module unf_popin(model, wall_thickness=2){
-  let(model = unf_stToLower(model)){
+  let(model = unf_stToLower(unf_stCutAfter(model, "|"))){
     if ("rleil_r2" == model){
       unf_rleil_rl2_popin(wall_thickness);
     } else if ("yb4835va" == model){
@@ -59,8 +62,7 @@ module unf_popin(model, wall_thickness=2){
 
 //call a popin switch cutout module by name
 module unf_popin_cutout(model, wall_thickness=2){
-  let(model = unf_stToLower(model)){
-    echo(str("CUTOUT: ", model));
+  let(model = unf_stToLower(unf_stCutAfter(model, "|"))){
     if ("rleil_r2" == model){
       unf_rleil_rl2_cutout(wall_thickness);
     } else if ("yb4835va" == model){
@@ -71,7 +73,7 @@ module unf_popin_cutout(model, wall_thickness=2){
 
 //get a popin switch's dimensions by name
 function unf_popin_dims(model) =
-  let(model = unf_stToLower(model)) (
+  let(model = unf_stToLower(unf_stCutAfter(model, "|"))) (
     "rleil_r2" == model ? unf_rleil_r2_dims() : (
       "yb4835va" == model ? unf_yb4835va_dims() : [0, 0]
     )

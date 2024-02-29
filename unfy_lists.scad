@@ -28,6 +28,19 @@ function unf_lookup(key, v) = 0 == len(v) ? undef : (
   )
 );
 
+// unf_stCutAfter(string in, string cutoff)
+function unf_stCutAfter(in, cutoff, trim=true) = trim ? unf_stTrim(unf_stCutAfter(in, cutoff, false)) : (
+  let(vpos=search(cutoff, in), pos=(0==len(vpos)?-1:vpos.x)) 0 > pos ? in : unf_sub(in, 0, pos)
+);
+
+// unf_stTrim(string in)
+function unf_stTrim(in) = let(last=len(in)-1)
+  0>last ? "" : (
+    " "==in[0] || "\r"==in[0] || "\n"==in[0] ? unf_stTrim(unf_sub(in, 1)) : (
+      " "==in[last] || "\r"==in[last] || "\n"==in[last] ? unf_stTrim(unf_sub(in, 0, last)) : in
+    )
+  );
+
 // unf_vToS(in) - converts a vector to a string
 function unf_vToS(in, pref="", start=0) =
   start >= len(in) ? pref : unf_vToS(in, str(in=pref, pref=in[start]), start=start+1);
