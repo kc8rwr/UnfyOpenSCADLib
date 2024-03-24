@@ -516,13 +516,15 @@ module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
 // note - these are pilot hole dimensions, not dimensions of the actual insert
 
 function unf_hst_v(size="m3", length="medium", opening_taper_percent=10) = is_list(size) ? size : (
-  ["HST", //0
-   unf_fnr_name(size), //1
-   unf_hst_diameter(size)+(unf_hst_diameter(size)*opening_taper_percent/100), //2
-   unf_fnr_shaft_diameter(size), //3
-   opening_taper_percent, //4
-   unf_hst_diameter(size), //5
-   unf_hst_length(size, length)] //6
+  let (length=unf_stToLower(length)) (
+    ["HST", //0
+     unf_fnr_name(size), //1
+     unf_hst_diameter(size)+(unf_hst_diameter(size)*opening_taper_percent/100), //2
+     unf_fnr_shaft_diameter(size), //3
+     opening_taper_percent, //4
+     unf_hst_diameter(size), //5
+     unf_hst_length(size, length)] //6
+  )
 );
   
 
@@ -561,48 +563,50 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
   )
 );
 
-function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
-  is_list(in) ? in[6] : (
-    "m" == in[0] || "M" == in[0] ? (
-      unf_round(place=-3,
-		num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			       "small" == length ?
-			       [[0, 0],
-				[2, 3],
-				[2.5, 3],
-				[3, 3.1],
-				[4, 4.1]]
-			       :
-			       ("large" == length ?
-				[[0, 0],
-				 [2, 8.1],
-				 [2.5, 5.1],
-				 [3, 8],
-				 [4, 8.1]]
-				:
-				[[0, 0],
-				 [2, 4],
-				 [2.5, 4],
-				 [3, 5],
-				 [4, 6.2]])
-		)
-      )
-      
-    ) : (
-      "\"" == in[len(in)-1] ? (
-	unf_hst_length(str("M", 25.4*unf_stToNum(unf_sub(in, 0, len(in)-1))), length) // No Data
+function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : (
+  let (length = unf_stToLower(length)) (
+    is_list(size) ? size[6] : (
+      "m" == size[0] || "M" == size[0] ? (
+	unf_round(place=-3,
+		  num=unf_lookup(unf_stToNum(unf_sub(size, 1)),
+				 "small" == length ?
+				 [[0, 0],
+				  [2, 3],
+				  [2.5, 3],
+				  [3, 3.1],
+				  [4, 4.1]]
+				 :
+				 ("large" == length ?
+				  [[0, 0],
+				   [2, 8.1],
+				   [2.5, 5.1],
+				   [3, 8],
+				   [4, 8.1]]
+				  :
+				  [[0, 0],
+				   [2, 4],
+				   [2.5, 4],
+				   [3, 5],
+				   [4, 6.2]])
+		  )
+	)
+	
       ) : (
-	"#0000" == in ? unf_hst_length(str("M", unf_fnr_shaft_diameter(in)), length) : ( // No Data
-	  "#000" == in ? unf_hst_length(str("M", unf_fnr_shaft_diameter(in)), length) : ( // No Data
-	    "#00" == in ? unf_hst_length(str("M", unf_fnr_shaft_diameter(in)), length) : ( // No Data
-	      "#" != in[0] ? unf_hst_length("M3") : (
-		unf_round(place=-3,
-			  num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-					 [[0, unf_hst_length(str("M", unf_fnr_shaft_diameter("#0")), length=length)], // No Data
-					  [4, 5.8],
-					  [6, 7.14],
-					  [8, 9.06],
-					  [10, 10.64]])
+	"\"" == size[len(size)-1] ? (
+	  unf_hst_length(str("M", 25.4*unf_stToNum(unf_sub(size, 0, len(size)-1))), length) // No Data
+	) : (
+	  "#0000" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
+	    "#000" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
+	      "#00" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
+		"#" != size[0] ? unf_hst_length("M3") : (
+		  unf_round(place=-3,
+			    num=unf_lookup(unf_stToNum(unf_sub(size, 1)),
+					   [[0, unf_hst_length(str("M", unf_fnr_shaft_diameter("#0")), length=length)], // No Data
+					    [4, 5.8],
+					    [6, 7.14],
+					    [8, 9.06],
+					    [10, 10.64]])
+		  )
 		)
 	      )
 	    )
@@ -616,12 +620,13 @@ function unf_hst_length(in="m3", length="medium") = is_num(length) ? length : (
 
 module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1, extra_room=true, bolt_hole_depth=0){
   let (
+    length = unf_stToLower(length),
     size = is_list(size) ? size : unf_hst_v(size=size, length=length)){
     let (
       bolt_diameter = unf_fnr_shaft_diameter(size),
       opening_diameter = unf_fnr_diameter(size),
       diameter = unf_hst_diameter(size),
-      length = unf_hst_length(size),
+      length = unf_hst_length(size=size, length=length),
       head_ext = (0 <= head_ext) ? head_ext : $over
     ) {
       //main body
@@ -1097,6 +1102,85 @@ module unf_wsh(size = "m3", ext = -1){
   }
 }
 
+
+/************************ Pillar **************************/
+
+module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1){
+  let(fastener = unf_stToLower(fastener)){
+
+    if ("hexnut" == fastener){
+      let (nut_v = unf_nut_v(bolt),
+	   nut_diameter = unf_nut_diameter(nut_v),
+	   nut_height = unf_nut_height(nut_v),
+	   top_d=(2*wall)+nut_diameter,
+	   bottom_d = top_d+(2*length*tan(slope))
+      ){
+	cylinder(d1=bottom_d, d2=top_d, h=length);
+	translate([0, 0, length+$over]){
+	  rotate([0, 180, 0]){
+	    unf_nut(size=nut_v, ext=$over);
+	  }
+	}
+      }
+    }
+
+    else if ("heatset" == fastener){
+      let(fastener = unf_hst_v(size=bolt, length=heatset_length),
+	  hst_diameter = unf_hst_diameter(fastener),
+	  hst_length = unf_hst_length(fastener, length=heatset_length),
+	  length = (wall+hst_length)>length ? (wall+hst_length) : length,
+	  top_d=(2*wall)+hst_diameter,
+	  bottom_d = top_d+(2*length*tan(slope))
+      ){
+	cylinder(d1=bottom_d, d2=top_d, h=length);
+      }
+    }
+    
+  }
+}
+
+module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="Medium", scale=2, wall=1, ext=2){
+  let(fastener = unf_stToLower(fastener)){
+
+    if ("hexnut" == fastener){
+      let (nut_v = unf_nut_v(bolt),
+	   nut_diameter = unf_nut_diameter(nut_v),
+	   nut_height = unf_nut_height(nut_v)
+      ){
+	translate([0, 0, length+$over]){
+	  rotate([0, 180, 0]){
+	    unf_nut(size=nut_v, ext=$over);
+	  }
+	}
+	translate([0, 0, -ext]){
+	  cylinder(d=unf_fnr_shaft_diameter(bolt), h=$over+ext+length);
+	}
+      }
+    }
+
+    else if ("heatset" == fastener){
+      let(fastener = unf_hst_v(size=bolt, length=heatset_length),
+	  hst_diameter = unf_hst_diameter(fastener),
+	  hst_length = unf_hst_length(fastener, length=heatset_length),
+	  length = (wall+hst_length)>length ? (wall+hst_length) : length
+      ){
+	translate([0, 0, length]){
+	  rotate([0, 180, 0]){
+	    unf_hst(size=fastener, length=heatset_length, bolt_hole_depth=length-hst_length+$over);
+	  }
+	}
+      }      
+    }
+    
+  }
+}
+
+module unf_pillar(fastener="Heatset", heatset_length="Medium", bolt="M3", length=5, slope=45, wall=1){
+  difference(){
+    unf_pillar_pos(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, slope=slope, wall=wall);
+    unf_pillar_neg(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length);
+  }
+}
 
 /************************ Preview *************************/
 
