@@ -35,7 +35,7 @@ use <../unfy_lists.scad>
 
 $fn = $preview ? 15 : 360;
 
-module unf_C14Socket(screw_d, fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, wall=4){
+module unf_C14Socket_Positive(screw_d, fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, wall=4){
   body_x = 26;
   body_y = 22.7;
   body_depth=18;
@@ -75,7 +75,7 @@ module unf_C14Socket(screw_d, fastener="plainhole", heatset_length="Medium", sup
       color("LightGrey", alpha=0.5){
 	hull(){
 	  intersection() {
-	    unf_C14Socket(screw_d=screw_d, fastener=fastener, heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
+	    unf_C14Socket_Positive(screw_d=screw_d, fastener=fastener, heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
 	    translate([-screw_separation/2, (body_y/2)-(support_skin_t/2), -body_depth]){
 	      cube([screw_separation, support_skin_t, body_depth]);
 	    }
@@ -87,7 +87,7 @@ module unf_C14Socket(screw_d, fastener="plainhole", heatset_length="Medium", sup
   }
 }
 
-module unf_C14SocketCutout(screw_d=3, hood_thickness=3, wall=4){  
+module unf_C14Socket_Negative(screw_d=3, hood_thickness=3, wall=4){  
   body_x = 26;
   body_y = 22.7;
   unf_C14Cape(hood_thickness=hood_thickness);
@@ -152,24 +152,33 @@ module unf_C14Body(depth=18){
   }
 }
 
-
-difference(){
-  translate([-32.5, -1, 0]){
-    cube([65, 25, wall]);
-  }
-  translate([0, 0, (wall+$over)]){
-    unf_C14SocketCutout(screw_d=screw_d,
-      hood_thickness=hood_thickness+$over,
-      wall=wall);
+module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, screw_d, fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, wall=4){
+  difference(){
+    color(alpha=0.5) children();
+    translate(location + [0, 0, wall+$over]){
+      rotate(rotation){
+	unf_C14Socket_Negative(screw_d=screw_d, hood_thickness=hood_thickness+$over, wall=wall);
+      }
     }
+  }
+  translate(location){
+    rotate(rotation){
+      unf_C14Socket_Positive(screw_d=screw_d, fastener=fastener, heatset_length==heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, wall=wall);
+    }
+  }
 }
+
 unf_C14Socket(screw_d=screw_d,
 	      fastener=fastener,
 	      heatset_length=heatset_length,
 	      support_skin=support_skin,
 	      support_skin_t=support_skin_t,
-	      wall = wall);
-
-
+	      hood_thickness=hood_thickness,
+	      wall=wall
+){
+    translate([-32.5, -1, 0]){
+    cube([65, 25, wall]);
+  }
+}
 
 
