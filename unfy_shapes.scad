@@ -43,6 +43,12 @@ bez2d_custom_v = [1.25, 3.75];
 bez3d_size=[5, 15, 15];
 bez3d_rounded_edges = [1, 2];
 
+/*
+  Creates a 2d rectangle with rounded corners
+  size: may be a 2d vector [x, y] or may be a single number creating a square equivalent to [x, x]
+  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
+           or a single number to make all corners the same
+ */
 module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   let (size = is_num(size) ? [size, size] : size,
        corners = is_num(corners) ? [corners, corners, corners, corners] : corners){
@@ -74,7 +80,17 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   }
 }
 
-module unf_roundedCube(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1, 2, 1, 2, 1, 2, 1, 2]){
+/*
+  Creates a 3d cuboid with rounded corners
+  size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
+  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
+           or a single number to make all corners the same
+  rounded_edges: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
+           or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
+	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
+           or a single number to make all edges the same
+ */
+module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1, 2, 1, 2, 1, 2, 1, 2]){
   function calc(base_x, base_y, r1, r2, r3, r4) = let(r_max = max(r1, r2, r3, r4),
 						      req_slices = unf_effective_fn(radius=r_max, angle=90),
 						      practical_slices = min(r_max/req_slices < $over*2 ? r_max/($over*2) : req_slices),
@@ -93,7 +109,7 @@ module unf_roundedCube(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1, 2
     ;
   let (size = is_num(size) ? [size, size, size] : size,
        corners = is_num(corners) ? [corners, corners, corners, corners] : corners,
-       round_edges = is_num(round_edges) ? [round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges] : (is_list(round_edges) ? (8==len(round_edges) ? round_edges : [round_edges[0], round_edges[1], round_edges[2], round_edges[3], round_edges[0], round_edges[1], round_edges[2], round_edges[3]]) : round_edges)){
+       round_edges = is_num(round_edges) ? [round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges] : (is_list(round_edges) ? (8==len(round_edges) ? round_edges : [round_edges[0], round_edges[1], round_edges[2], round_edges[3], round_edges[0], round_edges[1], round_edges[2], round_edges[3]]) : (2==len(rounded_edges)? [rounded_edges[0], rounded_edges[0], rounded_edges[0], rounded_edges[0], rounded_edges[1], rounded_edges[1], rounded_edges[1], rounded_edges[1]] : round_edges))){
 
     if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
       assert(false, "size must be a positive number or a vector of 3 positive numbers");
@@ -176,6 +192,12 @@ module unf_roundedCube(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1, 2
   }
 }
 
+/*
+  Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather than a straight line
+  Good for building up inside-corners for a more rounded look or added strength
+  size = a 2d vector [x, y] or a single number to be used for both, same as [x, x]
+  v - a vector to affect the shape of the bezier curve
+*/
 module unf_bezierWedge2d(size=[5, 15], v=false){
   let (size = is_num(size) ? [size, size] : size,
        v = is_list(v) ? v : (is_list(size) && 2 <= len(size) ? [size.x/4, size.y/4] : false)){
@@ -195,6 +217,12 @@ module unf_bezierWedge2d(size=[5, 15], v=false){
   }
 }
 
+/*
+  A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along the hypotenuse
+  Good for building up inside-corners for a more rounded look or added strength
+  size = a 3d vector [x, y, z] or a single number to be used for both, same as [x, x, x]
+  v - a vector to affect the shape of the bezier curve
+*/
 module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
   let(size = is_num(size) ? [size, size, size] : size,
       rouded_edges = is_num(rounded_edges) ? [rounded_edges, rounded_edges] : rounded_edges){
@@ -261,7 +289,7 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 }
 
 if ("round_cube" == test_shape){
-  unf_roundedCube(size=cube_size, corners=cube_corners, round_edges=cube_round_edges);
+  unf_roundedCuboid(size=cube_size, corners=cube_corners, round_edges=cube_round_edges);
 }
 
 if ("round_rectangle" == test_shape){
