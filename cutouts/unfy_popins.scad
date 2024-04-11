@@ -1,6 +1,6 @@
 // For simple rectangular shapes such as switches which push into a hole and have fingers that grab
 //
-// UnfyOpenSCADLib Copyright Leif Burrow 2022
+// UnfyOpenSCADLib Copyright Leif Burrow 2024
 // kc8rwr@unfy.us
 // unforgettability.net
 //
