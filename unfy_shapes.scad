@@ -28,7 +28,7 @@ $over = 0.1;
 /* [ Rounded Cube ] */
 cube_size=[20, 10, 5];
 cube_corners=[1, 1, 1, 1];
-cube_round_edges=[1, 2, 1, 2, 1, 2, 1, 2];
+cube_edge_r=[1, 2, 1, 2, 1, 2, 1, 2];
 
 /* [ Rounded Rectangle ] */
 rectangle_size=[50, 25];
@@ -60,18 +60,26 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
     if (!is_list(corners) || 4 != len(corners) || 0 > corners[0] || 0 > corners[1] || 0 > corners[2] || 0 > corners[3]){
       assert(false, "corners must be zero, a positive number or a vector of 4 such numbers");
     }
-    
-    hull(){
-      for (v=[[0, 0, corners[0]], [size.x, 0, corners[1]], [size.x, size.y, corners[2]], [0, size.y, corners[3]]]){
-	r = 0 < v.z ? v.z : $over;
-	translate([v.x, v.y]){
-	  if (0 < v.z){
-	    translate([(0==v.x?v.z:-v.z) ,(0==v.y?v.z:-v.z)]){
-	      circle(r=v.z);
-	    }
-	  } else {
-	    translate([(0==v.x?0:-$over) ,(0==v.y?0:-$over)]){
-	      square([$over, $over]);
+
+    intersection(){ //intersection with the non-rounded square is a hacky way to deal with
+      square(size); //a requested corner radius being greater than the side's length
+      hull(){       //FIXME - Do Better
+	for (v=[[0, 0, corners[0]], [size.x, 0, corners[1]], [size.x, size.y, corners[2]], [0, size.y, corners[3]]]){
+	  r = 0 < v.z ? v.z : $over;
+	  translate([v.x, v.y]){
+	    if (0 < v.z){
+	      translate([(0==v.x?v.z:-v.z) ,(0==v.y?v.z:-v.z)]){
+		intersection(){
+		  circle(r=v.z);
+		  translate([0, -v.z]){
+		    square(v.z);
+		  }
+		}
+	      }
+	    } else {
+	      translate([(0==v.x?0:-$over) ,(0==v.y?0:-$over)]){
+		square([$over, $over]);
+	      }
 	    }
 	  }
 	}
@@ -90,7 +98,7 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
 	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
            or a single number to make all edges the same
  */
-module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1, 2, 1, 2, 1, 2, 1, 2]){
+module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1, 2, 1, 2, 1, 2]){
   function calc(base_x, base_y, r1, r2, r3, r4) = let(r_max = max(r1, r2, r3, r4),
 						      req_slices = unf_effective_fn(radius=r_max, angle=90),
 						      practical_slices = min(r_max/req_slices < $over*2 ? r_max/($over*2) : req_slices),
@@ -109,8 +117,7 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1,
     ;
   let (size = is_num(size) ? [size, size, size] : size,
        corners = is_num(corners) ? [corners, corners, corners, corners] : corners,
-       round_edges = is_num(round_edges) ? [round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges, round_edges] : (is_list(round_edges) ? (8==len(round_edges) ? round_edges : [round_edges[0], round_edges[1], round_edges[2], round_edges[3], round_edges[0], round_edges[1], round_edges[2], round_edges[3]]) : (2==len(rounded_edges)? [rounded_edges[0], rounded_edges[0], rounded_edges[0], rounded_edges[0], rounded_edges[1], rounded_edges[1], rounded_edges[1], rounded_edges[1]] : round_edges))){
-
+       edge_r = is_num(edge_r) ? [edgge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r] : (is_list(edge_r) ? (8==len(edge_r) ? edge_r : [edge_r[0], edge_r[1], edge_r[2], edge_r[3], edge_r[0], edge_r[1], edge_r[2], edge_r[3]]) : (2==len(edge_r)? [edge_r[0], edge_r[0], edge_r[0], edge_r[0], edge_r[1], edge_r[1], edge_r[1], edge_r[1]] : edge_r))){
     if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
       assert(false, "size must be a positive number or a vector of 3 positive numbers");
     }
@@ -119,15 +126,14 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], round_edges=[1,
       assert(false, "corners must be zero, a positive number or a vector of 4 such numbers");
     }
 
-    if (!is_list(round_edges) || 8 != len(round_edges) || 0 > round_edges[0] || 0 > round_edges[1] || 0 > round_edges[2] || 0 > round_edges[3] || 0 > round_edges[4] || 0 > round_edges[5] || 0 > round_edges[6] || 0 > round_edges[7]){
-      assert(false, "round_edges must be zero, a positive number or a vector of 4 or 8 such numbers");
+    if (!is_list(edge_r) || 8 != len(edge_r) || 0 > edge_r[0] || 0 > edge_r[1] || 0 > edge_r[2] || 0 > edge_r[3] || 0 > edge_r[4] || 0 > edge_r[5] || 0 > edge_r[6] || 0 > edge_r[7]){
+      assert(false, "edge_r must be zero, a positive number or a vector of 4 or 8 such numbers");
     }
     
-    
-    top_calcs = (0 < max(round_edges[0], round_edges[1], round_edges[2], round_edges[3])) ? calc(size.x, size.y, round_edges[0], round_edges[1], round_edges[2], round_edges[3]) : false;
+    top_calcs = (0 < max(edge_r[0], edge_r[1], edge_r[2], edge_r[3])) ? calc(size.x, size.y, edge_r[0], edge_r[1], edge_r[2], edge_r[3]) : false;
     top_height = is_list(top_calcs) ? top_calcs[len(top_calcs)-1][4] : 0;
-    bottom_calcs = (0 < max(round_edges[4], round_edges[5], round_edges[6], round_edges[7])) ? calc(size.x, size.y, round_edges[4], round_edges[5], round_edges[6], round_edges[7]) : false;
-    bottom_height = is_list(bottom_calcs) ? bottom_calcs[len(top_calcs)-1][4] : 0;
+    bottom_calcs = (0 < max(edge_r[4], edge_r[5], edge_r[6], edge_r[7])) ? calc(size.x, size.y, edge_r[4], edge_r[5], edge_r[6], edge_r[7]) : false;
+    bottom_height = is_list(bottom_calcs) ? bottom_calcs[len(bottom_calcs)-1][4] : 0;
     middle_height = size.z - (top_height + bottom_height);
 
     // Do Bottom
@@ -289,7 +295,7 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 }
 
 if ("round_cube" == test_shape){
-  unf_roundedCuboid(size=cube_size, corners=cube_corners, round_edges=cube_round_edges);
+  unf_roundedCuboid(size=cube_size, corners=cube_corners, edge_r=cube_edge_r);
 }
 
 if ("round_rectangle" == test_shape){
