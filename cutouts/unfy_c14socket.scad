@@ -24,6 +24,9 @@ slope = 45; //[45,0]
 fastener = "Heatset"; //["Heatset", "HexNut", "PlainHole"]
 heatset_length = "Medium"; //["Small", "Medium", "Large"]
 
+restriction_l = -1; //[-1:0.1:10]
+restriction_r = -1; //[-1:0.1:10]
+
 support_skin = "none"; //["none", "horizontal", "vertical"]
 support_skin_t = 0.02;
 
@@ -34,32 +37,44 @@ use <../unfy_lists.scad>
 
 $fn = $preview ? 15 : 360;
 
-module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", wall=4){
+module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
   let(fastener = unf_stToLower(fastener),
       support_skin = unf_stToLower(support_skin),
       body_x = 26,
       body_y = 22.7,
       body_depth=18,
-      screw_separation = 40) {
+      screw_separation = 40,
+      restriction_l = false == restriction_l ? -1 : restriction_l,
+      restriction_r = false == restriction_r ? -1 : restriction_r) {
+      
+    intersection(){
+      if (0 <= restriction_l || 0 <= restriction_r){
+	translation = [-1 < restriction_l ? -(26 + restriction_l) : -100, -39, -100];
+	dims = [-1 < restriction_r ? (-translation.x + 26 + restriction_r) : 126, 100, 100];
+	translate(translation){
+	  cube(dims);
+	}
+      }
 
-    //fastener pillars  
-    if ("plainhole" != fastener){
-      difference(){
-	color(color){
-	  for (x = [-screw_separation/2, screw_separation/2]){
-	    translate([x, body_y/2]){
-	      rotate([0, 180, 0]){
-		unf_pillar(fastener=fastener, heatset_length=heatset_length, bolt=bolt, slope=slope, length=5);
+      //fastener pillars  
+      if ("plainhole" != fastener){
+	difference(){
+	  color(color){
+	    for (x = [-screw_separation/2, screw_separation/2]){
+	      translate([x, body_y/2]){
+		rotate([0, 180, 0]){
+		  unf_pillar(fastener=fastener, heatset_length=heatset_length, bolt=bolt, slope=slope, length=5);
+		}
 	      }
 	    }
 	  }
-	}
-      	translate([-screw_separation/2, 0, $over]){
-	  unf_C14Body(depth=body_depth+$over);
+	  translate([-screw_separation/2, 0, $over]){
+	    unf_C14Body(depth=body_depth+$over);
+	  }
 	}
       }
     }
-
+      
     //support skin
     if ("none" != support_skin && 0 < support_skin_t){
       color(support_color, alpha=0.5){
@@ -71,13 +86,13 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 	}
       }
     }
-    
+  
     //vertical support (bar between screw holes for supporting pillars when printed on end)
     if ("vertical" == support_skin && "plainhole" != fastener && 0 < support_skin_t) {
       color(support_color, alpha=0.5){
 	hull(){
 	  intersection() {
-	    unf_C14Socket_Positive(bolt=bolt, fastener="plainhole", heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
+	    unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
 	    translate([-screw_separation/2, (body_y/2)-(support_skin_t/2), -body_depth]){
 	      cube([screw_separation, support_skin_t, body_depth]);
 	    }
@@ -87,6 +102,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
     }
   }
 }
+
 
 module unf_C14Socket_Negative(bolt="M4", hood_thickness=3, wall=4){  
   let(bolt_d = unf_fnr_shaft_diameter(bolt),
@@ -155,7 +171,7 @@ module unf_C14Body(depth=18){
   }
 }
 
-module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", wall=4){
+module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
 
   difference(){
     children();
@@ -169,7 +185,7 @@ module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4"
   }
   translate(location){
     rotate(rotation){
-      unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, color=color, support_color=support_color, wall=wall);
+      unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, color=color, support_color=support_color, restriction_l=restriction_l, restriction_r=restriction_r, wall=wall);
     }
   }
 }
@@ -182,12 +198,16 @@ unf_C14Socket(bolt=bolt,
 	      support_skin=support_skin,
 	      support_skin_t=support_skin_t,
 	      hood_thickness=hood_thickness,
+	      restriction_r = restriction_r,
+	      restriction_l = restriction_l,
 	      wall=wall,
-	      rotation = [0, -90, 0]
+	      rotation = [0, -0, 0]
 ){
-  rotate([0, -90, 0]){
+  rotate([0, -0, 0]){
     translate([-back_size.x/2, -1, 0]){
-      cube(back_size);
+      color("Gray", alpha=0.25){
+	cube(back_size);
+      }
     }
   }
 }
