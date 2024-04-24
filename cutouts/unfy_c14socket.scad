@@ -44,13 +44,16 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
       body_y = 22.7,
       body_depth=18,
       screw_separation = 40,
-      restriction_l = false == restriction_l ? -1 : restriction_l,
-      restriction_r = false == restriction_r ? -1 : restriction_r) {
+      ear_x=13,
+      restriction_l = is_num(restriction_l) ? (abs(restriction_l) < 0.001 ? 0 : restriction_l) : -1, //rounding numbers really close to zero because odd really small magnitudes have been seen from custimizer value of "zero"
+      restriction_r = is_num(restriction_r) ? (abs(restriction_r) < 0.001 ? 0 : restriction_r) : -1){
       
+    echo (str(restriction_l, "  ", restriction_r));
     intersection(){
       if (0 <= restriction_l || 0 <= restriction_r){
-	translation = [-1 < restriction_l ? -(26 + restriction_l) : -100, -39, -100];
-	dims = [-1 < restriction_r ? (-translation.x + 26 + restriction_r) : 126, 100, 100];
+	translation = [0 > restriction_l ? -100 : -restriction_l , -39, -100];
+	dims = [0 > restriction_r ? 126 : (body_x + (2*ear_x) + restriction_r - translation.x) , 100, 100];
+	echo(str(translation, dims));
 	translate(translation){
 	  cube(dims);
 	}
@@ -60,7 +63,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
       if ("plainhole" != fastener){
 	difference(){
 	  color(color){
-	    for (x = [-screw_separation/2, screw_separation/2]){
+	    for (x = [ear_x/2, screw_separation+(ear_x/2)]){
 	      translate([x, body_y/2]){
 		rotate([0, 180, 0]){
 		  unf_pillar(fastener=fastener, heatset_length=heatset_length, bolt=bolt, slope=slope, length=5);
@@ -68,7 +71,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 	      }
 	    }
 	  }
-	  translate([-screw_separation/2, 0, $over]){
+	  translate([ear_x, 0, $over]){
 	    unf_C14Body(depth=body_depth+$over);
 	  }
 	}
@@ -81,7 +84,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 	translate([0, 0, wall-support_skin_t]){
 	  unf_C14Cape(hood_thickness=support_skin_t);
 	}
-	translate([-screw_separation/2, 0, 0]){
+	translate([ear_x, 0, 0]){
 	  unf_C14Body(depth=support_skin_t);
 	}
       }
@@ -93,7 +96,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 	hull(){
 	  intersection() {
 	    unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
-	    translate([-screw_separation/2, (body_y/2)-(support_skin_t/2), -body_depth]){
+	    translate([ear_x/2, (body_y/2)-(support_skin_t/2), -body_depth]){
 	      cube([screw_separation, support_skin_t, body_depth]);
 	    }
 	  }
@@ -112,12 +115,12 @@ module unf_C14Socket_Negative(bolt="M4", hood_thickness=3, wall=4){
       ear_x=13,
       screw_separation=40){
     unf_C14Cape(hood_thickness=hood_thickness);
-    translate([-screw_separation/2, 0, -$over]){
+    translate([ear_x, 0, -$over]){
       unf_C14Body(depth=body_depth+$over);
     }
     translate([0, 0, -(wall+body_depth)]){
       //screw holes
-      for (x = [screw_separation/2, -screw_separation/2]){
+      for (x = [ear_x/2, screw_separation+(ear_x/2)]){
 	translate([x, body_y/2]){
 	  cylinder(d=bolt_d, h=body_depth+wall);
 	}
@@ -131,7 +134,7 @@ module unf_C14Cape(hood_thickness=3){
   body_y = 22.7;
   screw_separation = 40;
   ear_x = 13;
-  translate([-ear_x, 0, -hood_thickness]){
+  translate([ear_x, 0, -hood_thickness]){
     linear_extrude(hood_thickness){
       hull(){
 	//body
@@ -156,7 +159,7 @@ module unf_C14Body(depth=18){
   cutaway_bottom_y = 13.33;
   cutaway_top_x = 21;
   cutaway_y = 20;
-  translate([ear_x/2, 0, -depth]){
+  translate([0, 0, -depth]){
     linear_extrude(depth){
       //body
       bottom_y = (body_y - cutaway_y)/2;
@@ -204,7 +207,7 @@ unf_C14Socket(bolt=bolt,
 	      rotation = [0, -0, 0]
 ){
   rotate([0, -0, 0]){
-    translate([-back_size.x/2, -1, 0]){
+    translate([-6, -1, 0]){
       color("Gray", alpha=0.25){
 	cube(back_size);
       }
