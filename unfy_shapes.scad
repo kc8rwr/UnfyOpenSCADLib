@@ -185,7 +185,7 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 		  unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
 		}
 	      }
-	      translate([top[0], top[1], top[4]]){
+	      translate([top[0], top[1], top[4]-$over]){
 		linear_extrude($over){
 		  unf_roundedRectangle(size=[top[2], top[3]], corners=corners);
 		}
@@ -231,14 +231,14 @@ module unf_bezierWedge2d(size=[5, 15], v=false){
 */
 module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
   let(size = is_num(size) ? [size, size, size] : size,
-      rouded_edges = is_num(rounded_edges) ? [rounded_edges, rounded_edges] : rounded_edges){
-
+      rounded_edges = is_num(rounded_edges) ? [rounded_edges, rounded_edges] : rounded_edges){
+    
     if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
       assert(false, "size must be a positive number or a vector of 3 positive numbers");
     }
     
     if (!is_list(rounded_edges) || 2 != len(rounded_edges) || 0 > rounded_edges.x || 0 > rounded_edges.y){
-      assert(false, "rounded_edges must be zero, a positive number or a vector of 2 such numbers");
+      assert(false, str("rounded_edges, '", rounded_edges, "' must be zero, a positive number or a vector of 2 such numbers"));
     }
     
     middle_height = size.z - (rounded_edges.y + rounded_edges.x);
