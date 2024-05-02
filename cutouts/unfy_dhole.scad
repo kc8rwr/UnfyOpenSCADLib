@@ -17,13 +17,13 @@
 //
 
 //diameter of full circle
-a = 11.3;
+diameter = 11.3;
 
 //single - measurement from flat to opposite diameter, double - measurement from flat to flat
-b=10.54;
+flat_width = 10.54;
 
-//double-d
-isDouble = false;
+//shape
+shape = "D"; //["D", "DoubleD", "Circle"]
 
 //rotation angle, 0 is flat on top, rotates counter-clockwise
 angle = 0; //[0:360]
@@ -34,17 +34,35 @@ z = 4;
 $over = 0.01;
 $fn = $preview ? 36 : 360;
 
-module unf_DHole(a=11.3, b=10.54, z=4, isDouble=false){
-  linear_extrude(z){
-    rotate(angle){
-      intersection(){
-	circle(d = a);
-	translate([-a/2, -b/2 - (isDouble?0:(a-b)/2) , 0]){
-	  square([a, b]);
+use <../unfy_lists.scad>
+
+/*
+  Creates d, double-d and circle shapes for cutouts such as fuse holder, toggle switch, etc.. mounts.
+  Reason for circle (which could obviously be done without this) is to make easy user-customization.
+  diameter - diameter of the fully round part of the circle
+  falt_width - distance from flat to opposite side of circle in a d-shape
+               distance between flats for double-d
+  angle - 
+*/
+module unf_DHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
+  let (shape = unf_stToLower(shape)){
+    assert ("d" == shape || "doubled" == shape || "circle" == shape, "Shape must be one of 'd', 'doubled' or 'circle'.");
+    assert (0 < diameter, "Diameter must be greater than 0.");
+    assert (shape == "circle" || 0 < flat_width, "Flat_width must be greater than zero.");
+    assert (shape == "circle" || flat_width < diameter, "Flat_width must be less than diameter.");
+    linear_extrude(z){
+      rotate(180+angle){
+	intersection(){
+	  circle(d = diameter);
+	  if ("circle" != shape){
+	    translate([-diameter/2, -flat_width/2 - (("doubled"==shape)?0:(diameter-flat_width)/2) , 0]){
+	      square([diameter, flat_width]);
+	    }
+	  }
 	}
       }
     }
   }
 }
 
-unf_DHole(a=a, b=b, z=z, isDouble=isDouble);
+unf_DHole(diameter=diameter, flat_width=flat_width, angle=angle, z=z, shape=shape);
