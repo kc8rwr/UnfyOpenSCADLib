@@ -64,15 +64,17 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
     intersection(){ //intersection with the non-rounded square is a hacky way to deal with
       square(size); //a requested corner radius being greater than the side's length
       hull(){       //FIXME - Do Better
-	for (v=[[0, 0, corners[0]], [size.x, 0, corners[1]], [size.x, size.y, corners[2]], [0, size.y, corners[3]]]){
+	for (v=[[0, 0, corners[0], -90], [size.x, 0, corners[1], 0], [size.x, size.y, corners[2], 90], [0, size.y, corners[3], 180]]){
 	  r = 0 < v.z ? v.z : $over;
 	  translate([v.x, v.y]){
 	    if (0 < v.z){
 	      translate([(0==v.x?v.z:-v.z) ,(0==v.y?v.z:-v.z)]){
-		intersection(){
-		  circle(r=v.z);
-		  translate([0, -v.z]){
-		    square(v.z);
+		rotate([0, 0, v[3]]){
+		  intersection(){
+		    circle(r=v.z);
+		    translate([0, -v.z]){
+		      square(v.z);
+		    }
 		  }
 		}
 	      }
