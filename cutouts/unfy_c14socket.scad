@@ -30,6 +30,9 @@ restriction_r = -1; //[-1:0.1:10]
 support_skin = "none"; //["none", "horizontal", "vertical"]
 support_skin_t = 0.02;
 
+body_color = "Blue"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
+support_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
+
 $over = 0.01;
 
 use <../unfy_fasteners.scad>
@@ -37,7 +40,7 @@ use <../unfy_lists.scad>
 
 $fn = $preview ? 15 : 360;
 
-module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
+module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
   let(fastener = unf_stToLower(fastener),
       support_skin = unf_stToLower(support_skin),
       body_x = 26,
@@ -48,12 +51,10 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
       restriction_l = is_num(restriction_l) ? (abs(restriction_l) < 0.001 ? 0 : restriction_l) : -1, //rounding numbers really close to zero because odd really small magnitudes have been seen from custimizer value of "zero"
       restriction_r = is_num(restriction_r) ? (abs(restriction_r) < 0.001 ? 0 : restriction_r) : -1){
       
-    echo (str(restriction_l, "  ", restriction_r));
     intersection(){
       if (0 <= restriction_l || 0 <= restriction_r){
 	translation = [0 > restriction_l ? -100 : -restriction_l , -39, -100];
 	dims = [0 > restriction_r ? 126 : (body_x + (2*ear_x) + restriction_r - translation.x) , 100, 100];
-	echo(str(translation, dims));
 	translate(translation){
 	  cube(dims);
 	}
@@ -62,7 +63,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
       //fastener pillars  
       if ("plainhole" != fastener){
 	difference(){
-	  color(color){
+	  color(body_color){
 	    for (x = [ear_x/2, screw_separation+(ear_x/2)]){
 	      translate([x, body_y/2]){
 		rotate([0, 180, 0]){
@@ -174,7 +175,7 @@ module unf_C14Body(depth=18){
   }
 }
 
-module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
+module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
 
   difference(){
     children();
@@ -188,10 +189,16 @@ module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4"
   }
   translate(location){
     rotate(rotation){
-      unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, color=color, support_color=support_color, restriction_l=restriction_l, restriction_r=restriction_r, wall=wall);
+      unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, body_color=body_color, support_color=support_color, restriction_l=restriction_l, restriction_r=restriction_r, wall=wall);
     }
   }
 }
+
+function unf_c14_size() = let(body_x = 26,
+			      body_y = 22.7,
+			      ear_x=13,
+			      screw_separation=40) [body_x+(2*ear_x), body_y];
+
 
 back_size=[65, 25, wall];
 
@@ -204,11 +211,13 @@ unf_C14Socket(bolt=bolt,
 	      restriction_r = restriction_r,
 	      restriction_l = restriction_l,
 	      wall=wall,
-	      rotation = [0, -0, 0]
+	      rotation = [0, -0, 0],
+	      body_color = body_color,
+	      support_color = support_color
 ){
   rotate([0, -0, 0]){
     translate([-6, -1, 0]){
-      color("Gray", alpha=0.25){
+      color(body_color, alpha=0.25){
 	cube(back_size);
       }
     }
