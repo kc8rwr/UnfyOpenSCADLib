@@ -56,7 +56,7 @@ function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
   (
     let (
       alpha = f - (e * tt),
-      a = pow(tt, 2) + 1,,
+      a = pow(tt, 2) + 1,
       b = 2 * alpha * tt,
       c = pow(alpha, 2) - pow(radius, 2),
       x = max(unf_quadratic(a, b, c)),
