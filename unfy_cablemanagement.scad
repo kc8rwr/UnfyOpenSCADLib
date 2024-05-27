@@ -108,7 +108,6 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 	  tooth_width = 2*tooth_length;
 	  tooth_step = max(tooth_width, tab_side/tooth_count);
 	  z_offset = max(0, (tab_side - (tooth_step * (tooth_count-1)) - tooth_width)/2);
-	  echo(str("z_offset: ", z_offset));
 	  difference(){
 	    for(z = [0:tooth_step:tab_side-tooth_width]){
 	      translate([0, 0, z+z_offset+wall]){
