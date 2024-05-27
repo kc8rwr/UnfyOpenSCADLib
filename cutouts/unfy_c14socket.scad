@@ -52,7 +52,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
       restriction_r = is_num(restriction_r) ? (abs(restriction_r) < 0.001 ? 0 : restriction_r) : -1){
       
     intersection(){
-      if (0 <= restriction_l || 0 <= restriction_r){
+      if ("plainhole" != fastener && (0 <= restriction_l || 0 <= restriction_r)){
 	translation = [0 > restriction_l ? -100 : -restriction_l , -39, -100];
 	dims = [0 > restriction_r ? 126 : (body_x + (2*ear_x) + restriction_r - translation.x) , 100, 100];
 	translate(translation){
@@ -80,7 +80,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
     }
       
     //support skin
-    if ("none" != support_skin && 0 < support_skin_t){
+    if ("none" != support_skin && $over < support_skin_t){
       color(support_color, alpha=0.5){
 	translate([0, 0, wall-support_skin_t]){
 	  unf_C14Cape(hood_thickness=support_skin_t);
@@ -92,7 +92,7 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
     }
   
     //vertical support (bar between screw holes for supporting pillars when printed on end)
-    if ("vertical" == support_skin && "plainhole" != fastener && 0 < support_skin_t) {
+    if ("vertical" == support_skin && "plainhole" != fastener && $over < support_skin_t) {
       color(support_color, alpha=0.5){
 	hull(){
 	  intersection() {
