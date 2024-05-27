@@ -143,15 +143,17 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
       for(i = [len(bottom_calcs)-1:-1:1]) {
 	let(top = bottom_calcs[(i-1)],
 	    bottom = bottom_calcs[i]){
-	  hull(){
-	    translate([bottom[0], bottom[1], bottom_height-bottom[4]]){
-	      linear_extrude($over){
-		unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
+	  if (0 < bottom[2] && 0 < bottom[3]){
+	    hull(){
+	      translate([bottom[0], bottom[1], bottom_height-bottom[4]]){
+		linear_extrude($over){
+		  unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
+		}
 	      }
-	    }
-	    translate([top[0], top[1], bottom_height-top[4]]){
-	      linear_extrude($over){
-		unf_roundedRectangle(size=[top[2], top[3]], corners=corners);
+	      translate([top[0], top[1], bottom_height-top[4]]){
+		linear_extrude($over){
+		  unf_roundedRectangle(size=[max($over, top[2]), max($over, top[3])], corners=corners);
+		}
 	      }
 	    }
 	  }
@@ -168,7 +170,7 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 	  }
 	  translate([0, 0, middle_height - $over]){
 	    linear_extrude($over){
-	      unf_roundedRectangle(size=[size[0], size[1]], corners=corners);
+	      unf_roundedRectangle(size=[size.x, size.y], corners=corners);
 	    }
 	  }
 	}
@@ -181,15 +183,17 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 	for(i = [1:len(top_calcs)-1]) {
 	  let(top = top_calcs[i],
 	      bottom = top_calcs[(i-1)]){
-	    hull(){
-	      translate([bottom[0], bottom[1], bottom[4]]){
-		linear_extrude($over){
-		  unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
+	    if (0 < top[2] && 0 < top[3]){
+	      hull(){
+		translate([max($over, bottom[0]), max($over, bottom[1]), max($over, bottom[4])]){
+		  linear_extrude($over){
+		    unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
+		  }
 		}
-	      }
-	      translate([top[0], top[1], top[4]-$over]){
-		linear_extrude($over){
-		  unf_roundedRectangle(size=[top[2], top[3]], corners=corners);
+		translate([top[0], top[1], top[4]-$over]){
+		  linear_extrude($over){
+		    unf_roundedRectangle(size=[top[2], top[3]], corners=corners);
+		  }
 		}
 	      }
 	    }
