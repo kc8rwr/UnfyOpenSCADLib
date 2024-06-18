@@ -119,7 +119,18 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
     ;
   let (size = is_num(size) ? [size, size, size] : size,
        corners = is_num(corners) ? [corners, corners, corners, corners] : corners,
-       edge_r = is_num(edge_r) ? [edgge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r] : (is_list(edge_r) ? (8==len(edge_r) ? edge_r : [edge_r[0], edge_r[1], edge_r[2], edge_r[3], edge_r[0], edge_r[1], edge_r[2], edge_r[3]]) : (2==len(edge_r)? [edge_r[0], edge_r[0], edge_r[0], edge_r[0], edge_r[1], edge_r[1], edge_r[1], edge_r[1]] : edge_r))){
+
+       edge_r = is_num(edge_r) ? [edge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r, edge_r] : (
+	 (!is_list(edge_r)) ? edge_r : (
+	   8==len(edge_r) ? edge_r : (
+	     4==len(edge_r) ? [edge_r[0], edge_r[1], edge_r[2], edge_r[3], edge_r[0], edge_r[1], edge_r[2], edge_r[3]] : (
+	       2==len(edge_r) ? [edge_r[0], edge_r[0], edge_r[0], edge_r[0], edge_r[1], edge_r[1], edge_r[1], edge_r[1]] : edge_r
+	     )
+	   )
+	 )
+       )
+  ){
+    
     if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
       assert(false, "size must be a positive number or a vector of 3 positive numbers");
     }
