@@ -54,9 +54,11 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
   nut_tab_t = nut_t + wall;
 
   module tooth(cable_d=7.5, tooth_length=0.5, tooth_width=2)
+  {
     rotate_extrude(){
-    translate([cable_d/2, 0, 0]){
-      polygon([[0, 0], [0, tooth_width], [-tooth_length, tooth_length]]);
+      translate([cable_d/2, 0, 0]){
+	polygon([[0, 0], [0, tooth_width], [-tooth_length, tooth_length]]);
+      }
     }
   }
   
@@ -88,14 +90,16 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 	    cube([(cable_d/2)+wall+$over, gap, wall+tab_side+(2*$over)]);
 	  }
 	}
-	translate([-(cable_d/2)-wall-$over, wall-gap, -$over]){
-	  cube([cable_d+(2*wall)+$over, (cable_d/2)+(2*wall)+$over, wall+$over]);
+	translate([-(cable_d/2)-wall-$over, -gap/2, -$over]){
+	  cube([cable_d+(2*wall)+$over, (cable_d/2)+(gap/2)+wall, wall+$over]);
 	}
 	translate([(cable_d/2)+wall+(tab_side/2), (gap/2)+(washer_tab_t)+$over, wall+(tab_side/2)]){
 	  rotate([90, 0, 0]){
 	    cylinder(d=bolt_d, h=gap+washer_tab_t+nut_tab_t+(2*$over));
-	    translate([0, 0, gap+nut_tab_t]){
-	      unf_nut(size=nut_v, ext=$over);
+	    translate([0, 0, washer_tab_t+gap+nut_tab_t]){
+	      rotate([180, 0, 0]){
+		unf_nut(size=nut_v, ext=(2*$over));
+	      }
 	    }
 	    translate([0, 0, 0]){
 	      unf_wsh(size=washer_v, ext=$over);
@@ -170,7 +174,7 @@ module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, cent
   }
 }
 
-module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap=3, hole_ext=hole_ext, tooth_length=tooth_length, tooth_count=tooth_count, support="none", support_skin=0.6, wall=1.4, body_color=false, support_color=false, center=true){
+module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap=3, hole_ext=3, tooth_length=0.5, tooth_count=4, support="none", support_skin=0.6, wall=1.4, body_color=false, support_color=false, center=true){
   difference(){
     children();
     translate(location){
@@ -185,7 +189,7 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
   }
   translate(location){
     rotate(rotation){
-      unf_cableClip_Positive(cable_d = cable_d,
+     unf_cableClip_Positive(cable_d = cable_d,
 			     gap = gap,
 			     bolt = bolt,
 			     tooth_length = tooth_length,
