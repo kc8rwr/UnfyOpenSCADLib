@@ -780,9 +780,9 @@ function unf_nut_height(in) = is_list(in) ? in[4] : (
 
 module unf_nut(size = "m3", ext = -1){
   let (ext = (0 <= ext) ? ext : $over,
-       size = is_list(size) ? size : unf_nut_v(size)){
-    diameter = unf_nut_diameter(size);
-    height = unf_nut_height(size);
+       size = is_list(size) ? size : unf_nut_v(size),
+       diameter = unf_nut_diameter(size),
+       height = unf_nut_height(size)){
     if (0 < ext){
       translate([0, 0, -ext]){
 	color("grey", 0.25){
