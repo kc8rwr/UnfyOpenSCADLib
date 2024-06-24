@@ -113,9 +113,11 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 	  tooth_step = max(tooth_width, tab_side/tooth_count);
 	  z_offset = max(0, (tab_side - (tooth_step * (tooth_count-1)) - tooth_width)/2);
 	  difference(){
-	    for(z = [0:tooth_step:tab_side-tooth_width]){
-	      translate([0, 0, z+z_offset+wall]){
-		tooth(cable_d=cable_d, tooth_length=tooth_length, tooth_width=tooth_width);
+	    union(){
+	      for(z = [0:tooth_step:tab_side-tooth_width]){
+		translate([0, 0, z+z_offset+wall]){
+		  tooth(cable_d=cable_d, tooth_length=tooth_length, tooth_width=tooth_width);
+		}
 	      }
 	    }
 	    translate([0, -gap/2, wall-$over]){
