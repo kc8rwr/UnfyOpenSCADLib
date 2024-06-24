@@ -92,18 +92,26 @@ function unf_Popin_Dims(device) =
   );
 
 //cutout and buildup a popin by name
-module unf_Popin(location=[0, 0, 0], rotation=0, device="rleil_r2", wall=2, body_color="Blue", support_color="Yellow", support_skin=0){
+module unf_Popin(location=[0, 0, 0], rotation=0, device="rleil_r2", wall=2, body_color="Blue", support_color="Yellow", support_skin=0, do_render=false){
   difference(){
     children();
     translate(location){
       rotate(rotation){
-	unf_Popin_Negative(device=device, wall=wall);
+	if (do_render){
+	  render() unf_Popin_Negative(device=device, wall=wall);
+	} else {
+	  unf_Popin_Negative(device=device, wall=wall);
+	}
       }
     }
   }
   translate(location){
     rotate(rotation){
-      unf_Popin_Positive(device=device, wall=wall, body_color=body_color, support_color=support_color, support_skin=support_skin);
+      if (do_render){
+	render() unf_Popin_Positive(device=device, wall=wall, body_color=body_color, support_color=support_color, support_skin=support_skin);
+      } else {
+	unf_Popin_Positive(device=device, wall=wall, body_color=body_color, support_color=support_color, support_skin=support_skin);
+      }
     }
   }
 
@@ -122,7 +130,7 @@ module unf_rleil_rl2_cutout(wall=2){
 }
 
 //RLEIL RL2 series Rocker Switch
-function unf_rleil_r2_dims() = [33, 25, 27];
+function unf_rleil_r2_dims() = [30.2, 22, 27];//[33, 25, 27];
 
 //********************End Switches**************************
 
