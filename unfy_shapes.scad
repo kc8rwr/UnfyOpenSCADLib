@@ -148,7 +148,7 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
     bottom_calcs = (0 < max(edge_r[4], edge_r[5], edge_r[6], edge_r[7])) ? calc(size.x, size.y, edge_r[4], edge_r[5], edge_r[6], edge_r[7]) : false;
     bottom_height = is_list(bottom_calcs) ? bottom_calcs[len(bottom_calcs)-1][4] : 0;
     middle_height = size.z - (top_height + bottom_height);
-
+    
     // Do Bottom
     if (0 < bottom_height){
       for(i = [len(bottom_calcs)-1:-1:1]) {
@@ -175,33 +175,26 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
     // Do Middle
     if (0 < middle_height){
       translate([0, 0, bottom_height]){
-	hull(){
-	  linear_extrude($over){
-	    unf_roundedRectangle(size=[size[0], size[1]], corners=corners);
-	  }
-	  translate([0, 0, middle_height - $over]){
-	    linear_extrude($over){
-	      unf_roundedRectangle(size=[size.x, size.y], corners=corners);
-	    }
-	  }
+	linear_extrude(middle_height){
+	  unf_roundedRectangle(size=[size.x, size.y], corners=corners);
 	}
       }
     }
 
     // Do Top
     if (0 < top_height){
-      translate([0, 0, bottom_height + middle_height]){
+      translate([0, 0, bottom_height + middle_height - $over]){
 	for(i = [1:len(top_calcs)-1]) {
 	  let(top = top_calcs[i],
 	      bottom = top_calcs[(i-1)]){
 	    if (0 < top[2] && 0 < top[3]){
 	      hull(){
-		translate([max($over, bottom[0]), max($over, bottom[1]), max($over, bottom[4])]){
+		translate([bottom[0], bottom[1], bottom[4]]){
 		  linear_extrude($over){
 		    unf_roundedRectangle(size=[bottom[2], bottom[3]], corners=corners);
 		  }
 		}
-		translate([top[0], top[1], top[4]-$over]){
+		translate([top[0], top[1], top[4]]){
 		  linear_extrude($over){
 		    unf_roundedRectangle(size=[top[2], top[3]], corners=corners);
 		  }
