@@ -322,3 +322,24 @@ if ("bezier_wedge_3d" == test_shape){
   unf_bezierWedge3d(size=bez3d_size, rounded_edges=bez3d_rounded_edges);
 }
 
+module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
+  difference(){
+    unf_roundedCuboid([tab_length+(4*wall), tab_length, tab_height], edge_r=[wall, wall, 0, wall, 0, 0, 0, 0], corners=[wall, wall, 0, 0]);
+    translate([(tab_length/2)+(2*wall), tab_length/2, -$over]){
+      cylinder(d=bolt_d, h=tab_height+(2*$over));
+      translate([0, 0, wall+(2*$over)]){
+	unf_wsh(size=washer_v, ext=$over);
+      }
+    }
+  }
+  translate([wall, tab_length, tab_height]){
+    rotate([0, 0, -90]){
+      unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
+      for(y=[0, tab_length+wall]){
+	translate([0, y, 0]){
+	  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
+	}
+      }
+    }
+  }
+}
