@@ -18,6 +18,9 @@
 //
 
 use <unfy_fasteners.scad>
+//use <unfy_shapes.scad>
+
+//part="CableClip"; //["CableClip", "CableClamp"]
 
 cable_d = 7.5;
 gap = 3;
@@ -159,7 +162,6 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 	}
       }
     }
-  
 }
 
 module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, center=true){
@@ -206,23 +208,91 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
   }
 }
 
+/*module unf_cableClamp_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, tooth_count=4, wall=1.5, support="none", support_skin=0.6, body_color=false, support_color=false, center=true){
+  let(){
 
-unf_cableClip(location=[0, 0, wall],
-	      cable_d = cable_d,
-	      gap = gap,		 
-	      bolt = bolt,		 
-	      hole_ext = hole_ext,
-	      tooth_length = tooth_length,
-	      tooth_count = tooth_count,
-	      wall = wall,
-	      support = support,
-	      support_skin = support_skin,
-	      center = center,
-              body_color = body_color,
-	      support_color = support_color){
-  translate(center ? [-10, -7.5, 0] : [-5, -3.75, 0])
-    color(support_color){
-       cube([30, 15, wall]);
   }
 }
 
+module unf_cableClamp_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3){
+  translate([0, 0, -hole_ext]){
+    cylinder(d=cable_d, h=wall+hole_ext+$over);
+  }
+}
+
+module unf_cableClamp_Dims(cable_d=7.5, bolt="M3", wall=1.4){
+  
+}
+
+module unf_cableClamp(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap=3, hole_ext=3, tooth_length=0.5, tooth_count=4, support="none", support_skin=0.6, wall=1.4, body_color=false, support_color=false, center=true){
+  difference(){
+    children();
+    translate(location){
+      rotate(rotation){
+	unf_cableClamp_Negative(cable_d = cable_d,
+			       bolt = bolt,
+			       wall = wall,
+			       hole_ext=hole_ext);
+      }
+    }
+  }
+  translate(location){
+    rotate(rotation){
+     unf_cableClamp_Positive(cable_d = cable_d,
+			     gap = gap,
+			     bolt = bolt,
+			     tooth_length = tooth_length,
+			     tooth_count = tooth_count,
+			     wall = wall,
+			     support = support,
+			     support_skin = support_skin,
+			     body_color = body_color,
+			     support_color = support_color,
+			     center = center);
+    }
+  }  
+}
+*/
+
+//if (part == "CableClip"){
+  unf_cableClip(location=[0, 0, wall],
+		cable_d = cable_d,
+		gap = gap,		 
+		bolt = bolt,		 
+		hole_ext = hole_ext,
+		tooth_length = tooth_length,
+		tooth_count = tooth_count,
+		wall = wall,
+		support = support,
+		support_skin = support_skin,
+		center = center,
+		body_color = body_color,
+		support_color = support_color){
+    translate(center ? [-10, -7.5, 0] : [-5, -3.75, 0])
+      color(support_color){
+      cube([30, 15, wall]);
+    }
+  }
+// }
+
+/*if (part == "CableClamp"){
+  unf_cableClamp(location=[0, 0, wall],
+		 cable_d = cable_d,
+		 gap = gap,		 
+		 bolt = bolt,		 
+		 hole_ext = hole_ext,
+		 tooth_length = tooth_length,
+		 tooth_count = tooth_count,
+		 wall = wall,
+		 support = support,
+		 support_skin = support_skin,
+		 center = center,
+		 body_color = body_color,
+		 support_color = support_color){
+    translate(center ? [-10, -7.5, 0] : [-5, -3.75, 0])
+      color(support_color){
+      cube([30, 15, wall]);
+    }
+  }
+ }
+*/
