@@ -20,7 +20,7 @@
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
 
-test_shape="round_cube"; //["round_cube", "round_rectangle", "bezier_wedge_2d", "bezier_wedge_3d"]
+test_shape="round_cube"; //["round_cube", "round_rectangle", "oval", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
 
 $fn = $preview ? 36 : 360;
 $over = 0.1;
@@ -34,14 +34,29 @@ cube_edge_r=[1, 2, 1, 2, 1, 2, 1, 2];
 rectangle_size=[50, 25];
 rectangle_corners=[0, 1, 2, 3];
 
+/* [ Oval ] */
+oval_xdiameter = 20;
+oval_ydiameter = 10;
+
 /* [ Bezier Wedge 2d] */
 bez2d_size=[5, 15];
 bez2d_use_custom_v = false;
 bez2d_custom_v = [1.25, 3.75];
 
-/* [ Bezier Wedge 3d] */
+/* [ Bezier Wedge 3d ] */
 bez3d_size=[5, 15, 15];
 bez3d_rounded_edges = [1, 2];
+
+/* [ Bezier Frustrum ] */
+bezfr_base_dx = 8; //[1:10]
+bezfr_base_dy = 6; //[1:10]
+bezfr_base_edge_r = 0; //[0:0.01:4]
+bezfr_end_dx = 3; //[1:10]
+bezfr_end_dy = 5; //[1:10]
+bezfr_end_edge_r = 0; //[0:0.01:4]
+bezfr_control_height_pct = 50; //[0:100]
+bezfr_control_pinch_pct = 50; //[0:200]
+bezfr_length = 15; //[1:30]
 
 /*
   Creates a 2d rectangle with rounded corners
@@ -209,6 +224,19 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 }
 
 /*
+  Draw an oval by size
+*/
+module unf_oval(size = [8, 4]){
+	if (size.x == size.y){
+		circle(d=size.x);
+	} else {
+		resize(size){
+			circle(1);
+		}
+	}
+}
+
+/*
   Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather than a straight line
   Good for building up inside-corners for a more rounded look or added strength
   size = a 2d vector [x, y] or a single number to be used for both, same as [x, x]
@@ -304,6 +332,67 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
   }
 }
 
+module unf_bezier_frustrum(
+	base_d = 0,
+	base_dx = 80,
+	base_dy = 60,
+	base_edge_r = 0,
+	end_d = 0,
+	end_dx = 20,
+	end_dy = 40,
+	end_edge_r = 0,
+	control_height_pct = 50,
+	control_pinch_pct = 50,
+	length = 300,
+) {
+	let (
+		base_dx = 0 < base_d ? base_d : base_dx,
+		base_dy = 0 < base_d ? base_d : base_dy,
+		end_dx = 0 < end_d ? end_d : end_dx,
+		end_dy = 0 < end_d ? end_d : end_dy,
+		base_edge_r = min(base_edge_r, (base_dx/2), (base_dy/2), (length/2)),
+		end_edge_r = min(end_edge_r, (end_dx/2), (end_dy/2), (length/2)),
+	){
+		assert(0 < base_dx, "Either base_d or base_dx must be greater than zero");
+		assert(0 < base_dy, "Either base_d or base_dy must be greater than zero");
+		assert(0 <= base_edge_r, "Base_edge_r must not be below zero");
+		assert(0 < end_dx, "Either end_d or end_dx must be greater than zero");
+		assert(0 < end_dy, "Either end_d or end_dy must be greater than zero");
+		assert(0 <= end_edge_r, "End_edge_r must not be below zero");
+		assert(0 < length, "Length must be greater than zero");
+
+		control_z = length * control_height_pct / 100;
+		control_x = (base_dx + ((end_dx-base_dx)*control_height_pct/100)) * control_pinch_pct / 100;
+		control_y = (base_dy + ((end_dy-base_dy)*control_height_pct/100)) * control_pinch_pct / 100;
+		bez_x = unfy_bezier([[base_dx, 0], [control_x, control_z], [end_dx, length]]);
+		bez_y = unfy_bezier([[0, base_dy], [control_z, control_y], [length, end_dy]]);
+
+		for (i = [0: len(bez_x)-2]){
+			x1 = bez_x[i][0];
+			z1 = bez_x[i][1];
+			y1 = lookup(z1, bez_y);
+			x2 = bez_x[i+1][0];
+			z2 = bez_x[i+1][1]-$over;
+			y2 = lookup(z2, bez_y);
+			lip = (z1 < base_edge_r) ? (base_edge_r-(sqrt(pow(base_edge_r, 2)-pow(base_edge_r-z1, 2)))) : (
+				(z2 > (length - end_edge_r) ? (end_edge_r-sqrt(pow(end_edge_r,2)-pow((z2-(length-end_edge_r)),2))) : (
+					0)));;
+			hull(){
+				translate([0, 0, z1]){
+					linear_extrude($over){
+						unf_oval([x1-lip, y1-lip]);
+					}
+				}
+				translate([0, 0, z2]){
+					linear_extrude($over){
+						unf_oval([x2-lip, y2-lip]);
+					}
+				}
+			}
+		}
+	}
+}
+
 if ("round_cube" == test_shape){
   unf_roundedCuboid(size=cube_size, corners=cube_corners, edge_r=cube_edge_r);
 }
@@ -311,6 +400,10 @@ if ("round_cube" == test_shape){
 if ("round_rectangle" == test_shape){
   unf_roundedRectangle(size=rectangle_size, corners=rectangle_corners);
 }
+
+if ("oval" == test_shape){
+	unf_oval([oval_xdiameter, oval_ydiameter]);
+ }
 
 if ("bezier_wedge_2d" == test_shape){
   let (v = bez2d_use_custom_v ? bez2d_custom_v : [bez2d_size.x/4, bez2d_size.y/4]){
@@ -321,6 +414,20 @@ if ("bezier_wedge_2d" == test_shape){
 if ("bezier_wedge_3d" == test_shape){
   unf_bezierWedge3d(size=bez3d_size, rounded_edges=bez3d_rounded_edges);
 }
+
+if ("bezier_frustrum" == test_shape){
+	unf_bezier_frustrum(
+		base_dx = bezfr_base_dx,
+		base_dy = bezfr_base_dy,
+		base_edge_r = bezfr_base_edge_r,
+		end_dx = bezfr_end_dx,
+		end_dy = bezfr_end_dy,
+		end_edge_r = bezfr_end_edge_r,
+		length = bezfr_length,
+		control_height_pct = bezfr_control_height_pct,
+		control_pinch_pct = bezfr_control_pinch_pct,
+	);
+ }
 
 module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
   difference(){

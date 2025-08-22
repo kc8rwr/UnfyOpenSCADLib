@@ -87,7 +87,7 @@ function unfy_bound_size2(v) =
       mny = min([for(i=v)i.y]),
       mxy = max([for(i=v)i.y])
     )
-  [mxx - mnx, mxy, mny];
+	[mxx - mnx, mxy - mny];
 
 //take a vector of control points, return a vector of points on the curve
 function unfy_bezier(v) =
