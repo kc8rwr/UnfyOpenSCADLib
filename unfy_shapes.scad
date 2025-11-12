@@ -110,7 +110,7 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
   corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
            or a single number to make all corners the same
-  rounded_edges: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
+  edge_r: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
            or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
 	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
            or a single number to make all edges the same
