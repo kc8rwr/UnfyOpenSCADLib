@@ -1269,7 +1269,7 @@ module distortion_test_block(
 
 module unf_hst_test_block(size="M3"){
   height = unf_hst_length(size, "large") + 0.2*unf_fnr_shaft_diameter(size)+2;
-  spacing = unf_fnr_diammeter(size) + 4;
+  spacing = unf_fnr_diameter(size) + 4;
   length = 4 + (3*spacing) + unf_fnr_diameter(size);
   width = unf_fnr_diameter(size) + 5;
 
