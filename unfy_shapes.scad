@@ -440,13 +440,13 @@ module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
     }
   }
   translate([wall, tab_length, tab_height]){
-    rotate([0, 0, -90]){
-      unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
-      for(y=[0, tab_length+wall]){
-	translate([0, y, 0]){
-	  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
-	}
-      }
-    }
+	  rotate([0, 0, -90]){
+		  unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
+		  for(y=[0, tab_length+wall]){
+			  translate([0, y, 0]){
+				  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
+			  }
+		  }
+	  }
   }
 }
