@@ -111,6 +111,11 @@ function unfy_bezier(v) =
 
 function unf_cartesian_from_polar(r=1, theta=90) = let (theta=unf_normalize_angle(theta)) [r*cos(theta), r*sin(theta)];
 
+// returns the length of a chord given it's distance from the vertex and the radius
+function unf_chord_distance(r=1, d=0.5) = 2 * sqrt(pow(r, 2) - pow(d, 2));
+
+//returns the length of a chord given the angle the chord forms with the vertex and the radius
+function unf_chord_angle(r=1, a=45) = 2*r*sin(a/2);
 
 // ******************************* Demo Stuff
 
