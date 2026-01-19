@@ -102,19 +102,19 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 /************************ Distorted Shafts ***********************************/
 
 module unf_shaft(diameter=3, length=10, distorted=false){
-  if (distorted || 0 == $unf_hdist_y || 0 == $unf_hdist_x){
-    dist_d =(diameter * $unf_hdist_x) / 100;
-    linear_extrude(length) {
-      hull(){
-	circle(d=diameter);
-	translate([0, ((diameter-dist_d)/2)+((diameter*$unf_hdist_y)/200)]){
-	  circle(d=dist_d);
+	if (distorted){
+		dist_d =(diameter * $unf_hdist_x) / 100;
+		linear_extrude(length) {
+			hull(){
+				circle(d=diameter);
+				translate([0, ((diameter-dist_d)/2)+((diameter*$unf_hdist_y)/200)]){
+					circle(d=dist_d);
+				}
+			}
+		}
+	} else { // !distorted
+		cylinder(d=diameter, h=length);
 	}
-      }
-    }
-  } else { // !distorted
-    cylinder(d=diameter, h=length);
-  }
 }
 
 
@@ -1269,7 +1269,7 @@ module distortion_test_block(
 
 module unf_hst_test_block(size="M3"){
   height = unf_hst_length(size, "large") + 0.2*unf_fnr_shaft_diameter(size)+2;
-  spacing = unf_fnr_diammeter(size) + 4;
+  spacing = unf_fnr_diameter(size) + 4;
   length = 4 + (3*spacing) + unf_fnr_diameter(size);
   width = unf_fnr_diameter(size) + 5;
 

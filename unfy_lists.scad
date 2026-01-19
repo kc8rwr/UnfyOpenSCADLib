@@ -125,7 +125,7 @@ function unf_matrix_sort(arr, sort_col_num) = !(len(arr)>0) ? [] : let(
 
 // Adapted from Mastering OpenSCAD https://mastering-openscad.eu/buch/introduction/
 module unf_enbox(size=10000, extend_to_y=true, margin=0){
-  module 1d(width=true){
+  module one_d(width=true){
     hull(){
       projection(){
 	rotate(width ? [0, 90, 0] : [-90, 0, 0]){
@@ -137,7 +137,7 @@ module unf_enbox(size=10000, extend_to_y=true, margin=0){
   translate([margin, margin]){
     offset(delta=margin){
       intersection(){
-	1d(true){
+	one_d(true){
 	  children([0:$children-1]);
 	}
 	union(){
@@ -145,7 +145,7 @@ module unf_enbox(size=10000, extend_to_y=true, margin=0){
 	    if (extend_to_y){ //ensure box goes to y axis b/c text has padding
 	      square([0.001, size]);
 	    }
-	    1d(false){
+	    one_d(false){
 	      children([0:$children-1]);
 	    }
 	  }

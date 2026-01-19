@@ -110,7 +110,7 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
   corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
            or a single number to make all corners the same
-  rounded_edges: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
+  edge_r: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
            or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
 	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
            or a single number to make all edges the same
@@ -440,13 +440,13 @@ module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
     }
   }
   translate([wall, tab_length, tab_height]){
-    rotate([0, 0, -90]){
-      unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
-      for(y=[0, tab_length+wall]){
-	translate([0, y, 0]){
-	  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
-	}
-      }
-    }
+	  rotate([0, 0, -90]){
+		  unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
+		  for(y=[0, tab_length+wall]){
+			  translate([0, y, 0]){
+				  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
+			  }
+		  }
+	  }
   }
 }
