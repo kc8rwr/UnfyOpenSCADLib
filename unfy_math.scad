@@ -1,3 +1,14 @@
+/**
+ * @file   unfy_math.scad
+ * @author  Leif Burrow <kc8rwr@unfy.us>
+ * @date   %a %b %d %H:%M:%S
+ * 
+ * @brief  Math functions for UnfyOpenSCADLib
+ * 
+ * /copyright {© 2023-%Y Leif Burrow unforgettability.net}
+ */
+
+
 //
 // UnfyOpenSCADLib Copyright Leif Burrow 2025
 // kc8rwr@unfy.us
