@@ -38,7 +38,7 @@ jobs:
             mkdir -p "$outdir"
 
             echo "Generating docs for $scad"
-            openscad-docsgen "$scad" --output "$outdir"
+            openscad-docsgen "$scad" -D "$outdir"
           done
 
       - name: Add index page
