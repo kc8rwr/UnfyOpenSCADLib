@@ -1,10 +1,11 @@
-name: Generate OpenSCAD Docs (GitHub Pages)
+name: Generate OpenSCAD Docs (Markdown → Pages)
 
 on:
   push:
     branches: [ main ]
     paths:
       - "**/*.scad"
+      - ".github/workflows/**"
 
 permissions:
   contents: write
@@ -17,38 +18,39 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y openscad python3 python3-pip
-
-      - name: Install openscad-docsgen
-        run: |
           pip3 install openscad-docsgen
 
-      - name: Generate documentation (per file)
+      - name: Generate Markdown docs
         run: |
           set -e
           mkdir -p public
 
-          # Find all .scad files recursively
-          find . -name '*.scad' -type f | while read scad; do
-            # Preserve directory structure under public/
-            outdir="public/$(dirname "$scad")"
-            mkdir -p "$outdir"
+          find . -type f -name '*.scad' \
+            ! -path './.git/*' \
+            ! -path './public/*' \
+            | while read -r scad; do
 
-            echo "Generating docs for $scad"
-            openscad-docsgen "$scad" -D "$outdir"
-          done
+              outdir="public/$(dirname "$scad")"
+              mkdir -p "$outdir"
 
-      - name: Add index page
+              echo "Generating docs for $scad"
+              openscad-docsgen -D "$outdir" "$scad"
+            done
+
+      - name: Generate index
         run: |
           echo "# OpenSCAD Documentation" > public/index.md
           echo "" >> public/index.md
 
-          find public -name '*.html' | sed 's|^public/||' | while read f; do
-            echo "- [${f}](${f})" >> public/index.md
-          done
+          find public -name '*.md' ! -name index.md \
+            | sed 's|^public/||' \
+            | while read f; do
+                echo "- [${f}](${f})" >> public/index.md
+              done
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
