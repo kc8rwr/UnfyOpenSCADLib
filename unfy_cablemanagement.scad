@@ -213,7 +213,9 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 //   $over = 0.01;
 //   $fn = 36;
 //   use <unfy_cablemanagement.scad>;
-//   unf_cableClip_Negative();
+//   color("yellow"){
+//      unf_cableClip_Negative();
+//   }
 module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, center=true){
   nut_v = unf_nut_v(bolt);
 
