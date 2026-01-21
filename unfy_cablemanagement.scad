@@ -1,20 +1,20 @@
-//
-// UnfyOpenSCADLib Copyright Leif Burrow 2026
-// kc8rwr@unfy.us
-// unforgettability.net
-//
-// This file is part of UnfyOpenSCADLib.
-//
-// UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-// GNU General Public License as published by the Free Software Foundation, either version 3 of
-// the License, or (at your option) any later version.
-//
-// UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-// If not, see <https://www.gnu.org/licenses/>.
+// LibFile: unfy_fasteners.scad
+//   UnfyOpenSCADLib Copyright Leif Burrow 2026
+//   kc8rwr@unfy.us
+//   unforgettability.net
+//    
+//   This file is part of UnfyOpenSCADLib.
+//    
+//   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
+//   GNU General Public License as published by the Free Software Foundation, either version 3 of
+//   the License, or (at your option) any later version.
+//   
+//   UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//   without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//   See the GNU General Public License for more details.
+//   
+//   You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
+//   If not, see <https://www.gnu.org/licenses/>.
 //
 
 use <unfy_fasteners.scad>
@@ -51,7 +51,30 @@ edge_r = 2;
 
 $fn = $preview ? 36 : 360;
 
-module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, tooth_count=4, wall=1.5, support="none", support_skin=0.6, body_color=false, support_color=false, center=true){
+// Module: unf_cableClip_positive
+// Usage:
+//   unf_cableClip_positive(&lt;args&gt;);
+// Description:
+//   Just the positive part of a cable clip.
+// Arguments:
+//   ---
+//   cable_d = cable diameter (7.5)
+//   gap = width of the gap in the circle, which gets pinched shut to squeeze the cable (3)
+//   bolt = bolt size for closing the clip (M3)
+//   tooth_length = optional teeth to grip the cable, this is how far they stick inward (0.5)
+//   tooth_count = how many teeth (4)
+//   wall = minimum thickness of parts (1.4)
+//   support = Optional support for printing, may be vertical, horizontal or none (none)
+//   support_skin = thickness of support skin, if generating supports, probably good to use the minimum your slicer will include (0.6)
+//   body_color = color of the generated part or false for default (blue)
+//   support_color = color of generated supports or false for default (yellow)
+//   center = center the part (true)
+// Figure:
+//   $over = 0.01;
+//   $fn = 36;
+//   use <unfy_cablemanagement.scad>;
+//   unf_cableClip_Positive();
+module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, tooth_count=4, wall=1.5, support="none", support_skin=0.6, body_color="blue", support_color="yellow", center=true){
   washer_v = unf_wsh_v(bolt);
   nut_v = unf_nut_v(bolt);
 
@@ -173,6 +196,24 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
     }
 }
 
+// Module: unf_cableClip_Negative
+// Usage:
+//   unf_cableClip_Negative(&lt;args&gt;);
+// Description:
+//   Just the negative part of a cable clip. Really, this is just a cylinder to extend the cable hole into the object the clip attaches to.
+//   What is useful here is that if rendered in the same location as the positive part it will locate the hole in the corect place.
+// Arguments:
+//   ---
+//   cable_d = cable diameter (7.5)
+//   bolt = bolt size for closing the clip (M3)
+//   wall = minimum thickness of parts (1.4)
+//   hole_ext = how far to extend the cable hole in (3)
+//   center = center the part (true)
+// Figure:
+//   $over = 0.01;
+//   $fn = 36;
+//   use <unfy_cablemanagement.scad>;
+//   unf_cableClip_Negative();
 module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, center=true){
   nut_v = unf_nut_v(bolt);
 
@@ -187,7 +228,42 @@ module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, cent
   }
 }
 
-module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap=3, hole_ext=3, tooth_length=0.5, tooth_count=4, support="none", support_skin=0.6, wall=1.4, body_color=false, support_color=false, center=true){
+// Module: unf_cableClip
+// Usage:
+//   unf_cableClip(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
+// Description:
+//   Operator module that uses unf_cableClip_Positive() and unf_cableClip_Negative() to place a cable clip on and a cable hole through the child object(s).
+// Arguments:
+//   ---
+//   location = where to place the clip relative to the child/childrens' origin. ([0, 0, 0])
+//   rotation = how to orientate the clip releative to the child/childen objects (0)
+//   cable_d = cable diameter (7.5)
+//   bolt = bolt size for closing the clip (M3)
+//   gap = width of the gap in the circle, which gets pinched shut to squeeze the cable (3)
+//   hole_ext = how far to extend the cable hole into the child/children (3)
+//   tooth_length = optional teeth to grip the cable, this is how far they stick inward (0.5)
+//   tooth_count = how many teeth (4)
+//   support = optional support for printing, may be vertical, horizontal or none (none)
+//   support_skin = thickness of support skin, if generating supports, probably good to use the minimum your slicer will include (0.6)
+//   wall = minimum thickness of parts (1.4)
+//   body_color = color of the generated part or false for default (blue)
+//   support_color = color of generated supports or false for default (yellow)
+//   center = center the part (true)
+// Figure:
+//   $over = 0.01;
+//   $fn = 36;
+//   wall = 1.5;
+//   use <unfy_cablemanagement.scad>;
+//   rotate([40, 0, 0]){
+//      unf_cableClip(location=[0, 0, wall]){
+//         translate([-10, -7.5, 0]){
+//            color("yellow"){
+//               cube([30, 15, wall]);
+//            }
+//         }
+//      }
+//   }
+module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap=3, hole_ext=3, tooth_length=0.5, tooth_count=4, support="none", support_skin=0.6, wall=1.4, body_color="blue", support_color="yellow", center=true){
   difference(){
     children();
     translate(location){
@@ -234,23 +310,49 @@ if (part == "CableClip"){
 		support_color = support_color){
     translate(center ? [-10, -7.5, 0] : [-5, -3.75, 0])
       color(support_color){
-      cube([30, 15, wall]);
+		 cube([30, 15, wall]);
     }
   }
 }
 
+// Module: unf_clipInStrainRelief
+// Usage:
+//   unf_clipInStrainRelief(&lt;args&gt;);
+// Description:
+//   does something
+// Arguments:
+//   ---
+//   cable_d = cable diameter (7.5)
+//   num_conductors = d
+//   inside_diameter = d
+//   inside_length = d
+//   waste_diameter = d
+//   waste_length = d
+//   outside_length = d
+//   outside_diameter = d
+//   wall = d
+//   body_color = color of the generated part or false for default (blue)
+//   support_skin = d
+//   support_color = color of generated supports or false for default (yellow)
+//   edge_r = d
+// Figure: Without support skin
+//   $over = 0.01;
+//   $fn = 36;
+//   wall = 1.5;
+//   use <unfy_cablemanagement.scad>;
+//   unf_clipInStrainRelief(support_skin=0);
 module unf_clipInStrainRelief(
 	cable_d = 2,
 	num_conductors = 2,
-	inside_diameter = 12,
+	inside_diameter = 10,
 	inside_length = 2.5,
-	waste_diameter = 8,
-	waste_length = 5,
+	waste_diameter = 6,
+	waste_length = 3,
 	outside_length = 5,
-	outside_diameter = 8,
+	outside_diameter = 9,
 	wall = 1.5,
 	body_color = "Blue",
-	support_skin = 0.9,
+	support_skin = 0.6,
 	support_color = "Yellow",
 	edge_r = 2,
 ){
