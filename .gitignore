@@ -1,2 +1,4 @@
+docs/
 STLs/
 *.stl
+docsgen_report.json

@@ -1,0 +1,57 @@
+name: Generate OpenSCAD Docs (GitHub Pages)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "**/*.scad"
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openscad python3 python3-pip
+
+      - name: Install openscad-docsgen
+        run: |
+          pip3 install openscad-docsgen
+
+      - name: Generate documentation (per file)
+        run: |
+          set -e
+          mkdir -p public
+
+          # Find all .scad files recursively
+          find . -name '*.scad' -type f | while read scad; do
+            # Preserve directory structure under public/
+            outdir="public/$(dirname "$scad")"
+            mkdir -p "$outdir"
+
+            echo "Generating docs for $scad"
+            openscad-docsgen "$scad" --output "$outdir"
+          done
+
+      - name: Add index page
+        run: |
+          echo "# OpenSCAD Documentation" > public/index.md
+          echo "" >> public/index.md
+
+          find public -name '*.html' | sed 's|^public/||' | while read f; do
+            echo "- [${f}](${f})" >> public/index.md
+          done
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
