@@ -39,6 +39,12 @@ jobs:
 
               echo "Generating docs for $scad"
               openscad-docsgen -D "$outdir" "$scad"
+
+              # openscad-docsgen creates an extra "docs/" directory — flatten it
+              if [ -d "$outdir/docs" ]; then
+                mv "$outdir/docs"/*.md "$outdir/"
+                rmdir "$outdir/docs"
+              fi
             done
 
       - name: Generate index
@@ -48,6 +54,7 @@ jobs:
 
           find public -name '*.md' ! -name index.md \
             | sed 's|^public/||' \
+            | sort \
             | while read f; do
                 echo "- [${f}](${f})" >> public/index.md
               done
