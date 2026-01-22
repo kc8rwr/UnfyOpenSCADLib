@@ -28,7 +28,9 @@ jobs:
         run: |
            wget -q https://files.openscad.org/snapshots/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
            chmod +x OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
-           xvfb-run -a -s "-screen 0 1024x768x24" ./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage --version
+           sudo ln -sf "$PWD/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage" /usr/local/bin/openscad
+           echo $PATH
+           openscad --version
 
       - name: Generate Markdown docs
         run: |
@@ -44,7 +46,6 @@ jobs:
               mkdir -p "$outdir"
 
               echo "Generating docs for $scad"
-              export OPENSCAD_EXECUTABLE=./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
               xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -fmD "$outdir" "$scad"
 
               # openscad-docsgen creates an extra "docs/" directory — flatten it
