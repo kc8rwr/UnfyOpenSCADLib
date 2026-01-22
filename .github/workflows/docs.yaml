@@ -28,7 +28,7 @@ jobs:
         run: |
            wget -q https://files.openscad.org/snapshots/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
            chmod +x OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
-           ./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage --version
+           xvfb-run -a -s "-screen 0 1024x768x24" ./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage --version
 
       - name: Generate Markdown docs
         run: |
