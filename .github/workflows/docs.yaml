@@ -21,7 +21,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openscad python3 python3-pip xvfb
+          sudo snap install openscad-nightly --classic
+          # Snap installs the binary as /snap/bin/openscad-nightly
+          sudo ln -sf /snap/bin/openscad-nightly /usr/local/bin/openscad
+          sudo apt-get install -y python3 python3-pip xvfb
           pip3 install openscad-docsgen
     
       - name: Generate Markdown docs
