@@ -1,4 +1,4 @@
-# LibFile: unfy\_fasteners.scad
+# LibFile: unfy\_cablemanagement.scad
 
 UnfyOpenSCADLib Copyright Leif Burrow 2026
 kc8rwr@unfy.us
@@ -68,7 +68,7 @@ Just the positive part of a cable clip.
 **Description:** 
 
 Just the negative part of a cable clip. Really, this is just a cylinder to extend the cable hole into the object the clip attaches to.
-What is useful here is that if rendered in the same location as the positive part it will locate the hole in the corect place.
+What is useful here is that if rendered in the same location as the positive part it will locate the hole in the correct place.
 
 **Arguments:** 
 
