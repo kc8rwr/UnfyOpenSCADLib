@@ -67,12 +67,14 @@ jobs:
                 echo "- [${f}](${f})" >> public/index.md
               done
 
+      - name: Remove .nojekyll
+        run: |
+         rm -f .nojekyll
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
 
-      - name: Remove .nojekyll
-        run: |
-         rm -f .nojekyll
+
