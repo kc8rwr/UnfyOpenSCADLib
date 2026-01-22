@@ -29,6 +29,14 @@ jobs:
          echo "Scanning for .scad files..."
          find . -type f -name '*.scad' ! -path './.git/*' ! -path './public/*' | sort
 
+      - name: Debug docsgen
+        run: |
+           mkdir -p testdocs
+           openscad-docsgen -D testdocs ./unfy_brackets.scad
+           echo "Contents of testdocs:"
+           ls -R testdocs
+
+
       - name: Generate Markdown docs
         run: |
           set -e
