@@ -23,11 +23,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip xvfb
           pip3 install openscad-docsgen
+          
       - name: Download OpenSCAD AppImage
         run: |
            wget -q https://files.openscad.org/snapshots/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
            chmod +x OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
-           ./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
+           ./OpenSCAD-2025.05.02.ai25232-x86_64.AppImage --version
 
       - name: Generate Markdown docs
         run: |
