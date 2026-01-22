@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3 python3-pip xvfb
+          sudo apt-get install -y python3 python3-pip xvfb libegl1 libgl1 libglx-mesa0 libglu1-mesa
           pip3 install openscad-docsgen
           
       - name: Download OpenSCAD AppImage
