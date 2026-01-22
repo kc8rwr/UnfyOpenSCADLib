@@ -32,7 +32,7 @@ jobs:
       - name: Debug docsgen
         run: |
            mkdir -p testdocs
-           openscad-docsgen -fmD testdocs ./unfy_brackets.scad
+           openscad-docsgen -mD testdocs ./unfy_brackets.scad
            echo "Contents of testdocs:"
            ls -R testdocs
 
@@ -51,7 +51,7 @@ jobs:
               mkdir -p "$outdir"
 
               echo "Generating docs for $scad"
-              openscad-docsgen -fmD "$outdir" "$scad"
+              openscad-docsgen -mD "$outdir" "$scad"
 
               # openscad-docsgen creates an extra "docs/" directory — flatten it
               if [ -d "$outdir/docs" ]; then
