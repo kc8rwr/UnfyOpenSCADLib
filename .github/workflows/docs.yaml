@@ -21,12 +21,14 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo snap install openscad-nightly --classic
-          # Snap installs the binary as /snap/bin/openscad-nightly
-          sudo ln -sf /snap/bin/openscad-nightly /usr/local/bin/openscad
           sudo apt-get install -y python3 python3-pip xvfb
           pip3 install openscad-docsgen
-    
+      - name: Download OpenSCAD AppImage
+        run: |
+           wget https://files.openscad.org/nightly/openscad-latest.AppImage
+           chmod +x openscad-latest.AppImage
+           ./openscad-latest.AppImage --version
+
       - name: Generate Markdown docs
         run: |
           set -e
@@ -41,6 +43,7 @@ jobs:
               mkdir -p "$outdir"
 
               echo "Generating docs for $scad"
+              export OPENSCAD_EXECUTABLE=./openscad-latest.AppImage
               xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -fmD "$outdir" "$scad"
 
               # openscad-docsgen creates an extra "docs/" directory — flatten it
