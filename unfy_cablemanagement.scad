@@ -1,4 +1,4 @@
-// LibFile: unfy_fasteners.scad
+// LibFile: unfy_cablemanagement.scad
 //   UnfyOpenSCADLib Copyright Leif Burrow 2026
 //   kc8rwr@unfy.us
 //   unforgettability.net
@@ -201,7 +201,7 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 //   unf_cableClip_Negative(&lt;args&gt;);
 // Description:
 //   Just the negative part of a cable clip. Really, this is just a cylinder to extend the cable hole into the object the clip attaches to.
-//   What is useful here is that if rendered in the same location as the positive part it will locate the hole in the corect place.
+//   What is useful here is that if rendered in the same location as the positive part it will locate the hole in the correct place.
 // Arguments:
 //   ---
 //   cable_d = cable diameter (7.5)
