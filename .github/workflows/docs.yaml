@@ -23,14 +23,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openscad python3 python3-pip
           pip3 install openscad-docsgen
-      
-      -name: List .scad files
+    
+      - name: List .scad files
         run: |
-    `````echo "Scanning for .scad files..."
-    `````find . -type f -name '*.scad' \
-      `````! -path './.git/*' \
-      `````! -path './public/*' \
-      `````| sort
+         echo "Scanning for .scad files..."
+         find . -type f -name '*.scad' ! -path './.git/*' ! -path './public/*' | sort
 
       - name: Generate Markdown docs
         run: |
