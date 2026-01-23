@@ -372,7 +372,7 @@ module unf_clipInStrainRelief(
 				end_edge_r = edge_r,
 				end_dx = outside_x,
 				end_dy = outside_y,
-				length = outside_length,
+				length = outside_length
 			);
 		}
 	}
@@ -427,7 +427,7 @@ if (part == "ClipInStrainRelief"){
 		body_color = body_color,
 		support_skin = support_skin,
 		support_color = support_color,
-		edge_r = edge_r,
+		edge_r = edge_r
 	);
  }
 

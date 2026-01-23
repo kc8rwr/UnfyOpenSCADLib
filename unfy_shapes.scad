@@ -351,7 +351,7 @@ module unf_bezier_frustrum(
 		end_dx = 0 < end_d ? end_d : end_dx,
 		end_dy = 0 < end_d ? end_d : end_dy,
 		base_edge_r = min(base_edge_r, (base_dx/2), (base_dy/2), (length/2)),
-		end_edge_r = min(end_edge_r, (end_dx/2), (end_dy/2), (length/2)),
+		end_edge_r = min(end_edge_r, (end_dx/2), (end_dy/2), (length/2))
 	){
 		assert(0 < base_dx, "Either base_d or base_dx must be greater than zero");
 		assert(0 < base_dy, "Either base_d or base_dy must be greater than zero");
@@ -425,7 +425,7 @@ if ("bezier_frustrum" == test_shape){
 		end_edge_r = bezfr_end_edge_r,
 		length = bezfr_length,
 		control_height_pct = bezfr_control_height_pct,
-		control_pinch_pct = bezfr_control_pinch_pct,
+		control_pinch_pct = bezfr_control_pinch_pct
 	);
  }
 
