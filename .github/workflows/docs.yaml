@@ -46,7 +46,7 @@ jobs:
               mkdir -p "$outdir"
 
               echo "Generating docs for $scad"
-              xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -fmD "$outdir" "$scad"
+              xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -famD "$outdir" "$scad"
 
               # openscad-docsgen creates an extra "docs/" directory — flatten it
               if [ -d "$outdir/docs" ]; then
