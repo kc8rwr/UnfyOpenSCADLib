@@ -48,7 +48,7 @@ Creates a simple bracket.
 
 **Figure 1.1.1:** 
 
-<img align="left" alt="unf\_simple\_bracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_simple\_bracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.gif" width="320" height="240">
 
 <br clear="all" /><br/>
 
