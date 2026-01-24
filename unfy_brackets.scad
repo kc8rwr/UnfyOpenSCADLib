@@ -51,7 +51,7 @@ $fn = $preview ? 36 : 360;
 //   bottom_bolt_position = horizontal location of the bottom mounting hole, distance from the bend (11)
 //   body_color = color of the bracket or false for default (false)
 //   wall = width of both sides of the bracket (4)
-// Figure:
+// Figure(Spin;VPD=100):
 //   $over = 0.01;
 //   $fn = 36;
 //   use <unfy_brackets.scad>;
