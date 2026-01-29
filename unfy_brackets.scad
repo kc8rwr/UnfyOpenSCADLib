@@ -51,11 +51,16 @@ $fn = $preview ? 36 : 360;
 //   bottom_bolt_position = horizontal location of the bottom mounting hole, distance from the bend (11)
 //   body_color = color of the bracket or false for default (false)
 //   wall = width of both sides of the bracket (4)
-// Figure(Spin;VPD=100):
+// Figure(Spin;VPD=100;NoAxes): defaults
 //   $over = 0.01;
 //   $fn = 36;
 //   use <unfy_brackets.scad>;
 //   unf_simple_bracket();
+// Figure(Spin;VPD=150;NoAxes): bottom_bolt_position=22, bottom_slot_length=15
+//   $over = 0.01;
+//   $fn = 36;
+//   use <unfy_brackets.scad>;
+//   unf_simple_bracket(bottom_bolt_position=22, bottom_slot_length=15);
 module unf_simple_bracket(top_bolt_size = "M4",
 			  top_slot_length = 0,
 			  top_bolt_position = 11,

@@ -69,7 +69,7 @@ $fn = $preview ? 36 : 360;
 //   body_color = color of the generated part or false for default (blue)
 //   support_color = color of generated supports or false for default (yellow)
 //   center = center the part (true)
-// Figure:
+// Figure(Spin;VPD=75;VPT=[0, 0, 5]):
 //   $over = 0.01;
 //   $fn = 36;
 //   use <unfy_cablemanagement.scad>;
@@ -211,7 +211,7 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 //   center = center the part (true)
 // Figure:
 //   $over = 0.01;
-//   $fn = 36;
+//   $fn = 360;
 //   use <unfy_cablemanagement.scad>;
 //   color("yellow"){
 //      unf_cableClip_Negative();
@@ -251,17 +251,15 @@ module unf_cableClip_Negative(cable_d=7.5, bolt="M3", wall=1.5, hole_ext=3, cent
 //   body_color = color of the generated part or false for default (blue)
 //   support_color = color of generated supports or false for default (yellow)
 //   center = center the part (true)
-// Figure:
+// Figure(Spin;VPD=75;VPT=[0, 0, 5]):
 //   $over = 0.01;
 //   $fn = 36;
 //   wall = 1.5;
 //   use <unfy_cablemanagement.scad>;
-//   rotate([40, 0, 0]){
-//      unf_cableClip(location=[0, 0, wall]){
-//         translate([-10, -7.5, 0]){
-//            color("yellow"){
-//               cube([30, 15, wall]);
-//            }
+//   unf_cableClip(location=[0, 0, wall]){
+//      translate([-10, -7.5, 0]){
+//         color("yellow"){
+//            cube([30, 15, wall]);
 //         }
 //      }
 //   }
@@ -337,7 +335,7 @@ if (part == "CableClip"){
 //   support_skin = d
 //   support_color = color of generated supports or false for default (yellow)
 //   edge_r = d
-// Figure: Without support skin
+// Figure(Spin;VPD=50;VPT=[0, 0, 5]):
 //   $over = 0.01;
 //   $fn = 36;
 //   wall = 1.5;
