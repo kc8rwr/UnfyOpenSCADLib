@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openscad gifsicle python3 python3-pip xvfb libegl1 libgl1 libglx-mesa0 libglu1-mesa unifont
+          sudo apt-get install -y mesa-utils mesa-utils-exttra openscad gifsicle python3 python3-pip xvfb libegl1 libgl1 libglx-mesa0 libglu1-mesa unifont
           pip3 install openscad-docsgen
           
 #      - name: Download OpenSCAD AppImage
@@ -46,7 +46,7 @@ jobs:
               mkdir -p "$outdir"
 
               echo "Generating docs for $scad"
-              xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -famD "$outdir" "$scad"
+              LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a -s "-screen 0 1024x768x24" openscad-docsgen -famD "$outdir" "$scad"
 
               # openscad-docsgen creates an extra "docs/" directory — flatten it
               if [ -d "$outdir/docs" ]; then
