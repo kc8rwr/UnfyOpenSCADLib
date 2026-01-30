@@ -46,11 +46,17 @@ Creates a simple bracket.
 `body_color`         | color of the bracket or false for default (false)
 `wall`               | width of both sides of the bracket (4)
 
-**Figure 1.1.1:** 
+**Figure 1.1.1:** defaults
 
 <img align="left" alt="unf\_simple\_bracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
+
+**Figure 1.1.2:** bottom\_bolt\_position=22, bottom\_slot\_length=15
+
+<img align="left" alt="unf\_simple\_bracket Figure 1.1.2" src="images/unfy_brackets/figure_1_1_2.png" width="320" height="240">
+
+<br clear="all" />
 
 ---
 

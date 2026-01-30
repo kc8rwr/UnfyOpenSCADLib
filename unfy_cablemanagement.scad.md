@@ -153,7 +153,7 @@ does something
 `support_color`      | color of generated supports or false for default (yellow)
 `edge_r`             | d
 
-**Figure 1.4.1:** Without support skin
+**Figure 1.4.1:** 
 
 <img align="left" alt="unf\_clipInStrainRelief Figure 1.4.1" src="images/unfy_cablemanagement/figure_1_4_1.png" width="320" height="240">
 
