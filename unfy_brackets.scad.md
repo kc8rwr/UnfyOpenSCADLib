@@ -50,7 +50,7 @@ Creates a simple bracket.
 
 <img align="left" alt="unf\_simple\_bracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.png" width="320" height="240">
 
-<br clear="all" /><br/>
+<br clear="all" />
 
 **Figure 1.1.2:** bottom\_bolt\_position=22, bottom\_slot\_length=15
 
