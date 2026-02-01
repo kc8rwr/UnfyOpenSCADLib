@@ -133,29 +133,35 @@ Operator module that uses unf_cableClip_Positive() and unf_cableClip_Negative() 
 
 **Description:** 
 
-does something
+A cable strain relief that can be closed within a hole between two walls of a chassis.
 
 **Arguments:** 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`cable_d`            | cable diameter (7.5)
-`num_conductors`     | d
-`inside_diameter`    | d
-`inside_length`      | d
-`waste_diameter`     | d
-`waste_length`       | d
-`outside_length`     | d
-`outside_diameter`   | d
-`wall`               | d
+`cable_d`            | cable diameter (2.5)
+`num_conductors`     | number of conductors or separate cables to pass through (2)
+`inside_diameter`    | diameter of non-tapered end that goes inside the chasis (12)
+`inside_length`      | length of non-tapered end that goes inside the chasis (2.5)
+`waste_diameter`     | diameter of narrow part that gets gripped by the chassis (6)
+`waste_length`       | length of the narrow part that gets gripped by the chassis (3)
+`outside_length`     | length of the tapered end that goes outside the chasis (7)
+`outside_diameter`   | diameter of the tapered end that goes outside the chasis (12)
+`wall`               | minimum wall thickness (1.5)
 `body_color`         | color of the generated part or false for default (blue)
-`support_skin`       | d
+`support_skin`       | thickness of support skin to print along the outside edge of the waste for preventing overhang (0.6)
 `support_color`      | color of generated supports or false for default (yellow)
-`edge_r`             | d
+`edge_r`             | radius of rounded edges (2)
 
 **Figure 1.4.1:** 
 
 <img align="left" alt="unf\_clipInStrainRelief Figure 1.4.1" src="images/unfy_cablemanagement/figure_1_4_1.png" width="320" height="240">
+
+<br clear="all" />
+
+**Figure 1.4.2:** 
+
+<img align="left" alt="unf\_clipInStrainRelief Figure 1.4.2" src="images/unfy_cablemanagement/figure_1_4_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
