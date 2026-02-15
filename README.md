@@ -11,6 +11,8 @@ It includes but is not limited to:
 * 3d printer parts
 * Random parts
 
+Click [here](https://kc8rwr.github.io/UnfyOpenSCADLib/) for full documentation.
+
 This consists of several files, divided by topic. It can be imported into your project as a submodule if you are using Git or just downloaded into a folder inside it if not.
 
 Each file should contain functions and modules which may be imported into your project via the USE statement. They should also contain root code such that if you open the file itself in OpenSCAD and enable the customizer window you can select a module or a function to demonstrate and try changing the arguments passed to it via the customizer. For this reason one should only import these into a project using USE, not INCLUDE.
