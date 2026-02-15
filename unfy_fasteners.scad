@@ -205,11 +205,11 @@ module unf_shaft(diameter=3, length=10, distorted=false){
 //   Retrieve a vector representing the dimensions of a cap-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 //   .
 //   The vector will consist of, in order:
-//   0. name
-//   1. bolt_diameter
-//   2. head_diameter
-//   3. head_height
-//   4. default_length
+//   * name
+//   * bolt_diameter
+//   * head_diameter
+//   * head_height
+//   * default_length
 // Arguments:
 //   size = size as a string or the vector itself
 function unf_cap_v(size) = is_list(size) ? size : [
@@ -314,7 +314,7 @@ function unf_cap_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 //   distorted = true/false, should the bolt hole be distorted
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
-// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent. This still works just the same for subtracking.
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
 //   $fn = 36;
 //   $over = 0.1;
 //   $wall=2;
