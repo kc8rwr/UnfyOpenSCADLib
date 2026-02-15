@@ -158,11 +158,11 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 Retrieve a vector representing the dimensions of a cap-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 
 The vector will consist of, in order:
-0. name
-1. bolt_diameter
-2. head_diameter
-3. head_height
-4. default_length
+* name
+* bolt_diameter
+* head_diameter
+* head_height
+* default_length
 
 **Arguments:** 
 
@@ -247,7 +247,7 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 `$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
 `$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
 
-**Figure 1.10.1:** note - the head\_ext area is semi-transparent. This still works just the same for subtracking.
+**Figure 1.10.1:** note - the head\_ext area is semi-transparent.
 
 <img align="left" alt="unf\_cap Figure 1.10.1" src="images/unfy_fasteners/figure_1_10_1.png" width="320" height="240">
 
