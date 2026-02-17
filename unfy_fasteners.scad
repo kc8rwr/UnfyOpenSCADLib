@@ -82,7 +82,7 @@ $fn = $preview ? 36 : 360;
 // Description:
 //   Takes a vector describing a fastener and returns a string representing the fastener type.
 // Arguments:
-//   in - vector describing an unfy_fastener
+//   in = vector describing an unfy_fastener
 function unf_fnr_type(in) = is_list(in) ? in[0] : unf_stToUpper(in);
 					
 // Function: unf_fnr_size
@@ -93,7 +93,7 @@ function unf_fnr_type(in) = is_list(in) ? in[0] : unf_stToUpper(in);
 //   .
 //   Of course this isnt't doing much when it is passed the string. This is done so that a variable may hold the size string which the user requested before it is expanded into the vector and still work in the same code.
 // Arguments:
-//   in - vector describing an unfy_fastener or a string representing the size of one.
+//   in = vector describing an unfy_fastener or a string representing the size of one.
 function unf_fnr_size(in) = is_list(in) ? in[1] : unf_stToUpper(in);
 
 // Function: unf_fnr_diameter
@@ -102,7 +102,7 @@ function unf_fnr_size(in) = is_list(in) ? in[1] : unf_stToUpper(in);
 // Description:
 //   Takes a vector describing a fastener or a string representing the fastener size and returns the diameter of the widest part in millimeters. Useful for calculating positioning or sizes of parts that will contain the fastener when the end-user is allowed to pick from a variety of sizes of fasteners.
 // Arguments:
-//   in - vector describing an unfy_fastener or a string representing the size of one.
+//   in = vector describing an unfy_fastener or a string representing the size of one.
 function unf_fnr_diameter(in) = is_list(in) ? in[2] : (is_num(in) ? in : 5);
 
 // Function: unf_fnr_shaft_diameter
@@ -111,7 +111,7 @@ function unf_fnr_diameter(in) = is_list(in) ? in[2] : (is_num(in) ? in : 5);
 // Description:
 //   Takes a vector describing a fastener or a string representing the fastener size and returns the shaft diameter in millimeters.
 // Arguments:
-//   in - vector describing an unfy_fastener or a string representing the size of one.
+//   in = vector describing an unfy_fastener or a string representing the size of one.
 function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_stToNum(unf_sub(in, 1))
@@ -153,6 +153,7 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 //   diameter = shaft diameter in mm
 //   length = length in mm
 //   distorted = true/false should this be distorted
+//   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
 // Figure(2D;NoAxes): various values of unf_hdist_x and unf_hdist_y. (0, 0) or distorted=false would be a perfect circle.
@@ -312,6 +313,7 @@ function unf_cap_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 //   length = length in mm
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   distorted = true/false, should the bolt hole be distorted
+//   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
 // Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
@@ -345,8 +347,20 @@ module unf_cap(size = "m3", length = -1, head_ext = -1, distorted = false){
 
 /************************ Countersunk Bolts unf_csk_ *************************/
 
-//[name, bolt_diameter, head_diameter, head_height, default_length]
-
+// Function: unf_csk_v
+// Usage:
+//   unf_csk_v(size_or_vector)
+// Description:
+//   Retrieve a vector representing the dimensions of a countersunk bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+//   .
+//   The vector will consist of, in order:
+//   * name
+//   * bolt_diameter
+//   * head_diameter
+//   * head_height
+//   * default_length
+// Arguments:
+//   size = size as a string or the vector itself
 function unf_csk_v(size) = is_list(size) ? size : [
   "CSK", //0
   unf_fnr_size(size), //1
@@ -356,6 +370,13 @@ function unf_csk_v(size) = is_list(size) ? size : [
   unf_csk_default_length(size) //5
 ];
 
+// Function: unf_csk_head_diameter
+// Usage:
+//   unf_csk_head_diameter(size_or_vector)
+// Description:
+//   Retrieve the diameter in mm of the head of a countersunk bolt given the size.
+// Arguments:
+//   size = size as a string or the unf_csk_v() vector itself
 function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
@@ -408,6 +429,13 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
+// Function: unf_csk_head_height
+// Usage:
+//   unf_csk_head_height(size_or_vector)
+// Description:
+//   Retrieve the height or thickness in mm of the head of a countersunk bolt given the size.
+// Arguments:
+//   size = size as a string or the unf_cap_v() vector itself
 function unf_csk_head_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
@@ -460,15 +488,43 @@ function unf_csk_head_height(in) = is_list(in) ? in[4] : (
   )
 );
 
+// Function: unf_csk_default_length
+// Usage:
+//   unf_csk_default_length(size_or_vector)
+// Description:
+//   Retrieve a default length for a countersunk bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_csk bolt.
+// Arguments:
+//   size = size as a string or the unf_cap_v() vector itself
 function unf_csk_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
-module unf_csk(screw = "m3", length = -1, head_ext = -1, distorted = false){
+// Module: unf_csk
+// Usage:
+//   unf_csk(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+// Description:
+//   Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the cap head is rendered as a simple cylinder with the diameter of the widest part of the actual head. This is because it is meant for being a negative, to recess a bolt and not for printing an actual bolt.
+// Arguments:
+//   size = string representing the size or the unf_cap_v() vector.
+//   length = length in mm
+//   head_ext = length in mm to recess the head beyond just it's thickness
+//   distorted = true/false, should the bolt hole be distorted
+//   ---
+//   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
+//   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_hdist_x = 80;
+//   $unf_hdist_y = 10;
+//   use <unfy_fasteners.scad>;
+//   unf_csk(size="m3", length=10, head_ext=2, distorted=true);
+module unf_csk(size = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
-       screw = is_list(screw) ? screw : unf_csk_v(screw),
-       length = 0 < length ? length : unf_csk_default_length(screw)){
-    head_d = unf_csk_head_diameter(screw);
-    head_height = unf_csk_head_height(screw);
-    shaft_d = unf_fnr_shaft_diameter(screw);
+       size = is_list(size) ? size : unf_csk_v(size),
+       length = 0 < length ? length : unf_csk_default_length(size)){
+    head_d = unf_csk_head_diameter(size);
+    head_height = unf_csk_head_height(size);
+    shaft_d = unf_fnr_shaft_diameter(size);
     if (0 < head_ext){
       translate([0, 0, -head_ext]){
 	color("grey", 0.25){
