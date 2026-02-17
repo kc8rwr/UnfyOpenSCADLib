@@ -43,6 +43,11 @@ So far this feature has been developed only for bolt holes and not the other par
 - [`unf_cap_head_height`](#function-unf_cap_head_height)
 - [`unf_cap_default_length`](#function-unf_cap_default_length)
 - [`unf_cap`](#module-unf_cap)
+- [`unf_csk_v`](#function-unf_csk_v)
+- [`unf_csk_head_diameter`](#function-unf_csk_head_diameter)
+- [`unf_csk_head_height`](#function-unf_csk_head_height)
+- [`unf_csk_default_length`](#function-unf_csk_default_length)
+- [`unf_csk`](#module-unf_csk)
 
 
 ### Function: unf\_fnr\_type
@@ -59,7 +64,7 @@ Takes a vector describing a fastener and returns a string representing the faste
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in - vector describing an unfy_fastener`
+`in`                 | vector describing an unfy_fastener
 
 ---
 
@@ -79,7 +84,7 @@ Of course this isnt't doing much when it is passed the string. This is done so t
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in - vector describing an unfy_fastener or a string representing the size of one.`
+`in`                 | vector describing an unfy_fastener or a string representing the size of one.
 
 ---
 
@@ -97,7 +102,7 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in - vector describing an unfy_fastener or a string representing the size of one.`
+`in`                 | vector describing an unfy_fastener or a string representing the size of one.
 
 ---
 
@@ -115,7 +120,7 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in - vector describing an unfy_fastener or a string representing the size of one.`
+`in`                 | vector describing an unfy_fastener or a string representing the size of one.
 
 ---
 
@@ -136,6 +141,9 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 `diameter`           | shaft diameter in mm
 `length`             | length in mm
 `distorted`          | true/false should this be distorted
+
+<abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
+-------------------- | ------------
 `$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
 `$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
 
@@ -244,12 +252,126 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 `length`             | length in mm
 `head_ext`           | length in mm to recess the head beyond just it's thickness
 `distorted`          | true/false, should the bolt hole be distorted
+
+<abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
+-------------------- | ------------
 `$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
 `$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
 
 **Figure 1.10.1:** note - the head\_ext area is semi-transparent.
 
 <img align="left" alt="unf\_cap Figure 1.10.1" src="images/unfy_fasteners/figure_1_10_1.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+---
+
+### Function: unf\_csk\_v
+
+**Usage:** 
+
+- unf_csk_v(size_or_vector)
+
+**Description:** 
+
+Retrieve a vector representing the dimensions of a countersunk bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+
+The vector will consist of, in order:
+* name
+* bolt_diameter
+* head_diameter
+* head_height
+* default_length
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the vector itself
+
+---
+
+### Function: unf\_csk\_head\_diameter
+
+**Usage:** 
+
+- unf_csk_head_diameter(size_or_vector)
+
+**Description:** 
+
+Retrieve the diameter in mm of the head of a countersunk bolt given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_csk_v() vector itself
+
+---
+
+### Function: unf\_csk\_head\_height
+
+**Usage:** 
+
+- unf_csk_head_height(size_or_vector)
+
+**Description:** 
+
+Retrieve the height or thickness in mm of the head of a countersunk bolt given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_cap_v() vector itself
+
+---
+
+### Function: unf\_csk\_default\_length
+
+**Usage:** 
+
+- unf_csk_default_length(size_or_vector)
+
+**Description:** 
+
+Retrieve a default length for a countersunk bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_csk bolt.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_cap_v() vector itself
+
+---
+
+### Module: unf\_csk
+
+**Usage:** 
+
+- unf_csk(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+
+**Description:** 
+
+Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the cap head is rendered as a simple cylinder with the diameter of the widest part of the actual head. This is because it is meant for being a negative, to recess a bolt and not for printing an actual bolt.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | string representing the size or the unf_cap_v() vector.
+`length`             | length in mm
+`head_ext`           | length in mm to recess the head beyond just it's thickness
+`distorted`          | true/false, should the bolt hole be distorted
+
+<abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
+-------------------- | ------------
+`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+
+**Figure 1.15.1:** note - the head\_ext area is semi-transparent.
+
+<img align="left" alt="unf\_csk Figure 1.15.1" src="images/unfy_fasteners/figure_1_15_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
