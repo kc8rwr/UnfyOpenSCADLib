@@ -5,17 +5,6 @@
 //   .
 //   This file is part of UnfyOpenSCADLib.
 //   .
-//   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-//   GNU General Public License as published by the Free Software Foundation, either version 3 of
-//   the License, or (at your option) any later version.
-//   .
-//   UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-//   without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-//   See the GNU General Public License for more details.
-//   .
-//   You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-//   If not, see <https://www.gnu.org/licenses/>.
-//   .
 //   Unfy_fasteners.scad contains modules for creating bolts, screws, nuts, washers, heatsink inserts and more. These models at the time do not include threads. Their purpose is for subtracting from a model to create holes and countersinks. Realistic models with threads could be added later if there is a use for them.
 //   .
 //   Fasteners may be generated to size by passing the size as a string. Metric sizes may be passed as "M&lt;number&gt;" such as "M4" or "M3". It is case insensitie so "m4" or "m3" will work as well. Numbered SAE sizes are represented as "#&lt;number&gt;", such as "#6" or "#8". Inch sizes are represented as a decimal number or as a fraction. "1/4" or "0.25" would both represent 1/4".
@@ -196,8 +185,14 @@ module unf_shaft(diameter=3, length=10, distorted=false){
 	}
 }
 
+// Section: Cap Bolts - unf_cap_*
+//   The vector representing a cap bolt will consist of, in order:
+//   * name
+//   * bolt_diameter
+//   * head_diameter
+//   * head_height
+//   * default_length
 
-/*********************** Cap Bolts unf_cap_ **********************************/
 
 // Function: unf_cap_v
 // Usage:
@@ -205,12 +200,6 @@ module unf_shaft(diameter=3, length=10, distorted=false){
 // Description:
 //   Retrieve a vector representing the dimensions of a cap-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 //   .
-//   The vector will consist of, in order:
-//   * name
-//   * bolt_diameter
-//   * head_diameter
-//   * head_height
-//   * default_length
 // Arguments:
 //   size = size as a string or the vector itself
 function unf_cap_v(size) = is_list(size) ? size : [
@@ -344,8 +333,13 @@ module unf_cap(size = "m3", length = -1, head_ext = -1, distorted = false){
 }
 
 
-
-/************************ Countersunk Bolts unf_csk_ *************************/
+// Section: Countersunk Bolts unf_csk_*
+//   The vector representing a countersunk bolt will consist of, in order:
+//   * name
+//   * bolt_diameter
+//   * head_diameter
+//   * head_height
+//   * default_length
 
 // Function: unf_csk_v
 // Usage:
@@ -353,12 +347,6 @@ module unf_cap(size = "m3", length = -1, head_ext = -1, distorted = false){
 // Description:
 //   Retrieve a vector representing the dimensions of a countersunk bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 //   .
-//   The vector will consist of, in order:
-//   * name
-//   * bolt_diameter
-//   * head_diameter
-//   * head_height
-//   * default_length
 // Arguments:
 //   size = size as a string or the vector itself
 function unf_csk_v(size) = is_list(size) ? size : [
@@ -437,55 +425,55 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
 // Arguments:
 //   size = size as a string or the unf_cap_v() vector itself
 function unf_csk_head_height(in) = is_list(in) ? in[4] : (
-  "m" == in[0] || "M" == in[0] ? (
-    unf_round(place=-3,
-	      num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-			     [[0, 0],
-			      [3, 2], // verified
-			      [4, 2.3], // verified
-			      [5, 2.8],
-			      [6, 3.3],
-			      [8, 4.4],
-			      [10, 5.5],
-			      [12, 6.5],
-			      [14, 7],
-			      [16, 7.5],
-			      [20, 8.5],
-			      [24, 14]])
-    )
-  ) : (
-    "\"" == in[len(in)-1] ? (
-      unf_round(place=-3,
-		num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
-			       [[0, 0],
-				[3.175, 1.448], // 1/8", 0.057"
-				[4.763, 2.134], // 3/16", 0.084"
-				[6.35, 2.845], // 1/4", 0.112"
-				[7.938, 3.556], // 5/16", 0.140"
-				[9.525, 4.267], // 3/8", 0.168"
-				[11.113, 4.978], // 7/16", 0.196"
-				[12.7, 5.715], // 1/2", 0.225"
-				[15.875, 7.137], // 5/8", 0.281"
-				[19.05, 8.56]]) // 3/4", 0.337"
-      )
-    ) : (
-      "#0000" == in ? 0.229 : ( // 0.009"
-	"#000" == in ? 0.356 : ( // 0.014"
-	  "#00" == in ? 0.508 : ( // 0.020"
-	    "#" != in[0] ? unf_csk_head_height("M3") : (
-	      unf_round(place=-3,
-			num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
-				       [[0, 0.660], // 0.026"
-					[6, 2.5], 
-					[10, 3.4],
-					[12, 4.2]]) 
-	      )
-	    )
-	  )
+	"m" == in[0] || "M" == in[0] ? (
+		unf_round(place=-3,
+					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
+										 [[0, 0],
+										  [3, 2], // verified
+										  [4, 2.3], // verified
+										  [5, 2.8],
+										  [6, 3.3],
+										  [8, 4.4],
+										  [10, 5.5],
+										  [12, 6.5],
+										  [14, 7],
+										  [16, 7.5],
+										  [20, 8.5],
+										  [24, 14]])
+		)
+	) : (
+		"\"" == in[len(in)-1] ? (
+			unf_round(place=-3,
+						 num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
+											 [[0, 0],
+											  [3.175, 1.448], // 1/8", 0.057"
+											  [4.763, 2.134], // 3/16", 0.084"
+											  [6.35, 2.845], // 1/4", 0.112"
+											  [7.938, 3.556], // 5/16", 0.140"
+											  [9.525, 4.267], // 3/8", 0.168"
+											  [11.113, 4.978], // 7/16", 0.196"
+											  [12.7, 5.715], // 1/2", 0.225"
+											  [15.875, 7.137], // 5/8", 0.281"
+											  [19.05, 8.56]]) // 3/4", 0.337"
+			)
+		) : (
+			"#0000" == in ? 0.229 : ( // 0.009"
+				"#000" == in ? 0.356 : ( // 0.014"
+					"#00" == in ? 0.508 : ( // 0.020"
+						"#" != in[0] ? unf_csk_head_height("M3") : (
+							unf_round(place=-3,
+										 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
+															 [[0, 0.660], // 0.026"
+															  [6, 2.5], 
+															  [10, 3.4],
+															  [12, 4.2]]) 
+							)
+						)
+					)
+				)
+			)
+		)
 	)
-      )
-    )
-  )
 );
 
 // Function: unf_csk_default_length
@@ -537,11 +525,22 @@ module unf_csk(size = "m3", length = -1, head_ext = -1, distorted = false){
   }
 }
 
+// Section: Hex Head Bolts - unf_hex_*
+//   The vector representing a hex head bolt will consist of, in order:
+//   * name
+//   * bolt_diameter
+//   * head_diameter
+//   * head_height
+//   * default_length
 
-/************************ Hex Head Bolts unf_hex_ *************************/
-
-//[name, bolt_diameter, head_diameter, head_height, default_length]
-
+// Function: unf_hex_v
+// Usage:
+//   unf_hex_v(size_or_vector)
+// Description:
+//   Retrieve a vector representing the dimensions of a hex-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+//   .
+// Arguments:
+//   size = size as a string or the vector itself
 function unf_hex_v(size) = is_list(size) ? size : [
   "HEX", //0
   unf_fnr_size(size), //1
@@ -551,6 +550,13 @@ function unf_hex_v(size) = is_list(size) ? size : [
   unf_hex_default_length(size) //5
 ];
 
+// Function: unf_hex_head_diameter
+// Usage:
+//   unf_hex_head_diameter(size_or_vector)
+// Description:
+//   Retrieve the diameter in mm of the head of a hex-head bolt given the size.
+// Arguments:
+//   size = size as a string or the unf_hex_v() vector itself
 function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
@@ -611,6 +617,13 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
   )
 );
 
+// Function: unf_hex_head_height
+// Usage:
+//   unf_hex_head_height(size_or_vector)
+// Description:
+//   Retrieve the height or thickness in mm of the head of a hex-head bolt given the size.
+// Arguments:
+//   size = size as a string or the unf_hex_v() vector itself
 function unf_hex_head_height(in) = is_list(in) ? in[4] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
@@ -674,15 +687,43 @@ function unf_hex_head_height(in) = is_list(in) ? in[4] : (
   )
 );
 
+// Function: unf_hex_default_length
+// Usage:
+//   unf_hex_default_length(size_or_vector)
+// Description:
+//   Retrieve a default length for a hex head bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_hrx bolt.
+// Arguments:
+//   size = size as a string or the unf_hex_v() vector itself
 function unf_hex_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
-module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
+// Module: unf_hex
+// Usage:
+//   unf_hex(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+// Description:
+//   Render a negative for a shaft and/or head-recess for a hex-head bolt.
+// Arguments:
+//   size = string representing the size or the unf_hex_v() vector.
+//   length = length in mm
+//   head_ext = length in mm to recess the head beyond just it's thickness
+//   distorted = true/false, should the bolt hole be distorted
+//   ---
+//   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
+//   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_hdist_x = 80;
+//   $unf_hdist_y = 10;
+//   use <unfy_fasteners.scad>;
+//   unf_hex(size="m3", length=10, head_ext=2, distorted=true);
+module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false){
   let (head_ext = (0 <= head_ext) ? head_ext : $over,
-       screw = is_list(screw) ? screw : unf_hex_v(screw),
-       length = 0 < length ? length : unf_hex_default_length(screw)){
-    head_d = unf_hex_head_diameter(screw);
-    head_height = unf_hex_head_height(screw);
-    shaft_d = unf_fnr_shaft_diameter(screw);
+       size = is_list(size) ? size : unf_hex_v(size),
+       length = 0 < length ? length : unf_hex_default_length(size)){
+    head_d = unf_hex_head_diameter(size);
+    head_height = unf_hex_head_height(size);
+    shaft_d = unf_fnr_shaft_diameter(size);
     rotate([0, 0, 30]){
       if (0 < head_ext){
 	translate([0, 0, -head_ext]){
@@ -697,12 +738,22 @@ module unf_hex(screw = "m3", length = -1, head_ext = -1, distorted = false){
   }
 }
 
+// Section: Heatset Inserts - unf_hst_*
+//   The vector representing a heatset insert will contain, in order:
+//   * name
+//   * shaft_diameter
+//   * insert_diameter
+//   * length
+//   note - these are pilot hole dimensions, not dimensions of the actual insert
 
-/************************ Heatset Inserts unf_hst_ ***************************/
-
-//[name, shaft_diameter, insert_diameter, length]
-// note - these are pilot hole dimensions, not dimensions of the actual insert
-
+// Function: unf_hst_v
+// Usage:
+//   unf_hst_v(size_or_vector)
+// Description:
+//   Retrieve a vector representing the dimensions of a heatset insert given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+//   .
+// Arguments:
+//   size = size as a string or the vector itself
 function unf_hst_v(size="m3", length="medium", opening_taper_percent=10) = is_list(size) ? size : (
   let (length=unf_stToLower(length)) (
     ["HST", //0
@@ -715,8 +766,13 @@ function unf_hst_v(size="m3", length="medium", opening_taper_percent=10) = is_li
   )
 );
   
-
-
+// Function: unf_hst_diameter
+// Usage:
+//   unf_hst_diameter(size_or_vector)
+// Description:
+//   Retrieve the diameter in mm of the hole for a heatset insert given the size.
+// Arguments:
+//   size = size as a string or the unf_hst_v() vector itself
 function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
   "m" == in[0] || "M" == in[0] ? (
     unf_round(place=-3,
@@ -751,6 +807,13 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
   )
 );
 
+// Function: unf_hst_height
+// Usage:
+//   unf_hst_height(size_or_vector)
+// Description:
+//   Retrieve the length in mm of the hole for a heatset insert given the size.
+// Arguments:
+//   size = size as a string or the unf_hst_v() vector itself
 function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : (
   let (length = unf_stToLower(length)) (
     is_list(size) ? size[6] : (
@@ -805,7 +868,26 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
   )
 );
 
-
+// Module: unf_hst
+// Usage:
+//   unf_hst(size, opening_taper_percent, length, head_ext, extra_room, bolt_hole_depth)
+// Description:
+//   Render a negative for a heatset-insert hole.
+// Arguments:
+//   size = string representing the size or the unf_cap_v() vector.
+//   opening_taper_percent = enlarge the opening with a taper for ease of insertion.
+//   length = one of small, medium or large
+//   head_ext = length in mm to recess the head beyond just it's thickness
+//   extra_room = extra distance at the top of the insert hole for recessing it. Rendered in blue.
+//   bolt_hole_depth = distance to extend the bolt hole beyond the bottom of the insert
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_hdist_x = 80;
+//   $unf_hdist_y = 10;
+//   use <unfy_fasteners.scad>;
+//   unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=2, extra_room=false, bolt_hole_depth=3);
 module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1, extra_room=true, bolt_hole_depth=0){
   let (
     length = unf_stToLower(length),
@@ -1388,7 +1470,7 @@ module collection(size="m3", spacing=2){
     echo(str("nut: ", nut));
     echo(str("wsh: ", wsh));
     echo(str("sqr: ", sqr));
-    unf_csk(screw = csk);
+    unf_csk(size = csk);
     translate([(unf_csk_head_diameter(csk) + unf_cap_head_diameter(cap))/2 + spacing, 0, 0]){
       unf_cap(size = cap);
       translate([(unf_cap_head_diameter(cap) + unf_hex_head_diameter(hex))/2 + spacing, 0, 0]){
@@ -1803,3 +1885,15 @@ if (parm_part == "Bolt_Distortion_Test"){
     include_control = parm_dist_include_control
   );
  }
+
+// Section: Licensing
+//   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
+//   GNU General Public License as published by the Free Software Foundation, either version 3 of
+//   the License, or (at your option) any later version.
+//   .
+//   UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//   without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//   See the GNU General Public License for more details.
+//   .
+//   You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
+//   If not, see <https://www.gnu.org/licenses/>.
