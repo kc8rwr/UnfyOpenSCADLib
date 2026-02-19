@@ -6,17 +6,6 @@ unforgettability.net
 
 This file is part of UnfyOpenSCADLib.
 
-UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software Foundation, either version 3 of
-the License, or (at your option) any later version.
-
-UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-If not, see <https://www.gnu.org/licenses/>.
-
 Unfy_fasteners.scad contains modules for creating bolts, screws, nuts, washers, heatsink inserts and more. These models at the time do not include threads. Their purpose is for subtracting from a model to create holes and countersinks. Realistic models with threads could be added later if there is a use for them.
 
 Fasteners may be generated to size by passing the size as a string. Metric sizes may be passed as "M&lt;number&gt;" such as "M4" or "M3". It is case insensitie so "m4" or "m3" will work as well. Numbered SAE sizes are represented as "#&lt;number&gt;", such as "#6" or "#8". Inch sizes are represented as a decimal number or as a fraction. "1/4" or "0.25" would both represent 1/4".
@@ -38,16 +27,35 @@ So far this feature has been developed only for bolt holes and not the other par
 - [`unf_fnr_diameter`](#function-unf_fnr_diameter)
 - [`unf_fnr_shaft_diameter`](#function-unf_fnr_shaft_diameter)
 - [`unf_shaft`](#module-unf_shaft)
-- [`unf_cap_v`](#function-unf_cap_v)
-- [`unf_cap_head_diameter`](#function-unf_cap_head_diameter)
-- [`unf_cap_head_height`](#function-unf_cap_head_height)
-- [`unf_cap_default_length`](#function-unf_cap_default_length)
-- [`unf_cap`](#module-unf_cap)
-- [`unf_csk_v`](#function-unf_csk_v)
-- [`unf_csk_head_diameter`](#function-unf_csk_head_diameter)
-- [`unf_csk_head_height`](#function-unf_csk_head_height)
-- [`unf_csk_default_length`](#function-unf_csk_default_length)
-- [`unf_csk`](#module-unf_csk)
+
+2. [Section: Cap Bolts - unf\_cap\_*](#section-cap-bolts---unf_cap_)
+    - [`unf_cap_v`](#function-unf_cap_v)
+    - [`unf_cap_head_diameter`](#function-unf_cap_head_diameter)
+    - [`unf_cap_head_height`](#function-unf_cap_head_height)
+    - [`unf_cap_default_length`](#function-unf_cap_default_length)
+    - [`unf_cap`](#module-unf_cap)
+
+3. [Section: Countersunk Bolts unf\_csk\_*](#section-countersunk-bolts-unf_csk_)
+    - [`unf_csk_v`](#function-unf_csk_v)
+    - [`unf_csk_head_diameter`](#function-unf_csk_head_diameter)
+    - [`unf_csk_head_height`](#function-unf_csk_head_height)
+    - [`unf_csk_default_length`](#function-unf_csk_default_length)
+    - [`unf_csk`](#module-unf_csk)
+
+4. [Section: Hex Head Bolts - unf\_hex\_*](#section-hex-head-bolts---unf_hex_)
+    - [`unf_hex_v`](#function-unf_hex_v)
+    - [`unf_hex_head_diameter`](#function-unf_hex_head_diameter)
+    - [`unf_hex_head_height`](#function-unf_hex_head_height)
+    - [`unf_hex_default_length`](#function-unf_hex_default_length)
+    - [`unf_hex`](#module-unf_hex)
+
+5. [Section: Heatset Inserts - unf\_hst\_*](#section-heatset-inserts---unf_hst_)
+    - [`unf_hst_v`](#function-unf_hst_v)
+    - [`unf_hst_diameter`](#function-unf_hst_diameter)
+    - [`unf_hst_height`](#function-unf_hst_height)
+    - [`unf_hst`](#module-unf_hst)
+
+6. [Section: Licensing](#section-licensing)
 
 
 ### Function: unf\_fnr\_type
@@ -155,6 +163,15 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 
 ---
 
+## Section: Cap Bolts - unf\_cap\_*
+
+The vector representing a cap bolt will consist of, in order:
+* name
+* bolt_diameter
+* head_diameter
+* head_height
+* default_length
+
 ### Function: unf\_cap\_v
 
 **Usage:** 
@@ -165,12 +182,6 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 
 Retrieve a vector representing the dimensions of a cap-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 
-The vector will consist of, in order:
-* name
-* bolt_diameter
-* head_diameter
-* head_height
-* default_length
 
 **Arguments:** 
 
@@ -258,13 +269,22 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 `$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
 `$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
 
-**Figure 1.10.1:** note - the head\_ext area is semi-transparent.
+**Figure 2.5.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_cap Figure 1.10.1" src="images/unfy_fasteners/figure_1_10_1.png" width="320" height="240">
+<img align="left" alt="unf\_cap Figure 2.5.1" src="images/unfy_fasteners/figure_2_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
+
+## Section: Countersunk Bolts unf\_csk\_*
+
+The vector representing a countersunk bolt will consist of, in order:
+* name
+* bolt_diameter
+* head_diameter
+* head_height
+* default_length
 
 ### Function: unf\_csk\_v
 
@@ -276,12 +296,6 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 
 Retrieve a vector representing the dimensions of a countersunk bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 
-The vector will consist of, in order:
-* name
-* bolt_diameter
-* head_diameter
-* head_height
-* default_length
 
 **Arguments:** 
 
@@ -369,11 +383,231 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 `$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
 `$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
 
-**Figure 1.15.1:** note - the head\_ext area is semi-transparent.
+**Figure 3.5.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_csk Figure 1.15.1" src="images/unfy_fasteners/figure_1_15_1.png" width="320" height="240">
+<img align="left" alt="unf\_csk Figure 3.5.1" src="images/unfy_fasteners/figure_3_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
+
+## Section: Hex Head Bolts - unf\_hex\_*
+
+The vector representing a hex head bolt will consist of, in order:
+* name
+* bolt_diameter
+* head_diameter
+* head_height
+* default_length
+
+### Function: unf\_hex\_v
+
+**Usage:** 
+
+- unf_hex_v(size_or_vector)
+
+**Description:** 
+
+Retrieve a vector representing the dimensions of a hex-head bolt given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the vector itself
+
+---
+
+### Function: unf\_hex\_head\_diameter
+
+**Usage:** 
+
+- unf_hex_head_diameter(size_or_vector)
+
+**Description:** 
+
+Retrieve the diameter in mm of the head of a hex-head bolt given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_hex_v() vector itself
+
+---
+
+### Function: unf\_hex\_head\_height
+
+**Usage:** 
+
+- unf_hex_head_height(size_or_vector)
+
+**Description:** 
+
+Retrieve the height or thickness in mm of the head of a hex-head bolt given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_hex_v() vector itself
+
+---
+
+### Function: unf\_hex\_default\_length
+
+**Usage:** 
+
+- unf_hex_default_length(size_or_vector)
+
+**Description:** 
+
+Retrieve a default length for a hex head bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_hrx bolt.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_hex_v() vector itself
+
+---
+
+### Module: unf\_hex
+
+**Usage:** 
+
+- unf_hex(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+
+**Description:** 
+
+Render a negative for a shaft and/or head-recess for a hex-head bolt.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | string representing the size or the unf_hex_v() vector.
+`length`             | length in mm
+`head_ext`           | length in mm to recess the head beyond just it's thickness
+`distorted`          | true/false, should the bolt hole be distorted
+
+<abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
+-------------------- | ------------
+`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+
+**Figure 4.5.1:** note - the head\_ext area is semi-transparent.
+
+<img align="left" alt="unf\_hex Figure 4.5.1" src="images/unfy_fasteners/figure_4_5_1.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+---
+
+## Section: Heatset Inserts - unf\_hst\_*
+
+The vector representing a heatset insert will contain, in order:
+* name
+* shaft_diameter
+* insert_diameter
+* length
+note - these are pilot hole dimensions, not dimensions of the actual insert
+
+### Function: unf\_hst\_v
+
+**Usage:** 
+
+- unf_hst_v(size_or_vector)
+
+**Description:** 
+
+Retrieve a vector representing the dimensions of a heatset insert given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the vector itself
+
+---
+
+### Function: unf\_hst\_diameter
+
+**Usage:** 
+
+- unf_hst_diameter(size_or_vector)
+
+**Description:** 
+
+Retrieve the diameter in mm of the hole for a heatset insert given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_hst_v() vector itself
+
+---
+
+### Function: unf\_hst\_height
+
+**Usage:** 
+
+- unf_hst_height(size_or_vector)
+
+**Description:** 
+
+Retrieve the length in mm of the hole for a heatset insert given the size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_hst_v() vector itself
+
+---
+
+### Module: unf\_hst
+
+**Usage:** 
+
+- unf_hst(size, opening_taper_percent, length, head_ext, extra_room, bolt_hole_depth)
+
+**Description:** 
+
+Render a negative for a heatset-insert hole.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | string representing the size or the unf_cap_v() vector.
+`opening_taper_percent` | enlarge the opening with a taper for ease of insertion.
+`length`             | one of small, medium or large
+`head_ext`           | length in mm to recess the head beyond just it's thickness
+`extra_room`         | extra distance at the top of the insert hole for recessing it. Rendered in blue.
+`bolt_hole_depth`    | distance to extend the bolt hole beyond the bottom of the insert
+
+**Figure 5.4.1:** note - the head\_ext area is semi-transparent.
+
+<img align="left" alt="unf\_hst Figure 5.4.1" src="images/unfy_fasteners/figure_5_4_1.png" width="320" height="240">
+
+<br clear="all" />
+
+---
+
+## Section: Licensing
+
+UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of
+the License, or (at your option) any later version.
+
+UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
+If not, see <https://www.gnu.org/licenses/>.
 
