@@ -36,6 +36,10 @@ $unf_hdist_x = 80; //[0:100]
 $over = 0.1;
 $wall = 2;
 
+body_color = "Blue"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
+
+subtraction_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
+
 /* [Horizontal Shaft Distortion Test Block] */
 //depth
 parm_dist_depth = 10;
@@ -142,8 +146,8 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 // Description:
 //   Render a fastener shaft hole, optionally with distortions to account for overhang sagging when 3d-printing.
 // Usage:
-//   unf_shaft(diameter, length, distorted, $unf_hdist_x, $unf_hdist_y)
-// Figure(2D;NoAxes): various values of unf_hdist_x and unf_hdist_y. (0, 0) or distorted=false would be a perfect circle.
+//   unf_shaft(diameter, length, distorted, $unf_hdist_x, $unf_hdist_y, body_color)
+// Figure(2D;NoAxes;Size=640x480): various values of unf_hdist_x and unf_hdist_y. (0, 0) or distorted=false would be a perfect circle.
 //   $over = 0.01;
 //   $fn = 36;
 //   use <unfy_fasteners.scad>
@@ -160,9 +164,11 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 //               unf_shaft(30, 1, true, $unf_hdist_x=dx, $unf_hdist_y=dy);
 //            }
 //         }
-//         translate([-15, -30]){
-//            resize([30, 10]){
-//               color("Blue") text(str("(", dx, ", ", dy, ")"));
+//         color("Blue"){
+//            translate([-15, -30]){
+//               resize([30, 10]){
+//                  projection() linear_extrude(1) text(str("(", dx, ", ", dy, ")"));
+//               }
 //            }
 //         }
 //      }
@@ -171,22 +177,102 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 //   diameter = shaft diameter in mm
 //   length = length in mm
 //   distorted = true/false should this be distorted
+//   body_color = color in which to render the shaft if rendered as a positive, color of the cut surfaces if rendering as a negative.
 //   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
-module unf_shaft(diameter=3, length=10, distorted=false){
-	if (distorted){
-		dist_d =(diameter * $unf_hdist_x) / 100;
-		linear_extrude(length) {
-			hull(){
-				circle(d=diameter);
-				translate([0, ((diameter-dist_d)/2)+((diameter*$unf_hdist_y)/200)]){
-					circle(d=dist_d);
+module unf_shaft(diameter=3, length=10, distorted=false, body_color="Yellow"){
+	color(body_color){
+		if (distorted){
+			dist_d =(diameter * $unf_hdist_x) / 100;
+			linear_extrude(length) {
+				hull(){
+					circle(d=diameter);
+					translate([0, ((diameter-dist_d)/2)+((diameter*$unf_hdist_y)/200)]){
+						circle(d=dist_d);
+					}
+				}
+			}
+		} else { // !distorted
+			cylinder(d=diameter, h=length);
+		}
+	}
+}
+
+// Module: distortion_test_block
+// Synopsis: Shaft Distortion Test Block
+// Description:
+//   Render a block with a series of distorted bolt shafts with varying values of unf_hdist_x and unf_hdist_y for choosing the best values to use with a particular setup.
+// Usage:
+//   distortion_test_block(diameter, depth, steps, min_spacing, min_dist_x, max_dist_x, min_dist_y, max_dist_y, include_control, body_color, subtraction_color)
+// Figure(NoAxes; VPR=[93, 0, 0];Size=640x480):
+//   $over = 0.01;
+//   $fn=360;
+//   use <unfy_fasteners.scad>
+//   distortion_test_block(steps=4, body_color="Blue", subtraction_color="Yellow");
+// Arguments:
+//   diameter = shaft diameter
+//   depth = thickness of the block
+//   steps = number of rows, columns
+//   min_spacing = minimum spacing between holes
+//   min_dist_x = minimum unf_hdist_x to try
+//   max_dist_x = maximum unf_hdist_x to try
+//   min_dist_y = minimum unf_hdist_y to try
+//   max_dist_y = maximum unf_hdist_y to try
+//   body_color = color of the block
+//   subtraction_color = color of the surfaces cut into the block by the test holes
+module distortion_test_block(
+	diameter = 3,
+	depth = 10,
+	steps = 5,
+	min_spacing = 3,
+	min_dist_x = 25,
+	max_dist_x = 100,
+	min_dist_y = 5,
+	max_dist_y = 20,
+	include_control = true,
+	body_color="Blue",
+	subtraction_color="yellow"
+){
+	x_inc = diameter + min_spacing;
+	y_inc = x_inc + ((diameter * max_dist_x) / 200);
+   
+	width = (steps * x_inc) + min_spacing;
+	height = (steps * y_inc) + min_spacing;
+
+	difference(){
+		color(body_color){
+			cube([width, depth, height]);
+		}
+		for (ix = [0:1:steps-1], iy = [0:1:steps-1]){
+			dist_x = min_dist_x + (ix * (max_dist_x-min_dist_x) / steps);
+			dist_y = min_dist_y + (iy * (max_dist_y-min_dist_y) / steps);
+			translate([min_spacing + (diameter/2) + (ix * x_inc), -1, min_spacing + (diameter/2) + (iy * y_inc)]){
+				rotate([270, 180, 0]){
+					color(subtraction_color){
+						unf_shaft(length = depth+2, diameter = diameter, $unf_hdist_x=dist_x, $unf_hdist_y=dist_y, distorted=true);
+					}
 				}
 			}
 		}
-	} else { // !distorted
-		cylinder(d=diameter, h=length);
+	}
+	
+	if (include_control){
+		side = diameter + (2 * min_spacing);
+		translate([-side, 0, 0]){
+			difference(){
+				color(body_color){
+					cube([side, depth, side]);
+				}
+				translate([side/2, -1, side/2]){
+					rotate([270, 0, 0]){
+						color(subtraction_color){
+							cylinder(d=diameter, h=depth + 2);
+						}
+					}
+				}     
+			}
+		}
 	}
 }
 
@@ -311,36 +397,38 @@ function unf_cap_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 //   $unf_hdist_x = 80;
 //   $unf_hdist_y = 10;
 //   use <unfy_fasteners.scad>;
-//   unf_cap(size="m3", length=10, head_ext=2, distorted=true);
+//   unf_cap(size="m3", length=10, head_ext=2, distorted=true, body_color="Yellow");
 // Usage:
-//   unf_cap(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+//   unf_cap(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y, body_color)
 // Arguments:
 //   size = string representing the size or the unf_cap_v() vector.
 //   length = length in mm
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   distorted = true/false, should the bolt hole be distorted
+//   body_color = color in which to render the bolt if rendered as a positive, color of the cut surfaces if rendering as a negative.
 //   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
-module unf_cap(size = "m3", length = -1, head_ext = -1, distorted = false){
-	let (head_ext = (0 <= head_ext) ? head_ext : $over,
-		  size = is_list(size) ? size : unf_cap_v(size),
-		  length = 0 < length ? length : unf_cap_default_length(size)){
-		head_d = unf_cap_head_diameter(size);
-		head_height = unf_cap_head_height(size);
-		shaft_d = unf_fnr_shaft_diameter(size);
-		if (0 < head_ext){
-			translate([0, 0, -head_ext]){
-				color("grey", 0.25){
-					cylinder(h = head_ext, d = head_d);
+module unf_cap(size = "m3", length = -1, head_ext = -1, distorted = false, body_color="Yellow"){
+	color(body_color){
+		let (head_ext = (0 <= head_ext) ? head_ext : $over,
+			  size = is_list(size) ? size : unf_cap_v(size),
+			  length = 0 < length ? length : unf_cap_default_length(size)){
+			head_d = unf_cap_head_diameter(size);
+			head_height = unf_cap_head_height(size);
+			shaft_d = unf_fnr_shaft_diameter(size);
+			if (0 < head_ext){
+				translate([0, 0, -head_ext]){
+					color("grey", 0.25){
+						cylinder(h = head_ext, d = head_d);
+					}
 				}
 			}
+			cylinder(h = head_height, d = head_d);
+			unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 		}
-		cylinder(h = head_height, d = head_d);
-		unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 	}
 }
-
 
 // Section: Countersunk Bolts - unf_csk_*
 //   The vector representing a countersunk bolt will consist of, in order:
@@ -510,31 +598,34 @@ function unf_csk_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 //   use <unfy_fasteners.scad>;
 //   unf_csk(size="m3", length=10, head_ext=2, distorted=true);
 // Usage:
-//   unf_csk(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+//   unf_csk(size, length, head_ext, distorted, body_color)
 // Arguments:
 //   size = string representing the size or the unf_cap_v() vector.
 //   length = length in mm
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   distorted = true/false, should the bolt hole be distorted
+//   body_color = color in which to render the bolt if rendered as a positive, color of the cut surfaces if rendering as a negative.
 //   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
-module unf_csk(size = "m3", length = -1, head_ext = -1, distorted = false){
-	let (head_ext = (0 <= head_ext) ? head_ext : $over,
-		  size = is_list(size) ? size : unf_csk_v(size),
-		  length = 0 < length ? length : unf_csk_default_length(size)){
-		head_d = unf_csk_head_diameter(size);
-		head_height = unf_csk_head_height(size);
-		shaft_d = unf_fnr_shaft_diameter(size);
-		if (0 < head_ext){
-			translate([0, 0, -head_ext]){
-				color("grey", 0.25){
-					cylinder(h = head_ext, d = head_d);
+module unf_csk(size = "m3", length = -1, head_ext = -1, distorted = false, body_color = "Yellow"){
+	color(body_color){
+		let (head_ext = (0 <= head_ext) ? head_ext : $over,
+			  size = is_list(size) ? size : unf_csk_v(size),
+			  length = 0 < length ? length : unf_csk_default_length(size)){
+			head_d = unf_csk_head_diameter(size);
+			head_height = unf_csk_head_height(size);
+			shaft_d = unf_fnr_shaft_diameter(size);
+			if (0 < head_ext){
+				translate([0, 0, -head_ext]){
+					color("grey", 0.25){
+						cylinder(h = head_ext, d = head_d);
+					}
 				}
 			}
+			cylinder(h = head_height, d1 = head_d, d2 = shaft_d);
+			unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 		}
-		cylinder(h = head_height, d1 = head_d, d2 = shaft_d);
-		unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 	}
 }
 
@@ -725,33 +816,36 @@ function unf_hex_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 //   use <unfy_fasteners.scad>;
 //   unf_hex(size="m3", length=10, head_ext=2, distorted=true);
 // Usage:
-//   unf_hex(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y)
+//   unf_hex(size, length, head_ext, distorted, body_color)
 // Arguments:
 //   size = string representing the size or the unf_hex_v() vector.
 //   length = length in mm
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   distorted = true/false, should the bolt hole be distorted
+//   body_color = color in which to render the bolt if rendered as a positive, color of the cut surfaces if rendering as a negative.
 //   ---
 //   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
 //   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
-module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false){
-	let (head_ext = (0 <= head_ext) ? head_ext : $over,
-		  size = is_list(size) ? size : unf_hex_v(size),
-		  length = 0 < length ? length : unf_hex_default_length(size)){
-		head_d = unf_hex_head_diameter(size);
-		head_height = unf_hex_head_height(size);
-		shaft_d = unf_fnr_shaft_diameter(size);
-		rotate([0, 0, 30]){
-			if (0 < head_ext){
-				translate([0, 0, -head_ext]){
-					color("grey", 0.25){
-						cylinder(h = head_ext, d = head_d, $fn=6);
+module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false, body_color="Yellow"){
+	color(body_color){
+		let (head_ext = (0 <= head_ext) ? head_ext : $over,
+			  size = is_list(size) ? size : unf_hex_v(size),
+			  length = 0 < length ? length : unf_hex_default_length(size)){
+			head_d = unf_hex_head_diameter(size);
+			head_height = unf_hex_head_height(size);
+			shaft_d = unf_fnr_shaft_diameter(size);
+			rotate([0, 0, 30]){
+				if (0 < head_ext){
+					translate([0, 0, -head_ext]){
+						color("grey", 0.25){
+							cylinder(h = head_ext, d = head_d, $fn=6);
+						}
 					}
 				}
+				cylinder(h = head_height, d = head_d, $fn=6);
 			}
-			cylinder(h = head_height, d = head_d, $fn=6);
+			unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 		}
-		unf_shaft(length = length + head_height, diameter = shaft_d, distorted = distorted);
 	}
 }
 
@@ -892,7 +986,7 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
 // Synopsis: Heatset Insert
 // Description:
 //   Render a negative for a heatset-insert hole.
-// Figure(Spin;VPD=30; VPT=[0, 0, -2];  NoAxes): note - the head_ext area is semi-transparent.
+// Figure(Spin;VPD=30; VPT=[0, 0, -2];  NoAxes): note - the head_ext, extra_room and bolt shaft areas are semi-transparent.
 //   $fn = 36;
 //   $over = 0.1;
 //   $wall=2;
@@ -900,10 +994,10 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
 //   $unf_hdist_y = 10;
 //   use <unfy_fasteners.scad>;
 //   rotate([0, 180, 0]){
-//      unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=2, extra_room=false, bolt_hole_depth=3);
+//      unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=2, extra_room=2, bolt_hole_depth=5);
 //   }
 // Usage:
-//   unf_hst(size, opening_taper_percent, length, head_ext, extra_room, bolt_hole_depth)
+//   unf_hst(size, opening_taper_percent, length, head_ext, extra_room, bolt_hole_depth, body_color)
 // Arguments:
 //   size = string representing the size or the unf_cap_v() vector.
 //   opening_taper_percent = enlarge the opening with a taper for ease of insertion.
@@ -911,7 +1005,8 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   extra_room = Continue the hole, at the inserts outer dimension a bit farther into the part. This creates a space for molten plastic to flow to when inserting the insert.
 //   bolt_hole_depth = Extend the hole at the width of the bolt, not the width of the insert beyond the insert to make room for the bolt to pass through the insert and deeper into the hole.
-module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1, extra_room=true, bolt_hole_depth=0){
+//   body_color = color in which to render the insert if rendered as a positive, color of the cut surfaces if rendering as a negative.
+module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1, extra_room=true, bolt_hole_depth=0, body_color="Yellow"){
 	let (
 		length = unf_stToLower(length),
 		size = is_list(size) ? size : unf_hst_v(size=size, length=length)){
@@ -923,7 +1018,9 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
 			head_ext = (0 <= head_ext) ? head_ext : $over
 		) {
 			//main body
-			cylinder(h=length, d1=opening_diameter, d2=diameter);
+			color(body_color){
+				cylinder(h=length, d1=opening_diameter, d2=diameter);
+			}
 			//head extension
 			if (0 < head_ext){
 				translate([0, 0, -head_ext]){
@@ -936,7 +1033,7 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
 			if (extra_room){
 				er=0.2;
 				translate([0, 0, length]){
-					color("blue"){
+					color("gray", 0.25){
 						cylinder(d1=diameter, d2=(1-er)*diameter, h=er*diameter);
 					}
 				} 
@@ -944,7 +1041,7 @@ module unf_hst(size="m3", opening_taper_percent=10, length="medium", head_ext=-1
 			//bolt hole
 			if (0 < bolt_hole_depth){
 				translate([0, 0, length]){
-					color("orange"){
+					color("gray", 0.25){
 						cylinder(d=bolt_diameter, h=bolt_hole_depth);
 					}
 				}
@@ -1110,11 +1207,12 @@ function unf_nut_height(in) = is_list(in) ? in[4] : (
 //      unf_nut(size="m5", ext=1);
 //   }
 // Usage:
-//   unf_nut(size, ext)
+//   unf_nut(size, ext, body_color)
 // Arguments:
 //   size = string representing the size or the unf_nut_v() vector.
 //   ext = length in mm to recess the nut beyond just it's thickness
-module unf_nut(size = "m3", ext = -1){
+//   body_color = color in which to render the nut if rendered as a positive, color of the cut surfaces if rendering as a negative.
+module unf_nut(size = "m3", ext = -1, body_color="Yellow"){
 	let (ext = (0 <= ext) ? ext : $over,
 		  size = is_list(size) ? size : unf_nut_v(size),
 		  diameter = unf_nut_diameter(size),
@@ -1126,7 +1224,9 @@ module unf_nut(size = "m3", ext = -1){
 				}
 			}
 		}
-		cylinder(h=height, d=diameter, $fn=6);
+		color(body_color){
+			cylinder(h=height, d=diameter, $fn=6);
+		}
 	}
 }
 
@@ -1271,12 +1371,13 @@ function unf_sqr_height(in) = is_list(in) ? in[4] : (
 //   use <unfy_fasteners.scad>;
 //   unf_sqr(size="m6", ext=0.5);
 // Usage:
-//   unf_sqr(size, ext)
+//   unf_sqr(size, ext, body_color)
 // Arguments:
 //   size = string representing the size or the unf_sqr_v() vector.
 //   length = length in mm
 //   ext = Extra height added to the negative for recessing the nut.
-module unf_sqr(size = "m3", ext = -1){
+//   body_color = color in which to render the nut if rendered as a positive, color of the cut surfaces if rendering as a negative.
+module unf_sqr(size = "m3", ext = -1, body_color="Yellow"){
 	let (ext = (0 <= ext) ? ext : $over,
 		  size = is_list(size) ? size : unf_nut_v(size)){
 		length = unf_sqr_length(size);
@@ -1289,16 +1390,28 @@ module unf_sqr(size = "m3", ext = -1){
 					}
 				}
 			}
-			cube([length, length, height]);
+			color(body_color){
+				cube([length, length, height]);
+			}
 		}
 	}
 }
 
+// Section: Washer unf_wsh_*
+//   The vector representing a washer will consist of, in order:
+//   * name
+//   * washer_diameter
+//   * height
 
-/************************ Washer unf_wsh_ *************************/
 
-//[name, washer_diameter, height]
-
+// Function: unf_wsh_v
+// Synopsis: Washer Vector
+// Description:
+//   Retrieve a vector representing the dimensions of a washer given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+// Usage:
+//   unf_wsh_v(size_or_vector, body_color)
+// Arguments:
+//   size = size as a string or the vector itself
 function unf_wsh_v(size) = is_list(size) ? size : [
 	"WSH",
 	unf_fnr_size(size),
@@ -1308,6 +1421,14 @@ function unf_wsh_v(size) = is_list(size) ? size : [
 	unf_wsh_height(size)
 ];
 
+// Function: unf_wsh_head_diameter
+// Synopsis: Washer Clearance Diameter
+// Description:
+//   Retrieve the outer diameter in mm of a washer given the bolt size.
+// Usage:
+//   unf_wsh_head_diameter(size_or_vector)
+// Arguments:
+//   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
@@ -1386,6 +1507,15 @@ function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
 	)
 );
 
+
+// Function: unf_wsh_head_height
+// Synopsis: Washer Thickness (height lying flat)
+// Description:
+//   Retrieve the height or thickness in mm of a washer given the bolt size.
+// Usage:
+//   unf_wsh_head_height(size_or_vector)
+// Arguments:
+//   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_height(in) = is_list(in) ? in[5] : (
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
@@ -1463,7 +1593,22 @@ function unf_wsh_height(in) = is_list(in) ? in[5] : (
 	)
 );
 
-module unf_wsh(size = "m3", ext = -1){
+// Module: unf_wsh
+// Synopsis: Washer
+// Description:
+//   Render a negative for a washer. Does not include a bolt hole since it is only meant to be a negative for recessing a vitamin, not an actual printed washer.
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   use <unfy_fasteners.scad>;
+//   unf_wsh(size="m3", ext=0.2);
+// Usage:
+//   unf_wsh(size, ext, body_color)
+// Arguments:
+//   size = string representing the size or the unf_cap_v() vector.
+//   ext = length in mm to recess the washer beyond just it's thickness
+//   body_color = color in which to render the washer if rendered as a positive, color of the cut surfaces if rendering as a negative.
+module unf_wsh(size = "m3", ext = -1, body_color="Yellow"){
 	let (ext = (0 <= ext) ? ext : $over,
 		  size = is_list(size) ? size : unf_wsh_v(size)){
 		diameter = unf_wsh_diameter(size);
@@ -1475,16 +1620,37 @@ module unf_wsh(size = "m3", ext = -1){
 				}
 			}
 		}
-		cylinder(h=height, d=diameter);
+		color(body_color){
+			cylinder(h=height, d=diameter);
+		}
 	}
 }
 
 
-/************************ Pillar **************************/
+// Section: Pillar
 
-module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1){
+// Module: unf_pillar_pos
+// Synopsis: Render the positive part of a fastener pillar
+// Description:
+//   *Stil under Construction* Calculates the diameter needed for a support piller that will contain a heatset insert or a nut. Then render the positive part of the pillar.
+// Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes):
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall = 2;
+//   use <unfy_fasteners.scad>;
+//   unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1.5);
+// Usage:
+//   unf_pillar_pos(fastener, bolt, heatset_length, length, slope, wall, body_color)
+// Arguments:
+//   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
+//   bolt = A string representing the bolt size.
+//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   length = length in mm of the pillar
+//   slope = slope in degrees leading from bottom to top of the pillar. *note - future version will use a bezier curve, likely replacing this argument.*
+//   wall = Minimum material thickness between heatset or nut insert and the outside of the pillar.
+//   body_color = color in which to render the pillar.
+module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1, body_color="Yellow"){
 	let(fastener = unf_stToLower(fastener)){
-
 		if ("hexnut" == fastener){
 			let (nut_v = unf_nut_v(bolt),
 				  nut_diameter = unf_nut_diameter(nut_v),
@@ -1492,15 +1658,11 @@ module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", le
 				  top_d=(2*wall)+nut_diameter,
 				  bottom_d = top_d+(2*length*tan(slope))
 			){
-				cylinder(d1=bottom_d, d2=top_d, h=length);
-				translate([0, 0, length+$over]){
-					rotate([0, 180, 0]){
-						unf_nut(size=nut_v, ext=$over);
-					}
+				color(body_color){
+					cylinder(d1=bottom_d, d2=top_d, h=length);
 				}
 			}
-		}
-
+		}	
 		else if ("heatset" == fastener){
 			let(fastener = unf_hst_v(size=bolt, length=heatset_length),
 				 hst_diameter = unf_hst_diameter(fastener),
@@ -1509,14 +1671,42 @@ module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", le
 				 top_d=(2*wall)+hst_diameter,
 				 bottom_d = top_d+(2*length*tan(slope))
 			){
-				cylinder(d1=bottom_d, d2=top_d, h=length);
+				color(body_color){
+					cylinder(d1=bottom_d, d2=top_d, h=length);
+				}
 			}
-		}
-    
+		}			
 	}
 }
 
-module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="Medium", scale=2, wall=1, ext=2){
+
+// Module: unf_pillar_neg
+// Synopsis: Render the negative part of a fastener pillar
+// Description:
+//   *Stil under Construction* Render that which should be subtracted from a pillar so that fasteners may be added.
+// Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Heatset Insert
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall = 2;
+//   use <unfy_fasteners.scad>;
+//   unf_pillar_neg(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, wall=1.5, ext=0.33);
+// Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Hexnut
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall = 2;
+//   use <unfy_fasteners.scad>;
+//   unf_pillar_neg(fastener="Hexnut", bolt="M3", heatset_length="Medium", length=5, wall=1.5, ext=0.33);
+// Usage:
+//   unf_pillar_neg(fastener, bolt, length, heatset_length, wall, ext, body_color)
+// Arguments:
+//   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
+//   bolt = A string representing the bolt size.
+//   length = length in mm of the pillar
+//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   wall = Minimum material thickness between heatset or nut insert and the outside of the pillar.
+//   ext = length in mm to recess the fastener beyond just it's length
+//   body_color = color in which to render if rendered as a positive, color of the cut surfaces if rendering as a negative.
+module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="Medium", wall=1, ext=2, body_color="Yellow"){
 	let(fastener = unf_stToLower(fastener)){
 
 		if ("hexnut" == fastener){
@@ -1526,11 +1716,13 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 			){
 				translate([0, 0, length+$over]){
 					rotate([0, 180, 0]){
-						unf_nut(size=nut_v, ext=$over);
+						unf_nut(size=nut_v, ext=$over, body_color=body_color);
 					}
 				}
 				translate([0, 0, -ext]){
-					cylinder(d=unf_fnr_shaft_diameter(bolt), h=$over+ext+length);
+					color(body_color){
+						cylinder(d=unf_fnr_shaft_diameter(bolt), h=$over+ext+length);
+					}
 				}
 			}
 		}
@@ -1543,7 +1735,7 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 			){
 				translate([0, 0, length]){
 					rotate([0, 180, 0]){
-						unf_hst(size=fastener, length=heatset_length, bolt_hole_depth=length-hst_length+$over);
+						unf_hst(size=fastener, length=heatset_length, bolt_hole_depth=length-hst_length+$over, body_color=body_color);
 					}
 				}
 			}      
@@ -1552,10 +1744,37 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 	}
 }
 
-module unf_pillar(fastener="Heatset", heatset_length="Medium", bolt="M3", length=5, slope=45, wall=1){
+// Module: unf_pillar
+// Synopsis: Render a fastener pillar
+// Description:
+//   *Stil under Construction* Render a pillar which will contain a heatset insert or nut and a bolt hole.
+// Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Heatset Insert
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall = 2;
+//   use <unfy_fasteners.scad>;
+//   unf_pillar(fastener="Heatset", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1.5);
+// Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Hexnut
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall = 2;
+//   use <unfy_fasteners.scad>;
+//   unf_pillar(fastener="Hexnut", bolt="M3", heatset_length="Medium", length=5, slope=45, wall=1.5);
+// Usage:
+//   unf_pillar_neg(fastener, heatset_length, bolt, length, slope, wall, body_color, subtraction_color)
+// Arguments:
+//   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
+//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   bolt = A string representing the bolt size.
+//   length = length in mm of the pillar
+//   slope = slope in degrees leading from bottom to top of the pillar. *note - future version will use a bezier curve, likely replacing this argument.*
+//   wall = Minimum material thickness between heatset or nut insert and the outside of the pillar.
+//   body_color = color in which to render the pillar
+//   subtraction_color = color in which to render the cut surfaces of the pillar.
+module unf_pillar(fastener="Heatset", heatset_length="Medium", bolt="M3", length=5, slope=45, wall=1, body_color="Blue", subtraction_color="Yellow"){
 	difference(){
-		unf_pillar_pos(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, slope=slope, wall=wall);
-		unf_pillar_neg(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length);
+		unf_pillar_pos(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, slope=slope, wall=wall, body_color=body_color);
+		unf_pillar_neg(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, body_color=subtraction_color);
 	}
 }
 
@@ -1577,9 +1796,9 @@ module collection(size="m3", spacing=2){
 		echo(str("nut: ", nut));
 		echo(str("wsh: ", wsh));
 		echo(str("sqr: ", sqr));
-		unf_csk(size = csk);
+		unf_csk(size = csk, body_color = body_color);
 		translate([(unf_csk_head_diameter(csk) + unf_cap_head_diameter(cap))/2 + spacing, 0, 0]){
-			unf_cap(size = cap);
+			unf_cap(size = cap, body_color = body_color);
 			translate([(unf_cap_head_diameter(cap) + unf_hex_head_diameter(hex))/2 + spacing, 0, 0]){
 				unf_hex(hex);
 				translate([(unf_hex_head_diameter(hex) + unf_fnr_diameter(hst))/2 + spacing, 0, 0]){
@@ -1594,51 +1813,6 @@ module collection(size="m3", spacing=2){
 						}
 					}
 				}
-			}
-		}
-	}
-}
-
-module distortion_test_block(
-	diameter = 3,
-	depth = 10,
-	steps = 5,
-	min_spacing = 3,
-	min_dist_x = 25,
-	max_dist_x = 100,
-	min_dist_y = 5,
-	max_dist_y = 20,
-	include_control = true
-){
-	x_inc = diameter + min_spacing;
-	y_inc = x_inc + ((diameter * max_dist_x) / 200);
-   
-	width = (steps * x_inc) + min_spacing;
-	height = (steps * y_inc) + min_spacing;
-   
-	difference(){
-		cube([width, depth, height]);
-		for (ix = [0:1:steps-1], iy = [0:1:steps-1]){
-			dist_x = min_dist_x + (ix * (max_dist_x-min_dist_x) / steps);
-			dist_y = min_dist_y + (iy * (max_dist_y-min_dist_y) / steps);
-			translate([min_spacing + (diameter/2) + (ix * x_inc), -1, min_spacing + (diameter/2) + (iy * y_inc)]){
-				rotate([270, 180, 0]){
-					unf_shaft(length = depth+2, diameter = diameter, $unf_hdist_x=dist_x, $unf_hdist_y=dist_y, distorted=true);
-				}
-			}
-		}
-	}
-   
-	if (include_control){
-		side = diameter + (2 * min_spacing);
-		translate([-side, 0, 0]){
-			difference(){
-				cube([side, depth, side]);
-				translate([side/2, -1, side/2]){
-					rotate([270, 0, 0]){
-						cylinder(d=diameter, h=depth + 2);
-					}
-				}     
 			}
 		}
 	}
@@ -1989,7 +2163,9 @@ if (parm_part == "Bolt_Distortion_Test"){
 		max_dist_x = parm_dist_max_dist_x,
 		min_dist_y = parm_dist_min_dist_y,
 		max_dist_y = parm_dist_max_dist_y,
-		include_control = parm_dist_include_control
+		include_control = parm_dist_include_control,
+		body_color = body_color,
+		subtraction_color = subtraction_color
 	);
  }
 
