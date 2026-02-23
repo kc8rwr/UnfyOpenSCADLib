@@ -139,7 +139,7 @@ function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
 	)
 );
 
-/************************ Distorted Shafts ***********************************/
+// Section: Distorted Shafts
 
 // Module: unf_shaft
 // Synopsis: Fastener Shaft
