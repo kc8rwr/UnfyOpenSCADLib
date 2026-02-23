@@ -4,18 +4,7 @@ UnfyOpenSCADLib Copyright Leif Burrow 2026
 kc8rwr@unfy.us
 unforgettability.net
 
-This file is part of UnfyOpenSCADLib.
-
-UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-GNU General Public License as published by the Free Software Foundation, either version 3 of
-the License, or (at your option) any later version.
-
-UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-If not, see <https://www.gnu.org/licenses/>.
+unfy_cablemanagement contains a collection of modules for generating clips and strain reliefs for cables.
 
 ## File Contents
 

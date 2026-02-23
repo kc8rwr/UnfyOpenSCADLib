@@ -26,60 +26,62 @@ So far this feature has been developed only for bolt holes and not the other par
 - [`unf_fnr_size`](#function-unf_fnr_size) – Fastener Size
 - [`unf_fnr_diameter`](#function-unf_fnr_diameter) – Fastener Clearance Diameter
 - [`unf_fnr_shaft_diameter`](#function-unf_fnr_shaft_diameter) – Fastener Shaft Diameter
-- [`unf_shaft`](#module-unf_shaft) – Fastener Shaft
-- [`distortion_test_block`](#module-distortion_test_block) – Shaft Distortion Test Block
 
-2. [Section: Cap Bolts - unf\_cap\_*](#section-cap-bolts---unf_cap_)
+2. [Section: Distorted Shafts](#section-distorted-shafts)
+    - [`unf_shaft`](#module-unf_shaft) – Fastener Shaft
+    - [`distortion_test_block`](#module-distortion_test_block) – Shaft Distortion Test Block
+
+3. [Section: Cap Bolts - unf\_cap\_*](#section-cap-bolts---unf_cap_)
     - [`unf_cap_v`](#function-unf_cap_v) – Cap Head Bolt Vector
     - [`unf_cap_head_diameter`](#function-unf_cap_head_diameter) – Cap Head Bolt Clearance Diameter
     - [`unf_cap_head_height`](#function-unf_cap_head_height) – Cap Head Bolt Head Height
     - [`unf_cap_default_length`](#function-unf_cap_default_length) – Cap Head Bolt Default Length
     - [`unf_cap`](#module-unf_cap) – Cap Head Bolt
 
-3. [Section: Countersunk Bolts - unf\_csk\_*](#section-countersunk-bolts---unf_csk_)
+4. [Section: Countersunk Bolts - unf\_csk\_*](#section-countersunk-bolts---unf_csk_)
     - [`unf_csk_v`](#function-unf_csk_v) – Counter Sunk Bolt Vector
     - [`unf_csk_head_diameter`](#function-unf_csk_head_diameter) – Countersunk Head Clearance Diameter
     - [`unf_csk_head_height`](#function-unf_csk_head_height) – Countersunk Head Height
     - [`unf_csk_default_length`](#function-unf_csk_default_length) – Countersunk Bolt Default Length
     - [`unf_csk`](#module-unf_csk) – Countersunk Bolt
 
-4. [Section: Hex Head Bolts - unf\_hex\_*](#section-hex-head-bolts---unf_hex_)
+5. [Section: Hex Head Bolts - unf\_hex\_*](#section-hex-head-bolts---unf_hex_)
     - [`unf_hex_v`](#function-unf_hex_v) – Hex Head Bolt Vector
     - [`unf_hex_head_diameter`](#function-unf_hex_head_diameter) – Hex Head Bolt Clearance Diameter
     - [`unf_hex_head_height`](#function-unf_hex_head_height) – Hex Head Height
     - [`unf_hex_default_length`](#function-unf_hex_default_length) – Hex Head Bolt Default Length
     - [`unf_hex`](#module-unf_hex) – Hex Head Bolt
 
-5. [Section: Heatset Inserts - unf\_hst\_*](#section-heatset-inserts---unf_hst_)
+6. [Section: Heatset Inserts - unf\_hst\_*](#section-heatset-inserts---unf_hst_)
     - [`unf_hst_v`](#function-unf_hst_v) – Heatset Insert Vector
     - [`unf_hst_diameter`](#function-unf_hst_diameter) – Heatset Insert Diameter
     - [`unf_hst_height`](#function-unf_hst_height) – Heatset Insert Height
     - [`unf_hst`](#module-unf_hst) – Heatset Insert
 
-6. [Section: Hex Nut - unf\_nut\_*](#section-hex-nut---unf_nut_)
+7. [Section: Hex Nut - unf\_nut\_*](#section-hex-nut---unf_nut_)
     - [`unf_nut_v`](#function-unf_nut_v) – hex-nut vector
     - [`unf_nut_diameter`](#function-unf_nut_diameter) – Hex Nut Clearance Diameter
     - [`unf_nut_height`](#function-unf_nut_height) – Hex Nut Height
     - [`unf_nut`](#module-unf_nut) – Hex Nut
 
-7. [Section: Square Nut - unf\_sqr\_*](#section-square-nut---unf_sqr_)
+8. [Section: Square Nut - unf\_sqr\_*](#section-square-nut---unf_sqr_)
     - [`unf_sqr_v`](#function-unf_sqr_v) – Square Nut Vector
     - [`unf_sqr_length`](#function-unf_sqr_length) – Square Nut Side Length
     - [`unf_sqr_height`](#function-unf_sqr_height) – Square Nut Height / Thickness
     - [`unf_sqr`](#module-unf_sqr) – Square Nut
 
-8. [Section: Washer unf\_wsh\_*](#section-washer-unf_wsh_)
+9. [Section: Washer unf\_wsh\_*](#section-washer-unf_wsh_)
     - [`unf_wsh_v`](#function-unf_wsh_v) – Washer Vector
     - [`unf_wsh_head_diameter`](#function-unf_wsh_head_diameter) – Washer Clearance Diameter
     - [`unf_wsh_head_height`](#function-unf_wsh_head_height) – Washer Thickness (height lying flat)
     - [`unf_wsh`](#module-unf_wsh) – Washer
 
-9. [Section: Pillar](#section-pillar)
+10. [Section: Pillar](#section-pillar)
     - [`unf_pillar_pos`](#module-unf_pillar_pos) – Render the positive part of a fastener pillar
     - [`unf_pillar_neg`](#module-unf_pillar_neg) – Render the negative part of a fastener pillar
     - [`unf_pillar`](#module-unf_pillar) – Render a fastener pillar
 
-10. [Section: Licensing](#section-licensing)
+11. [Section: Licensing](#section-licensing)
 
 
 ### Function: unf\_fnr\_type
@@ -164,6 +166,9 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 ---
 
+## Section: Distorted Shafts
+
+
 ### Module: unf\_shaft
 
 **Synopsis:** Fastener Shaft
@@ -176,9 +181,9 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 Render a fastener shaft hole, optionally with distortions to account for overhang sagging when 3d-printing.
 
-**Figure 1.5.1:** various values of unf\_hdist\_x and unf\_hdist\_y. (0, 0) or distorted=false would be a perfect circle.
+**Figure 2.1.1:** various values of unf\_hdist\_x and unf\_hdist\_y. (0, 0) or distorted=false would be a perfect circle.
 
-<img align="left" alt="unf\_shaft Figure 1.5.1" src="images/unfy_fasteners/figure_1_5_1.png" width="640" height="480">
+<img align="left" alt="unf\_shaft Figure 2.1.1" src="images/unfy_fasteners/figure_2_1_1.png" width="640" height="480">
 
 <br clear="all" />
 
@@ -210,9 +215,9 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 
 Render a block with a series of distorted bolt shafts with varying values of unf_hdist_x and unf_hdist_y for choosing the best values to use with a particular setup.
 
-**Figure 1.6.1:** 
+**Figure 2.2.1:** 
 
-<img align="left" alt="distortion\_test\_block Figure 1.6.1" src="images/unfy_fasteners/figure_1_6_1.png" width="640" height="480">
+<img align="left" alt="distortion\_test\_block Figure 2.2.1" src="images/unfy_fasteners/figure_2_2_1.png" width="640" height="480">
 
 <br clear="all" />
 
@@ -334,9 +339,9 @@ Retrieve a default length for a cap head bolt given it's size. Probably not very
 
 Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the cap head is rendered as a simple cylinder with the diameter of the widest part of the actual head. This is because it is meant for being a negative, to recess a bolt and not for printing an actual bolt.
 
-**Figure 2.5.1:** note - the head\_ext area is semi-transparent.
+**Figure 3.5.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_cap Figure 2.5.1" src="images/unfy_fasteners/figure_2_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_cap Figure 3.5.1" src="images/unfy_fasteners/figure_3_5_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -458,9 +463,9 @@ Retrieve a default length for a countersunk bolt given it's size. Probably not v
 
 Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the cap head is rendered as a simple cylinder with the diameter of the widest part of the actual head. This is because it is meant for being a negative, to recess a bolt and not for printing an actual bolt.
 
-**Figure 3.5.1:** note - the head\_ext area is semi-transparent.
+**Figure 4.5.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_csk Figure 3.5.1" src="images/unfy_fasteners/figure_3_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_csk Figure 4.5.1" src="images/unfy_fasteners/figure_4_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -582,9 +587,9 @@ Retrieve a default length for a hex head bolt given it's size. Probably not very
 
 Render a negative for a shaft and/or head-recess for a hex-head bolt.
 
-**Figure 4.5.1:** note - the head\_ext area is semi-transparent.
+**Figure 5.5.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_hex Figure 4.5.1" src="images/unfy_fasteners/figure_4_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_hex Figure 5.5.1" src="images/unfy_fasteners/figure_5_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -687,9 +692,9 @@ Retrieve the length in mm of the hole for a heatset insert given the size.
 
 Render a negative for a heatset-insert hole.
 
-**Figure 5.4.1:** note - the head\_ext, extra\_room and bolt shaft areas are semi-transparent.
+**Figure 6.4.1:** note - the head\_ext, extra\_room and bolt shaft areas are semi-transparent.
 
-<img align="left" alt="unf\_hst Figure 5.4.1" src="images/unfy_fasteners/figure_5_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_hst Figure 6.4.1" src="images/unfy_fasteners/figure_6_4_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -780,9 +785,9 @@ Retrieve the height (thickness) of a typical hex nut given the bolt size.
 
 Render a negative for a hex nut hole.
 
-**Figure 6.4.1:** note - the ext area is semi-transparent.
+**Figure 7.4.1:** note - the ext area is semi-transparent.
 
-<img align="left" alt="unf\_nut Figure 6.4.1" src="images/unfy_fasteners/figure_6_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_nut Figure 7.4.1" src="images/unfy_fasteners/figure_7_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -875,9 +880,9 @@ Retrieve the thickness of a square nut, it's height when lying flat.
 
 Render a negative for a square shaped nut
 
-**Figure 7.4.1:** note - the ext area is semi-transparent.
+**Figure 8.4.1:** note - the ext area is semi-transparent.
 
-<img align="left" alt="unf\_sqr Figure 7.4.1" src="images/unfy_fasteners/figure_7_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_sqr Figure 8.4.1" src="images/unfy_fasteners/figure_8_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -971,9 +976,9 @@ Retrieve the height or thickness in mm of a washer given the bolt size.
 
 Render a negative for a washer. Does not include a bolt hole since it is only meant to be a negative for recessing a vitamin, not an actual printed washer.
 
-**Figure 8.4.1:** note - the head\_ext area is semi-transparent.
+**Figure 9.4.1:** note - the head\_ext area is semi-transparent.
 
-<img align="left" alt="unf\_wsh Figure 8.4.1" src="images/unfy_fasteners/figure_8_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_wsh Figure 9.4.1" src="images/unfy_fasteners/figure_9_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -1002,9 +1007,9 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 *Stil under Construction* Calculates the diameter needed for a support piller that will contain a heatset insert or a nut. Then render the positive part of the pillar.
 
-**Figure 9.1.1:** 
+**Figure 10.1.1:** 
 
-<img align="left" alt="unf\_pillar\_pos Figure 9.1.1" src="images/unfy_fasteners/figure_9_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_pillar\_pos Figure 10.1.1" src="images/unfy_fasteners/figure_10_1_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -1034,15 +1039,15 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 *Stil under Construction* Render that which should be subtracted from a pillar so that fasteners may be added.
 
-**Figure 9.2.1:** Heatset Insert
+**Figure 10.2.1:** Heatset Insert
 
-<img align="left" alt="unf\_pillar\_neg Figure 9.2.1" src="images/unfy_fasteners/figure_9_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_pillar\_neg Figure 10.2.1" src="images/unfy_fasteners/figure_10_2_1.png" width="320" height="240">
 
 <br clear="all" />
 
-**Figure 9.2.2:** Hexnut
+**Figure 10.2.2:** Hexnut
 
-<img align="left" alt="unf\_pillar\_neg Figure 9.2.2" src="images/unfy_fasteners/figure_9_2_2.png" width="320" height="240">
+<img align="left" alt="unf\_pillar\_neg Figure 10.2.2" src="images/unfy_fasteners/figure_10_2_2.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -1072,15 +1077,15 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 *Stil under Construction* Render a pillar which will contain a heatset insert or nut and a bolt hole.
 
-**Figure 9.3.1:** Heatset Insert
+**Figure 10.3.1:** Heatset Insert
 
-<img align="left" alt="unf\_pillar Figure 9.3.1" src="images/unfy_fasteners/figure_9_3_1.png" width="320" height="240">
+<img align="left" alt="unf\_pillar Figure 10.3.1" src="images/unfy_fasteners/figure_10_3_1.png" width="320" height="240">
 
 <br clear="all" />
 
-**Figure 9.3.2:** Hexnut
+**Figure 10.3.2:** Hexnut
 
-<img align="left" alt="unf\_pillar Figure 9.3.2" src="images/unfy_fasteners/figure_9_3_2.png" width="320" height="240">
+<img align="left" alt="unf\_pillar Figure 10.3.2" src="images/unfy_fasteners/figure_10_3_2.png" width="320" height="240">
 
 <br clear="all" />
 
