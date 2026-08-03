@@ -224,6 +224,74 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 }
 
 /*
+  Creates a 3d cuboid with rounded corners
+  size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
+  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
+           or a single number to make all corners the same
+  edge_r: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
+           or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
+	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
+           or a single number to make all edges the same
+ */
+module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge1_r=0, edge2_r=0) {
+	echo ([$fn, $fa, $fs]);
+    let(
+        // 1. Resolve primary radii/diameters
+        has_individual = (r1 > 0 || r2 > 0 || d1 > 0 || d2 > 0),
+        
+        r1 = has_individual ? (r1 > 0 ? r1 : d1 / 2) : (r > 0 ? r : (d > 0 ? d / 2 : 1)),
+        r2 = has_individual ? (r2 > 0 ? r2 : d2 / 2) : (r > 0 ? r : (d > 0 ? d / 2 : 1)),
+        
+        d1 = r1 * 2,
+        d2 = r2 * 2,
+        
+        r = (r1 == r2) ? r1 : 0,
+        d = r * 2,
+
+        // 2. Resolve edge radii with constraints
+        has_edge_individual = (edge1_r > 0 || edge2_r > 0),
+        
+        raw_edge1 = has_edge_individual ? (edge1_r > 0 ? edge1_r : edge_r) : edge_r,
+        raw_edge2 = has_edge_individual ? (edge2_r > 0 ? edge2_r : edge_r) : edge_r,
+
+        edge1_r = (raw_edge1 > 0) ? min(raw_edge1, h / 2, r1) : 0,
+        edge2_r = (raw_edge2 > 0) ? min(raw_edge2, h / 2, r2) : 0,
+        
+        edge_r = (edge1_r > 0) ? edge1_r : edge2_r,
+
+		  base_r = function(z) r1 + ((r2-r1) * (z / h))
+    ) {
+		 // Bottom Edge
+		 if (0 < edge1_r) {
+			 slice1 = edge1_r / unf_effective_fn(radius=edge1_r, angle=90);
+			 for (z = [edge1_r : -slice1 : slice1]) {
+				 x2 = sqrt(pow(edge1_r, 2) - pow(edge1_r - z, 2));
+				 x1 = sqrt(pow(edge1_r, 2) - pow(edge1_r - (z - slice1), 2));		 
+				 translate([0, 0, z]) {
+					 cylinder(h=slice1, r1 = base_r(z)-edge1_r+x1, base_r(z+slice1)-edge1_r+x2);
+				 }
+			 }
+		 } 
+		 
+		 translate([0, 0, edge1_r]){
+			 cylinder(r1=base_r(edge1_r), r2=base_r(h-edge2_r), h=h-(edge1_r+edge2_r));
+		 }
+
+		 // Top Edge
+		 if (0 < edge2_r) {
+			 slice2 = edge2_r / unf_effective_fn(radius=edge2_r, angle=90);
+			 for (z = [edge2_r : -slice2 : slice2]) {
+				 x1 = sqrt(pow(edge2_r, 2) - pow(edge2_r - z, 2));
+				 x2 = sqrt(pow(edge2_r, 2) - pow(edge2_r - (z - slice2), 2));		 
+				 translate([0, 0, h-z-slice2]) {
+					 cylinder(h=slice2, r1 = base_r(z)-edge2_r+x1, base_r(z+slice2)-edge2_r+x2);
+				 }
+			 }
+		 }
+    }
+}
+
+/*
   Draw an oval by size
 */
 module unf_oval(size = [8, 4]){
