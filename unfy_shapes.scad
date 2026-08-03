@@ -20,19 +20,25 @@
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
 
-test_shape="round_cube"; //["round_cube", "round_rectangle", "oval", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
+test_shape="unf_roundedCuboid"; //["unf_roundedRectangle", "unf_roundedCuboid", "unf_roundedCylinder", "oval", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
 
 $fn = $preview ? 36 : 360;
 $over = 0.1;
 
-/* [ Rounded Cube ] */
+/* [ unf_roundedRectangle ] */
+rectangle_size=[50, 25];
+rectangle_corners=[0, 1, 2, 3];
+
+/* [ unf_RoundedCuboid ] */
 cube_size=[20, 10, 5];
 cube_corners=[1, 1, 1, 1];
 cube_edge_r=[1, 2, 1, 2, 1, 2, 1, 2];
 
-/* [ Rounded Rectangle ] */
-rectangle_size=[50, 25];
-rectangle_corners=[0, 1, 2, 3];
+/* [ unf_roundedCylinder ] */
+cylinder_r1 = 10;
+cylinder_r2 = 5;
+cylinder_edge_r = 1;
+cylinder_h = 15;
 
 /* [ Oval ] */
 oval_xdiameter = 20;
@@ -58,12 +64,25 @@ bezfr_control_height_pct = 50; //[0:100]
 bezfr_control_pinch_pct = 50; //[0:200]
 bezfr_length = 15; //[1:30]
 
-/*
-  Creates a 2d rectangle with rounded corners
-  size: may be a 2d vector [x, y] or may be a single number creating a square equivalent to [x, x]
-  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
-           or a single number to make all corners the same
- */
+// Module: unf_roundedRectangle
+// Usage:
+//   unf_roundedRectangle(<args>);
+// Description:
+//   Creates a 2d rectangle with rounded corners.
+// Arguments:
+//   ---
+//   size = may be a 2d vector [x, y] or a single number creating a square equivalent to [x, x] ([18, 5])
+//   corners = a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)] or a single number to make all corners the same ([1, 1, 1, 1])
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedRectangle();
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedRectangle(size=[40, 20], corners=[0, 4, 8, 12]);
 module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   let (size = is_num(size) ? [size, size] : size,
        corners = is_num(corners) ? [corners, corners, corners, corners] : corners){
@@ -105,16 +124,26 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
   }
 }
 
-/*
-  Creates a 3d cuboid with rounded corners
-  size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
-  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
-           or a single number to make all corners the same
-  edge_r: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
-           or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
-	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
-           or a single number to make all edges the same
- */
+// Module: unf_roundedCuboid
+// Usage:
+//   unf_roundedCuboid(<args>);
+// Description:
+//   Creates a 3d cuboid with rounded corners.
+// Arguments:
+//   ---
+//   size = may be a 3d vector [x, y, z] or a single number creating a cube equivalent to [x, x, x] ([20, 10, 5])
+//   corners = a vector containing the radiuses of each rounded corner ordered [[0,0], [x,0], [x,y], [0,y]] or a single number making all corners the same ([1, 1, 1, 1])
+//   edge_r = an 8-dimensional vector containing the radiuses of each rounded edge [FT, RT, BT, LT, FB, RB, BB, LB], or 4-dim [F, R, B, L], 2-dim [T, B], or single number ([1, 2, 1, 2, 1, 2, 1, 2])
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedCuboid();
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedCuboid(size=[30, 20, 10], corners=2, edge_r=3);
 module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1, 2, 1, 2, 1, 2]){
   function calc(base_x, base_y, r1, r2, r3, r4) = let(r_max = max(r1, r2, r3, r4),
 						      req_slices = unf_effective_fn(radius=r_max, angle=90),
@@ -223,16 +252,33 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
   }
 }
 
-/*
-  Creates a 3d cuboid with rounded corners
-  size: may be a 3d vector [x, y, z] or may be a single number creating a cube equivalent to [x, x, x]
-  corners: a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)]
-           or a single number to make all corners the same
-  edge_r: an 8-dimensional vector containing the radiuses of each rounded edge (0 for no-rounding) [FT, RT, BT, LT, FB, RB, BB, LB] - F-Front R-Right B-Back L-Left | T-Top B-Bottom
-           or a 4-dimensional vector, creating a cuboid where the top matches the bottom [F, R, B, L]
-	   or a 2-dimensional vector, creating a cuboid where the top edges are all one value, the bottom all another [T, B]
-           or a single number to make all edges the same
- */
+// Module: unf_roundedCylinder
+// Usage:
+//   unf_roundedCylinder(<args>);
+// Description:
+//   Creates a cylinder with rounded top and/or bottom edges.
+// Arguments:
+//   ---
+//   r = radius of cylinder (0)
+//   d = diameter of cylinder (0)
+//   r1 = bottom radius (0)
+//   r2 = top radius (0)
+//   d1 = bottom diameter (0)
+//   d2 = top diameter (0)
+//   h = height of cylinder (1)
+//   edge_r = general edge radius for both ends (0)
+//   edge1_r = bottom edge radius (0)
+//   edge2_r = top edge radius (0)
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedCylinder(r=10, h=20, edge_r=2);
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_roundedCylinder(r1=15, r2=5, h=25, edge1_r=3, edge2_r=1);
 module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge1_r=0, edge2_r=0) {
 	echo ([$fn, $fa, $fs]);
     let(
@@ -268,7 +314,7 @@ module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge
 				 x2 = sqrt(pow(edge1_r, 2) - pow(edge1_r - z, 2));
 				 x1 = sqrt(pow(edge1_r, 2) - pow(edge1_r - (z - slice1), 2));		 
 				 translate([0, 0, z]) {
-					 cylinder(h=slice1, r1 = base_r(z)-edge1_r+x1, base_r(z+slice1)-edge1_r+x2);
+					 cylinder(h=slice1, r1 = base_r(z)-edge1_r+x1, r2=base_r(z+slice1)-edge1_r+x2);
 				 }
 			 }
 		 } 
@@ -277,23 +323,40 @@ module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge
 			 cylinder(r1=base_r(edge1_r), r2=base_r(h-edge2_r), h=h-(edge1_r+edge2_r));
 		 }
 
-		 // Top Edge
+
+		 // Top Edge (Smooth and Correctly Oriented)
 		 if (0 < edge2_r) {
 			 slice2 = edge2_r / unf_effective_fn(radius=edge2_r, angle=90);
 			 for (z = [edge2_r : -slice2 : slice2]) {
 				 x1 = sqrt(pow(edge2_r, 2) - pow(edge2_r - z, 2));
 				 x2 = sqrt(pow(edge2_r, 2) - pow(edge2_r - (z - slice2), 2));		 
-				 translate([0, 0, h-z-slice2]) {
-					 cylinder(h=slice2, r1 = base_r(z)-edge2_r+x1, base_r(z+slice2)-edge2_r+x2);
+				 translate([0, 0, h - z]) {
+					 cylinder(h=slice2, r1 = base_r(h - z) - edge2_r + x1, r2 = base_r(h - z + slice2) - edge2_r + x2);
 				 }
 			 }
 		 }
     }
 }
 
-/*
-  Draw an oval by size
-*/
+
+// Module: unf_oval
+// Usage:
+//   unf_oval(<args>);
+// Description:
+//   Draw an oval by size.
+// Arguments:
+//   ---
+//   size = 2d vector [x, y] for oval dimensions ([8, 4])
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_oval();
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_oval(size=[30, 10]);
 module unf_oval(size = [8, 4]){
 	if (size.x == size.y){
 		circle(d=size.x);
@@ -304,12 +367,25 @@ module unf_oval(size = [8, 4]){
 	}
 }
 
-/*
-  Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather than a straight line
-  Good for building up inside-corners for a more rounded look or added strength
-  size = a 2d vector [x, y] or a single number to be used for both, same as [x, x]
-  v - a vector to affect the shape of the bezier curve
-*/
+// Module: unf_bezierWedge2d
+// Usage:
+//   unf_bezierWedge2d(<args>);
+// Description:
+//   Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather than a straight line. Good for inside-corners.
+// Arguments:
+//   ---
+//   size = a 2d vector [x, y] or a single number ([5, 15])
+//   v = a vector to affect the shape of the bezier curve (false)
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_bezierWedge2d();
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_bezierWedge2d(size=[10, 20], v=[2, 8]);
 module unf_bezierWedge2d(size=[5, 15], v=false){
   let (size = is_num(size) ? [size, size] : size,
        v = is_list(v) ? v : (is_list(size) && 2 <= len(size) ? [size.x/4, size.y/4] : false)){
@@ -329,77 +405,111 @@ module unf_bezierWedge2d(size=[5, 15], v=false){
   }
 }
 
-/*
-  A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along the hypotenuse
-  Good for building up inside-corners for a more rounded look or added strength
-  size = a 3d vector [x, y, z] or a single number to be used for both, same as [x, x, x]
-  v - a vector to affect the shape of the bezier curve
-*/
+// Module: unf_bezierWedge3d
+// Usage:
+//   unf_bezierWedge3d(<args>);
+// Description:
+//   A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along the hypotenuse.
+// Arguments:
+//   ---
+//   size = a 3d vector [x, y, z] or a single number ([5, 15, 15])
+//   rounded_edges = vector or number for edge rounding ([1, 1])
+// Figure(Spin;VPD=100;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_bezierWedge3d();
+// Figure(Spin;VPD=150;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_bezierWedge3d(size=[10, 20, 20], rounded_edges=[2, 3]);
 module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
-  let(size = is_num(size) ? [size, size, size] : size,
-      rounded_edges = is_num(rounded_edges) ? [rounded_edges, rounded_edges] : rounded_edges){
+	let(size = is_num(size) ? [size, size, size] : size,
+		 rounded_edges = is_num(rounded_edges) ? [rounded_edges, rounded_edges] : rounded_edges){
     
-    if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
-      assert(false, "size must be a positive number or a vector of 3 positive numbers");
-    }
-    
-    if (!is_list(rounded_edges) || 2 != len(rounded_edges) || 0 > rounded_edges.x || 0 > rounded_edges.y){
-      assert(false, str("rounded_edges, '", rounded_edges, "' must be zero, a positive number or a vector of 2 such numbers"));
-    }
-    
-    middle_height = size.z - (rounded_edges.y + rounded_edges.x);
-    bottom_fn = min(unf_effective_fn(radius=rounded_edges.y, angle=90), rounded_edges.y/$over);
-    bottom_fs = rounded_edges.y/bottom_fn;
-    bottom_diffs = [ for(i=[0:1/bottom_fn:1]) [rounded_edges.y-(sqrt(pow(rounded_edges.y, 2)-pow(i*rounded_edges.y, 2))), (1-i)*rounded_edges.y] ];
-    top_fn = min(unf_effective_fn(radius=rounded_edges.x, angle=90), rounded_edges.x/$over);
-    top_fs = rounded_edges.x/top_fn;
-    top_diffs = [ for(i=[0:1/top_fn:1]) [rounded_edges.x-(sqrt(pow(rounded_edges.x, 2)-pow(i*rounded_edges.x, 2))), i*rounded_edges.x] ];
-
-
-    translate([0, size.z, 0]){
-      rotate([90, 0, 0]){
-	
-	// Do Bottom
-	if (0 < rounded_edges.y){
-	  for (i = [1 : len(bottom_diffs)-1]){
-	    bottom = bottom_diffs[i];
-	    translate([0, 0, bottom.y]){
-	      linear_extrude(bottom_fs){
-		unf_bezierWedge2d(size = [size.x-bottom.x, size.y-bottom.x]);
-	      }
-	    }
-	  }
-	}
-	
-	// Do Middle
-	if (0 < middle_height){
-	  translate([0, 0, rounded_edges.y]){
-	    linear_extrude(middle_height){
-	      unf_bezierWedge2d(size=[size.x, size.y]);
-	    }
-	  }
-	}
-
-	// Do Top
-	if (0 < rounded_edges.x){
-	  translate([0, 0, rounded_edges.y + middle_height]){
-	    for (i = [len(top_diffs)-2 : -1 : 0]){
-	      bottom = top_diffs[i];
-	      translate([0, 0, bottom.y]){
-		linear_extrude(top_fs){
-		  unf_bezierWedge2d(size = [size.x-bottom.x, size.y-bottom.x]);
+		if (!is_list(size) || 3 != len(size) || 0 >=size.x || 0 >= size.y || 0 >= size.z){
+			assert(false, "size must be a positive number or a vector of 3 positive numbers");
 		}
-	      }
-	    }
-	  }
-	}
-      
+    
+		if (!is_list(rounded_edges) || 2 != len(rounded_edges) || 0 > rounded_edges.x || 0 > rounded_edges.y){
+			assert(false, str("rounded_edges, '", rounded_edges, "' must be zero, a positive number or a vector of 2 such numbers"));
+		}
+    
+		middle_height = size.z - (rounded_edges.y + rounded_edges.x);
+		bottom_fn = min(unf_effective_fn(radius=rounded_edges.y, angle=90), rounded_edges.y/$over);
+		bottom_fs = rounded_edges.y/bottom_fn;
+		bottom_diffs = [ for(i=[0:1/bottom_fn:1]) [rounded_edges.y-(sqrt(pow(rounded_edges.y, 2)-pow(i*rounded_edges.y, 2))), (1-i)*rounded_edges.y] ];
+		top_fn = min(unf_effective_fn(radius=rounded_edges.x, angle=90), rounded_edges.x/$over);
+		top_fs = rounded_edges.x/top_fn;
+		top_diffs = [ for(i=[0:1/top_fn:1]) [rounded_edges.x-(sqrt(pow(rounded_edges.x, 2)-pow(i*rounded_edges.x, 2))), i*rounded_edges.x] ];
+
+
+		translate([0, size.z, 0]){
+			rotate([90, 0, 0]){
 	
-      }
-    }
-  }
+				// Do Bottom
+				if (0 < rounded_edges.y){
+					for (i = [1 : len(bottom_diffs)-1]){
+						bottom = bottom_diffs[i];
+						translate([0, 0, bottom.y]){
+							linear_extrude(bottom_fs){
+								unf_bezierWedge2d(size = [size.x-bottom.x, size.y-bottom.x]);
+							}
+						}
+					}
+				}
+	
+				// Do Middle
+				if (0 < middle_height){
+					translate([0, 0, rounded_edges.y]){
+						linear_extrude(middle_height){
+							unf_bezierWedge2d(size=[size.x, size.y]);
+						}
+					}
+				}
+
+				// Do Top
+				if (0 < rounded_edges.x){
+					translate([0, 0, rounded_edges.y + middle_height]){
+						for (i = [len(top_diffs)-2 : -1 : 0]){
+							bottom = top_diffs[i];
+							translate([0, 0, bottom.y]){
+								linear_extrude(top_fs){
+									unf_bezierWedge2d(size = [size.x-bottom.x, size.y-bottom.x]);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
+// Module: unf_bezier_frustrum
+// Usage:
+//   unf_bezier_frustrum(<args>);
+// Description:
+//   Creates a 3D frustum shaped object transitioning via bezier curves with optional edge rounding.
+// Arguments:
+//   ---
+//   base_d = uniform base diameter (0)
+//   base_dx = base x dimension (80)
+//   base_dy = base y dimension (60)
+//   base_edge_r = base edge rounding radius (0)
+//   end_d = uniform end diameter (0)
+//   end_dx = end x dimension (20)
+//   end_dy = end y dimension (40)
+//   end_edge_r = end edge rounding radius (0)
+//   control_height_pct = height percentage for bezier control point (50)
+//   control_pinch_pct = pinch percentage for bezier control point (50)
+//   length = total length along z axis (300)
+// Figure(Spin;VPD=150;NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_bezier_frustrum(base_dx=40, base_dy=30, end_dx=10, end_dy=20, length=100);
 module unf_bezier_frustrum(
 	base_d = 0,
 	base_dx = 80,
@@ -461,12 +571,55 @@ module unf_bezier_frustrum(
 	}
 }
 
-if ("round_cube" == test_shape){
+// Module: unf_mount_tab
+// Usage:
+//   unf_mount_tab(<args>);
+// Description:
+//   Creates a mounting tab with an integrated bolt hole, washer recess, and reinforcing web supports.
+// Arguments:
+//   ---
+//   tab_length = length dimension of the mounting tab
+//   tab_height = thickness/height of the tab
+//   bolt_d = diameter of the bolt hole
+//   washer_v = washer definition vector for the recess
+//   wall = wall thickness parameter
+// Figure(Spin;VPD=150;NoAxes): sample
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_mount_tab(tab_length=20, tab_height=5, bolt_d=4.5, washer_v=[8, 1], wall=3);
+module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
+  difference(){
+    unf_roundedCuboid([tab_length+(4*wall), tab_length, tab_height], edge_r=[wall, wall, 0, wall, 0, 0, 0, 0], corners=[wall, wall, 0, 0]);
+    translate([(tab_length/2)+(2*wall), tab_length/2, -$over]){
+      cylinder(d=bolt_d, h=tab_height+(2*$over));
+      translate([0, 0, wall+(2*$over)]){
+	unf_wsh(size=washer_v, ext=$over);
+      }
+    }
+  }
+  translate([wall, tab_length, tab_height]){
+	  rotate([0, 0, -90]){
+		  unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
+		  for(y=[0, tab_length+wall]){
+			  translate([0, y, 0]){
+				  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
+			  }
+		  }
+	  }
+  }
+}
+
+if ("unf_roundedRectangle" == test_shape){
+  unf_roundedRectangle(size=rectangle_size, corners=rectangle_corners);
+}
+
+if ("unf_roundedCuboid" == test_shape){
   unf_roundedCuboid(size=cube_size, corners=cube_corners, edge_r=cube_edge_r);
 }
 
-if ("round_rectangle" == test_shape){
-  unf_roundedRectangle(size=rectangle_size, corners=rectangle_corners);
+if ("unf_roundedCylinder" == test_shape){
+	unf_roundedCylinder(r1=cylinder_r1, r2=cylinder_r2, edge_r=cylinder_edge_r, h=cylinder_h);
 }
 
 if ("oval" == test_shape){
@@ -497,24 +650,3 @@ if ("bezier_frustrum" == test_shape){
 	);
  }
 
-module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
-  difference(){
-    unf_roundedCuboid([tab_length+(4*wall), tab_length, tab_height], edge_r=[wall, wall, 0, wall, 0, 0, 0, 0], corners=[wall, wall, 0, 0]);
-    translate([(tab_length/2)+(2*wall), tab_length/2, -$over]){
-      cylinder(d=bolt_d, h=tab_height+(2*$over));
-      translate([0, 0, wall+(2*$over)]){
-	unf_wsh(size=washer_v, ext=$over);
-      }
-    }
-  }
-  translate([wall, tab_length, tab_height]){
-	  rotate([0, 0, -90]){
-		  unf_bezierWedge3d(size=[wall, wall, tab_length+(2*wall)]);
-		  for(y=[0, tab_length+wall]){
-			  translate([0, y, 0]){
-				  unf_bezierWedge3d(size=[tab_length-wall, tab_length-wall, wall], rounded_edges=wall/2);
-			  }
-		  }
-	  }
-  }
-}
