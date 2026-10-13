@@ -1,4 +1,4 @@
-# LibFile: unfy\_brackets.scad
+# LibFile: unfy\_shapes.scad
 
 UnfyOpenSCADLib Copyright Leif Burrow 2026
 kc8rwr@unfy.us

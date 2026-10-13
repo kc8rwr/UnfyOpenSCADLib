@@ -8,17 +8,17 @@ unfy_cablemanagement contains a collection of modules for generating clips and s
 
 ## File Contents
 
-- [`unf_cableClip_positive`](#module-unf_cableclip_positive)
+- [`unf_cableClip_Positive`](#module-unf_cableclip_positive)
 - [`unf_cableClip_Negative`](#module-unf_cableclip_negative)
 - [`unf_cableClip`](#module-unf_cableclip)
 - [`unf_clipInStrainRelief`](#module-unf_clipinstrainrelief)
 
 
-### Module: unf\_cableClip\_positive
+### Module: unf\_cableClip\_Positive
 
 **Usage:** 
 
-- unf_cableClip_positive(&lt;args&gt;);
+- unf_cableClip_Positive(&lt;args&gt;);
 
 **Description:** 
 
@@ -42,7 +42,7 @@ Just the positive part of a cable clip.
 
 **Figure 1.1.1:** 
 
-<img align="left" alt="unf\_cableClip\_positive Figure 1.1.1" src="images/unfy_cablemanagement/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_cableClip\_Positive Figure 1.1.1" src="images/unfy_cablemanagement/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 

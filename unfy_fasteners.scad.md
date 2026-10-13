@@ -55,12 +55,13 @@ So far this feature has been developed only for bolt holes and not the other par
 6. [Section: Heatset Inserts - unf\_hst\_*](#section-heatset-inserts---unf_hst_)
     - [`unf_hst_v`](#function-unf_hst_v) – Heatset Insert Vector
     - [`unf_hst_diameter`](#function-unf_hst_diameter) – Heatset Insert Diameter
-    - [`unf_hst_height`](#function-unf_hst_height) – Heatset Insert Height
+    - [`unf_hst_length`](#function-unf_hst_length) – Heatset Insert Length
     - [`unf_hst`](#module-unf_hst) – Heatset Insert
 
 7. [Section: Hex Nut - unf\_nut\_*](#section-hex-nut---unf_nut_)
     - [`unf_nut_v`](#function-unf_nut_v) – hex-nut vector
     - [`unf_nut_diameter`](#function-unf_nut_diameter) – Hex Nut Clearance Diameter
+    - [`unf_nut_small_d`](#function-unf_nut_small_d) – Hex Nut distance across flats
     - [`unf_nut_height`](#function-unf_nut_height) – Hex Nut Height
     - [`unf_nut`](#module-unf_nut) – Hex Nut
 
@@ -72,8 +73,8 @@ So far this feature has been developed only for bolt holes and not the other par
 
 9. [Section: Washer unf\_wsh\_*](#section-washer-unf_wsh_)
     - [`unf_wsh_v`](#function-unf_wsh_v) – Washer Vector
-    - [`unf_wsh_head_diameter`](#function-unf_wsh_head_diameter) – Washer Clearance Diameter
-    - [`unf_wsh_head_height`](#function-unf_wsh_head_height) – Washer Thickness (height lying flat)
+    - [`unf_wsh_diameter`](#function-unf_wsh_diameter) – Washer Clearance Diameter
+    - [`unf_wsh_height`](#function-unf_wsh_height) – Washer Thickness (height lying flat)
     - [`unf_wsh`](#module-unf_wsh) – Washer
 
 10. [Section: Pillar](#section-pillar)
@@ -660,13 +661,13 @@ Retrieve the diameter in mm of the hole for a heatset insert given the size.
 
 ---
 
-### Function: unf\_hst\_height
+### Function: unf\_hst\_length
 
-**Synopsis:** Heatset Insert Height
+**Synopsis:** Heatset Insert Length
 
 **Usage:** 
 
-- unf_hst_height(size_or_vector)
+- unf_hst_length(size_or_vector, [length])
 
 **Description:** 
 
@@ -677,6 +678,7 @@ Retrieve the length in mm of the hole for a heatset insert given the size.
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
 `size`               | size as a string or the unf_hst_v() vector itself
+`length`             | "small", "medium" or "large", or a number to just return that number ("medium")
 
 ---
 
@@ -753,6 +755,26 @@ Takes a fastener size or a hex nut vector and returns the clearance diameter
 
 ---
 
+### Function: unf\_nut\_small\_d
+
+**Synopsis:** Hex Nut distance across flats
+
+**Usage:** 
+
+- unf_nut_small_d(size_or_vector)
+
+**Description:** 
+
+Retrieve the distance across flats of a typical hex nut given the bolt size.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`size`               | size as a string or the unf_nut_v() vector itself
+
+---
+
 ### Function: unf\_nut\_height
 
 **Synopsis:** Hex Nut Height
@@ -785,9 +807,9 @@ Retrieve the height (thickness) of a typical hex nut given the bolt size.
 
 Render a negative for a hex nut hole.
 
-**Figure 7.4.1:** note - the ext area is semi-transparent.
+**Figure 7.5.1:** note - the ext area is semi-transparent.
 
-<img align="left" alt="unf\_nut Figure 7.4.1" src="images/unfy_fasteners/figure_7_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_nut Figure 7.5.1" src="images/unfy_fasteners/figure_7_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -924,13 +946,13 @@ Retrieve a vector representing the dimensions of a washer given the size. Will r
 
 ---
 
-### Function: unf\_wsh\_head\_diameter
+### Function: unf\_wsh\_diameter
 
 **Synopsis:** Washer Clearance Diameter
 
 **Usage:** 
 
-- unf_wsh_head_diameter(size_or_vector)
+- unf_wsh_diameter(size_or_vector)
 
 **Description:** 
 
@@ -944,13 +966,13 @@ Retrieve the outer diameter in mm of a washer given the bolt size.
 
 ---
 
-### Function: unf\_wsh\_head\_height
+### Function: unf\_wsh\_height
 
 **Synopsis:** Washer Thickness (height lying flat)
 
 **Usage:** 
 
-- unf_wsh_head_height(size_or_vector)
+- unf_wsh_height(size_or_vector)
 
 **Description:** 
 
