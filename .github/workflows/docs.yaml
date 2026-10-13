@@ -27,9 +27,9 @@ jobs:
           
       - name: Download OpenSCAD AppImage
         run: |
-           wget -q https://files.openscad.org/snapshots/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
-           chmod +x OpenSCAD-2025.05.02.ai25232-x86_64.AppImage
-           sudo ln -sf "$PWD/OpenSCAD-2025.05.02.ai25232-x86_64.AppImage" /usr/local/bin/openscad
+           wget -q https://files.openscad.org/snapshots/OpenSCAD-2026.08.09-x86_64.AppImage
+           chmod +x OpenSCAD-2026.08.09-x86_64.AppImage
+           sudo ln -sf "$PWD/OpenSCAD-2026.08.09-x86_64.AppImage" /usr/local/bin/openscad
 
       - name: Generate Markdown docs
         run: |
