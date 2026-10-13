@@ -1,21 +1,11 @@
-//
-// UnfyOpenSCADLib Copyright Leif Burrow 2026
-// kc8rwr@unfy.us
-// unforgettability.net
-//
-// This file is part of UnfyOpenSCADLib.
-//
-// UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-// GNU General Public License as published by the Free Software Foundation, either version 3 of
-// the License, or (at your option) any later version.
-//
-// UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-// If not, see <https://www.gnu.org/licenses/>.
-//
+// LibFile: unfy_powerboxes.scad
+//   UnfyOpenSCADLib Copyright Leif Burrow 2026
+//   kc8rwr@unfy.us
+//   unforgettability.net
+//   .
+//   This file is part of UnfyOpenSCADLib.
+//   .
+//   unfy_powerboxes contains modules for generating boxes for power inlets and fuse holders.
 
 use <../unfy_fasteners.scad>
 use <../unfy_shapes.scad>
@@ -51,6 +41,35 @@ wall = 4;
 $fn = $preview ? 36 : 360;
 $over = 0.01;
 
+// Module: unf_mounted_power_socket_box
+// Usage:
+//   unf_mounted_power_socket_box(&lt;args&gt;);
+// Description:
+//   Creates a box with an IEC C14 power inlet socket, a fuse holder hole and cable clips. Mounting tabs on the side and top allow it to be screwed to a surface such as the back of a desk or the side of a machine. The back is open except for a lip around the edges.
+// Arguments:
+//   ---
+//   step = [x, z] size of the step on the side of the box which the bottom cable clip is on ([20, 27])
+//   bolt_size = size of bolts for the mounting tabs (m4)
+//   back_lip = width of the lip around the open back (5)
+//   top_cable_d = diameter of the cable entering the top cable clip
+//   top_cable_bolt = bolt size for closing the top cable clip
+//   bottom_cable_d = diameter of the cable entering the bottom cable clip
+//   bottom_cable_bolt = bolt size for closing the bottom cable clip
+//   socket_fastener = how the C14 socket's bolts are held, "Heatset", "HexNut" or "PlainHole" (Heatset)
+//   socket_fastener_size = size of the C14 socket's bolts (M4)
+//   fuse_holder_hole_diameter = diameter of the hole for the fuse holder (12)
+//   fuse_holder_outer_diameter = outer diameter of the fuse holder, for spacing (14)
+//   fuse_holder_spacing = space around the fuse holder (4)
+//   fuse_holder_hole_shape = shape of the fuse holder hole, "circle", "d" or "doubled", see unf_DHole() (circle)
+//   fuse_holder_flat_width = for a "d" shaped hole the distance from the flat to the opposite side, for a "doubled" the distance between flats (5)
+//   fuse_holder_rotation = rotation of the fuse holder hole (0)
+//   support_skin = thickness of support skin, 0 for none (0.6)
+//   wall = thickness of walls (4)
+// Figure(Spin;VPD=340;VPT=[38,15,40];NoAxes): defaults
+//   $over = 0.01;
+//   $fn = 36;
+//   use <cases/unfy_powerboxes.scad>;
+//   unf_mounted_power_socket_box(top_cable_d=7.5, top_cable_bolt="M3", bottom_cable_d=7.5, bottom_cable_bolt="M3");
 module unf_mounted_power_socket_box(step=[20, 27],
 		 bolt_size = "m4",
 		 back_lip = 5,
@@ -103,7 +122,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
     unf_cableClip(location=[back_size.x-(corner_r/2), back_size.y-wall-(top_cable_d/2), back_size.z], rotation=[0, 0, -90], cable_d=top_cable_d, bolt=top_cable_bolt, hole_ext=back_size.z-(2*wall), support="vertical", support_skin=support_skin, body_color=body_color, support_color=support_color)
       
       // Bottom Cable Clip
-      unf_cableClip(location=[front_size.x+back_size.x, (3/4)*front_size.y, 0], rotation=[180, -90, 0], cable_d=top_cable_d, bolt=top_cable_bolt, hole_ext=front_size.x, body_color=body_color, support="none", center=false)
+      unf_cableClip(location=[front_size.x+back_size.x, (3/4)*front_size.y, 0], rotation=[180, -90, 0], cable_d=bottom_cable_d, bolt=bottom_cable_bolt, hole_ext=front_size.x, body_color=body_color, support="none", center=false)
       
       // Socket
       unf_C14Socket(rotation=[0, 90, 180], location=[wall-$over, (unf_c14_size().y+front_size.y)/2, unf_c14_size().x+c14_zpos], fastener=socket_fastener, bolt=socket_fastener_size, support_skin="vertical", restriction_l=fuse_holder_spacing, restriction_r=c14_zpos, body_color=body_color, support_color=support_color, support_skin_t=support_skin, wall=wall){
@@ -190,7 +209,7 @@ if ("MountedPowerBox" == part){
 	    bottom_cable_d = bottom_cable_d,
 	    bottom_cable_bolt = bottom_cable_bolt,
 	    socket_fastener=socket_fastener,
-	    socket_fastener_size=socket_fastener,
+	    socket_fastener_size=socket_fastener_size,
 	    fuse_holder_hole_diameter = fuse_holder_hole_diameter,
 	    fuse_holder_outer_diameter = fuse_holder_outer_diameter,
 	    fuse_holder_spacing = fuse_holder_spacing,
@@ -200,3 +219,16 @@ if ("MountedPowerBox" == part){
 	    support_skin = support_skin,
 	    wall = wall);
  }
+
+// Section: Licensing
+//   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
+//   GNU General Public License as published by the Free Software Foundation, either version 3 of
+//   the License, or (at your option) any later version.
+//   .
+//   UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//   without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//   See the GNU General Public License for more details.
+//   .
+//   You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
+//   If not, see <https://www.gnu.org/licenses/>.
+//   

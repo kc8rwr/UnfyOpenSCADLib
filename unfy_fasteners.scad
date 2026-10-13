@@ -920,14 +920,15 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
 	)
 );
 
-// Function: unf_hst_height
-// Synopsis: Heatset Insert Height
+// Function: unf_hst_length
+// Synopsis: Heatset Insert Length
 // Description:
 //   Retrieve the length in mm of the hole for a heatset insert given the size.
 // Usage:
-//   unf_hst_height(size_or_vector)
+//   unf_hst_length(size_or_vector, [length])
 // Arguments:
 //   size = size as a string or the unf_hst_v() vector itself
+//   length = "small", "medium" or "large", or a number to just return that number ("medium")
 function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : (
 	let (length = unf_stToLower(length)) (
 		is_list(size) ? size[6] : (
@@ -1069,7 +1070,8 @@ function unf_nut_v(size) = is_list(size) ? size : [
 	unf_fnr_size(size), //1
 	unf_nut_diameter(size), //2
 	unf_fnr_shaft_diameter(size), //3
-	unf_nut_height(size) //4
+	unf_nut_height(size), //4
+	unf_nut_small_d(size) //5
 ];
 
 // Function: unf_nut_diameter
@@ -1132,6 +1134,16 @@ function unf_nut_diameter(size) = is_list(size) ? size[2] : (
 		)
 	)
 );
+
+// Function: unf_nut_small_d
+// Synopsis: Hex Nut distance across flats
+// Description:
+//   Retrieve the distance across flats of a typical hex nut given the bolt size.
+// Usage:
+//   unf_nut_small_d(size_or_vector)
+// Arguments:
+//   size = size as a string or the unf_nut_v() vector itself
+function unf_nut_small_d(in) = is_list(in) ? in[5] : (unf_nut_diameter(in) * cos(30));
 
 // Function: unf_nut_height
 // Synopsis: Hex Nut Height
@@ -1421,12 +1433,12 @@ function unf_wsh_v(size) = is_list(size) ? size : [
 	unf_wsh_height(size)
 ];
 
-// Function: unf_wsh_head_diameter
+// Function: unf_wsh_diameter
 // Synopsis: Washer Clearance Diameter
 // Description:
 //   Retrieve the outer diameter in mm of a washer given the bolt size.
 // Usage:
-//   unf_wsh_head_diameter(size_or_vector)
+//   unf_wsh_diameter(size_or_vector)
 // Arguments:
 //   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
@@ -1508,12 +1520,12 @@ function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
 );
 
 
-// Function: unf_wsh_head_height
+// Function: unf_wsh_height
 // Synopsis: Washer Thickness (height lying flat)
 // Description:
 //   Retrieve the height or thickness in mm of a washer given the bolt size.
 // Usage:
-//   unf_wsh_head_height(size_or_vector)
+//   unf_wsh_height(size_or_vector)
 // Arguments:
 //   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_height(in) = is_list(in) ? in[5] : (

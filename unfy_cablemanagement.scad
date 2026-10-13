@@ -46,9 +46,9 @@ edge_r = 2;
 
 $fn = $preview ? 36 : 360;
 
-// Module: unf_cableClip_positive
+// Module: unf_cableClip_Positive
 // Usage:
-//   unf_cableClip_positive(&lt;args&gt;);
+//   unf_cableClip_Positive(&lt;args&gt;);
 // Description:
 //   Just the positive part of a cable clip.
 // Arguments:

@@ -1,20 +1,11 @@
-// UnfyOpenSCADLib Copyright Leif Burrow 2026
-// kc8rwr@unfy.us
-// unforgettability.net
-//
-// This file is part of UnfyOpenSCADLib.
-//
-// UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
-// GNU General Public License as published by the Free Software Foundation, either version 3 of
-// the License, or (at your option) any later version.
-//
-// UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-// See the GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
-// If not, see <https://www.gnu.org/licenses/>.
-//
+// LibFile: unfy_dhole.scad
+//   UnfyOpenSCADLib Copyright Leif Burrow 2026
+//   kc8rwr@unfy.us
+//   unforgettability.net
+//   .
+//   This file is part of UnfyOpenSCADLib.
+//   .
+//   unfy_dhole contains a module for creating D, double-D and round holes for mounting panel components such as fuse holders, toggle switches, potentiometers, etc...
 
 //diameter of full circle
 diameter = 11.3;
@@ -36,14 +27,34 @@ $fn = $preview ? 36 : 360;
 
 use <../unfy_lists.scad>
 
-/*
-  Creates d, double-d and circle shapes for cutouts such as fuse holder, toggle switch, etc.. mounts.
-  Reason for circle (which could obviously be done without this) is to make easy user-customization.
-  diameter - diameter of the fully round part of the circle
-  falt_width - distance from flat to opposite side of circle in a d-shape
-               distance between flats for double-d
-  angle - 
-*/
+// Module: unf_DHole
+// Usage:
+//   unf_DHole(&lt;args&gt;);
+// Description:
+//   Creates d, double-d and circle shapes for cutouts such as fuse holder, toggle switch, etc.. mounts.
+//   Reason for circle (which could obviously be done without this) is to make easy user-customization, the shape may be passed straight through from a customizer drop-down.
+// Arguments:
+//   ---
+//   diameter = diameter of the fully round part of the circle (11.3)
+//   flat_width = for a d-shape, distance from flat to opposite side of circle. For a double-d, distance between flats. Ignored for a circle. (10.54)
+//   angle = rotation angle, 0 is flat on top, rotates counter-clockwise (0)
+//   z = depth of hole to make (4)
+//   shape = "d", "doubled" or "circle", case insensitive (d)
+// Figure(Spin;VPD=50;NoAxes): defaults
+//   $over = 0.01;
+//   $fn = 36;
+//   use <cutouts/unfy_dhole.scad>;
+//   unf_DHole();
+// Figure(Spin;VPD=50;NoAxes): shape="DoubleD", flat_width=8
+//   $over = 0.01;
+//   $fn = 36;
+//   use <cutouts/unfy_dhole.scad>;
+//   unf_DHole(shape="DoubleD", flat_width=8);
+// Figure(Spin;VPD=50;NoAxes): shape="circle"
+//   $over = 0.01;
+//   $fn = 36;
+//   use <cutouts/unfy_dhole.scad>;
+//   unf_DHole(shape="circle");
 module unf_DHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
   let (shape = unf_stToLower(shape)){
     assert ("d" == shape || "doubled" == shape || "circle" == shape, "Shape must be one of 'd', 'doubled' or 'circle'.");
@@ -66,3 +77,16 @@ module unf_DHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
 }
 
 unf_DHole(diameter=diameter, flat_width=flat_width, angle=angle, z=z, shape=shape);
+
+// Section: Licensing
+//   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the
+//   GNU General Public License as published by the Free Software Foundation, either version 3 of
+//   the License, or (at your option) any later version.
+//   .
+//   UnfyOpenSCADLib is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+//   without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+//   See the GNU General Public License for more details.
+//   .
+//   You should have received a copy of the GNU General Public License along with UnfyOpenSCADLib.
+//   If not, see <https://www.gnu.org/licenses/>.
+//   
