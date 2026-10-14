@@ -53,6 +53,12 @@ Creates a mockup of a RAKwireless RAK19007 WisBlock base board, with its mountin
 ## Section: Standoffs
 
 
+**Figure 2.1:** Standoffs are not yet ready to use, coming soon!
+
+<img align="left" alt="Standoffs Figure 2.1" src="images/unfy_boards/figure_2_1.png" width="480" height="360">
+
+<br clear="all" /><br/>
+
 ### Module: standoff
 
 **Usage:** 
@@ -75,9 +81,9 @@ Creates a standoff for mounting a board. Render once with positive=true to creat
 `wall_ext`           | how far the base of the standoff extends down into the wall it is mounted on (1)
 `heatset_length`     | length of heatset insert, "small", "medium" or "large" (medium)
 
-**Figure 2.1.1:** defaults, cut away to show the hole
+**Figure 2.2.1:** defaults, cut away to show the hole
 
-<img align="left" alt="standoff Figure 2.1.1" src="images/unfy_boards/figure_2_1_1.png" width="320" height="240">
+<img align="left" alt="standoff Figure 2.2.1" src="images/unfy_boards/figure_2_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
