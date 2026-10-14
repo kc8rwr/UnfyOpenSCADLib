@@ -91,6 +91,11 @@ module rak19007(
 }
 
 // Section: Standoffs
+// Figure(3D;Med;VPD=800;VPT=[0,20,90];VPR=[70,0,20];NoAxes): Standoffs are not yet ready to use, coming soon!
+//   $over = 0.01;
+//   $fn = 36;
+//   use <unfy_construction.scad>;
+//   unf_construction_scene();
 
 // Module: standoff
 // Usage:
