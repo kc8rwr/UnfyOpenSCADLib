@@ -140,7 +140,7 @@ A cable strain relief that can be closed within a hole between two walls of a ch
 `body_color`         | color of the generated part or false for default (blue)
 `support_skin`       | thickness of support skin to print along the outside edge of the waste for preventing overhang (0.6)
 `support_color`      | color of generated supports or false for default (yellow)
-`edge_r`             | radius of rounded edges (2)
+`edge_r`             | radius of the rounded edge at the outside end (1)
 
 **Figure 1.4.1:** 
 

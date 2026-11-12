@@ -14,6 +14,7 @@ unfy_shapes contains a collection of modules for generating geometric shapes wit
 - [`unf_roundedCuboid`](#module-unf_roundedcuboid)
 - [`unf_roundedCylinder`](#module-unf_roundedcylinder)
 - [`unf_oval`](#module-unf_oval)
+- [`unf_star`](#module-unf_star)
 - [`unf_bezierWedge2d`](#module-unf_bezierwedge2d)
 - [`unf_bezierWedge3d`](#module-unf_bezierwedge3d)
 - [`unf_bezier_frustrum`](#module-unf_bezier_frustrum)
@@ -31,6 +32,8 @@ unfy_shapes contains a collection of modules for generating geometric shapes wit
 **Description:** 
 
 Creates a 2d rectangle with rounded corners.
+
+Corners too large to fit along their sides are reduced to fit, where both corners on a side are too large they shrink in proportion.
 
 **Arguments:** 
 
@@ -63,6 +66,12 @@ Creates a 2d rectangle with rounded corners.
 
 Creates a 3d cuboid with rounded corners.
 
+Where rounded edges meet a rounded corner the corner radius shrinks along with the edge so the two blend. Opposite edge radiuses together may not exceed that side's length, and the largest top edge radius plus the largest bottom edge radius may not exceed size.z.
+
+Optionally the cuboid may be bent around a cylinder of radius bend_r whose axis passes through the origin perpendicular to bend_plane. The cuboid's distance along bend_plane[0] becomes distance around the cylinder (0 at the top, positive going clockwise when viewed down the axis), its distance along bend_plane[1] becomes extra distance outward from the cylinder's surface, and its distance along the axis is unchanged. With the default plane a cuboid lying along x bends into a rainbow over the origin, with [[0, 1, 0], [0, 0, 1]] a cuboid lying along y arches over the x axis like a bridge. A negative bend_r bends the other way, wrapping the cuboid around the inside of the cylinder.
+
+The cuboid is built as a single polyhedron. Corners too large to fit along their sides are reduced to fit, where both corners on a side are too large they shrink in proportion.
+
 **Arguments:** 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
@@ -70,6 +79,8 @@ Creates a 3d cuboid with rounded corners.
 `size`               | may be a 3d vector [x, y, z] or a single number creating a cube equivalent to [x, x, x] ([20, 10, 5])
 `corners`            | a vector containing the radiuses of each rounded corner ordered [[0,0], [x,0], [x,y], [0,y]] or a single number making all corners the same ([1, 1, 1, 1])
 `edge_r`             | an 8-dimensional vector containing the radiuses of each rounded edge [FT, RT, BT, LT, FB, RB, BB, LB], or 4-dim [F, R, B, L], 2-dim [T, B], or single number ([1, 2, 1, 2, 1, 2, 1, 2])
+`bend_r`             | radius of the cylinder to bend around, 0 for no bend (0)
+`bend_plane`         | 2 vectors [along, up] defining the plane the cuboid bends in, along is wrapped around the cylinder, up points away from it and need not be exactly perpendicular to along ([[1, 0, 0], [0, 1, 0]])
 
 **Figure 1.2.1:** defaults
 
@@ -82,6 +93,18 @@ Creates a 3d cuboid with rounded corners.
 <img align="left" alt="unf\_roundedCuboid Figure 1.2.2" src="images/unfy_shapes/figure_1_2_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
+
+**Figure 1.2.3:** bent into a rainbow
+
+<img align="left" alt="unf\_roundedCuboid Figure 1.2.3" src="images/unfy_shapes/figure_1_2_3.png" width="320" height="240">
+
+<br clear="all" />
+
+**Figure 1.2.4:** bent into a bridge
+
+<img align="left" alt="unf\_roundedCuboid Figure 1.2.4" src="images/unfy_shapes/figure_1_2_4.png" width="320" height="240">
+
+<br clear="all" />
 
 ---
 
@@ -154,6 +177,38 @@ Draw an oval by size.
 
 ---
 
+### Module: unf\_star
+
+**Usage:** 
+
+- unf_star(<args>);
+
+**Description:** 
+
+Draws a 2d star centered on the origin with its first point straight up along the y axis. The points touch a circle of diameter od and the dips between them touch a circle of diameter id.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`od`                 | outer diameter, of the circle around the points (20)
+`id`                 | inner diameter, of the circle around the dips between the points, must not exceed od (10)
+`p`                  | number of points, a whole number of at least 2 (5)
+
+**Figure 1.5.1:** defaults
+
+<img align="left" alt="unf\_star Figure 1.5.1" src="images/unfy_shapes/figure_1_5_1.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+**Figure 1.5.2:** custom
+
+<img align="left" alt="unf\_star Figure 1.5.2" src="images/unfy_shapes/figure_1_5_2.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+---
+
 ### Module: unf\_bezierWedge2d
 
 **Usage:** 
@@ -171,15 +226,15 @@ Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather t
 `size`               | a 2d vector [x, y] or a single number ([5, 15])
 `v`                  | a vector to affect the shape of the bezier curve (false)
 
-**Figure 1.5.1:** defaults
+**Figure 1.6.1:** defaults
 
-<img align="left" alt="unf\_bezierWedge2d Figure 1.5.1" src="images/unfy_shapes/figure_1_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge2d Figure 1.6.1" src="images/unfy_shapes/figure_1_6_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
-**Figure 1.5.2:** custom
+**Figure 1.6.2:** custom
 
-<img align="left" alt="unf\_bezierWedge2d Figure 1.5.2" src="images/unfy_shapes/figure_1_5_2.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge2d Figure 1.6.2" src="images/unfy_shapes/figure_1_6_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -202,15 +257,15 @@ A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along
 `size`               | a 3d vector [x, y, z] or a single number ([5, 15, 15])
 `rounded_edges`      | vector or number for edge rounding ([1, 1])
 
-**Figure 1.6.1:** defaults
+**Figure 1.7.1:** defaults
 
-<img align="left" alt="unf\_bezierWedge3d Figure 1.6.1" src="images/unfy_shapes/figure_1_6_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge3d Figure 1.7.1" src="images/unfy_shapes/figure_1_7_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
-**Figure 1.6.2:** custom
+**Figure 1.7.2:** custom
 
-<img align="left" alt="unf\_bezierWedge3d Figure 1.6.2" src="images/unfy_shapes/figure_1_6_2.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge3d Figure 1.7.2" src="images/unfy_shapes/figure_1_7_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -242,9 +297,9 @@ Creates a 3D frustum shaped object transitioning via bezier curves with optional
 `control_pinch_pct`  | pinch percentage for bezier control point (50)
 `length`             | total length along z axis (300)
 
-**Figure 1.7.1:** defaults
+**Figure 1.8.1:** defaults
 
-<img align="left" alt="unf\_bezier\_frustrum Figure 1.7.1" src="images/unfy_shapes/figure_1_7_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezier\_frustrum Figure 1.8.1" src="images/unfy_shapes/figure_1_8_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -270,9 +325,9 @@ Creates a mounting tab with an integrated bolt hole, washer recess, and reinforc
 `washer_v`           | washer definition vector for the recess
 `wall`               | wall thickness parameter
 
-**Figure 1.8.1:** sample
+**Figure 1.9.1:** sample
 
-<img align="left" alt="unf\_mount\_tab Figure 1.8.1" src="images/unfy_shapes/figure_1_8_1.png" width="320" height="240">
+<img align="left" alt="unf\_mount\_tab Figure 1.9.1" src="images/unfy_shapes/figure_1_9_1.png" width="320" height="240">
 
 <br clear="all" />
 
