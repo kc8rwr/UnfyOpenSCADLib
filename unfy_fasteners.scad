@@ -5,9 +5,9 @@
 //   .
 //   This file is part of UnfyOpenSCADLib.
 //   .
-//   Unfy_fasteners.scad contains modules for creating bolts, screws, nuts, washers, heatsink inserts and more. These models at the time do not include threads. Their purpose is for subtracting from a model to create holes and countersinks. Realistic models with threads could be added later if there is a use for them.
+//   Unfy_fasteners.scad contains modules for creating bolts, self tapping screws, nuts, washers, heatsink inserts and more. These models at the time do not include threads. Their purpose is for subtracting from a model to create holes and countersinks. Realistic models with threads could be added later if there is a use for them.
 //   .
-//   Fasteners may be generated to size by passing the size as a string. Metric sizes may be passed as "M&lt;number&gt;" such as "M4" or "M3". It is case insensitie so "m4" or "m3" will work as well. Numbered SAE sizes are represented as "#&lt;number&gt;", such as "#6" or "#8". Inch sizes are represented as a decimal number or as a fraction. "1/4" or "0.25" would both represent 1/4".
+//   Fasteners may be generated to size by passing the size as a string. Metric sizes may be passed as "M&lt;number&gt;" such as "M4" or "M3". It is case insensitive so "m4" or "m3" will work as well. Numbered SAE sizes are represented as "#&lt;number&gt;", such as "#6" or "#8". Inch sizes are represented as a decimal number or as a fraction. "1/4" or "0.25" would both represent 1/4". ISO tapping screw sizes may be passed as "ST&lt;number&gt;" such as "ST2.9". These are treated as the metric size of the same diameter by the fasteners that are not self tapping screws.
 //   .
 //   Tables are included for looking up dimensions based on these sizes. Shaft diameter of course is the size itself in it's respective units. Tables also include things like typical diameters and thicknesses of heads for various bolt types, nut, washer and heatset insert dimensions, etc... Most sizes commonly used in 3d-printed projects as well as larger fasteners commonly available in hardware stores are included. If sizes that are outside of the built in tables are requested then the code will attempt to interpolate the missing value.
 //   .
@@ -21,16 +21,26 @@
 
 use <unfy_lists.scad>
 use <unfy_math.scad>
+use <unfy_shapes.scad>
 
-parm_part = "Collection"; // ["Collection", "HexHeadBolt_Test_Block", "CapHeadBolt_Test_Block", "CountersunkBolt_Test_Block", "HexNut_Test_Block", "SquareNut_Test_Block", "Washer_Test_Block", "Heatset_Test_Block", "Bolt_Distortion_Test"]
+parm_part = "Collection"; // ["Collection", "HexHeadBolt_Test_Block", "CapHeadBolt_Test_Block", "CountersunkBolt_Test_Block", "HexNut_Test_Block", "SquareNut_Test_Block", "Washer_Test_Block", "Heatset_Test_Block", "SelfTap_Test_Block", "SelfTap_Pilot_Test_Block", "Bolt_Distortion_Test"]
 
-parm_size = "m3"; // ["m2", "m2.5", "m3", "m4", "m8", "#00", "#000", "#0000", "#4", "#6", "#8", "#10", "#12", "1/4\"", "5/16\"", "3/8\""]
+parm_size = "m3"; // ["m2", "m2.5", "m3", "m4", "m8", "#00", "#000", "#0000", "#4", "#6", "#8", "#10", "#12", "1/4\"", "5/16\"", "3/8\"", "ST2.2", "ST2.9", "ST3.5", "ST4.2", "ST4.8"]
 
 //horizontal bolt shaft distortion height (as percentage of diameter)
 $unf_hdist_y = 10; //[0:100]
 
 //horizontal bolt shaft distortion width (as percentage of diameter)
 $unf_hdist_x = 80; //[0:100]
+
+//printer nozzle diameter, sets the spacing of the points of star shaped pilot holes
+$unf_nozzle = 0.4;
+
+//self tapping screw star pilot hole inner diameter (as percentage of the thread depth above the root diameter)
+$unf_stp_pilot_id = 0; //[0:100]
+
+//self tapping screw star pilot hole outer diameter (as percentage of the thread depth above the root diameter)
+$unf_stp_pilot_od = 50; //[0:100]
 
 //distance subtractions should "hang over"
 $over = 0.1;
@@ -64,6 +74,19 @@ parm_dist_max_dist_y = 20;
 
 //include a non-distorted control hole
 parm_dist_include_control = true;
+
+/* [Self Tapping Screws] */
+//head style
+parm_stp_head = "pan"; // ["pan", "csk", "raised_csk", "cheese", "button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]
+
+//pilot test block, number of holes in each row
+parm_stp_pilot_steps = 4;
+
+//pilot test block, smallest star outer diameter (as percentage of the thread depth above the root diameter)
+parm_stp_pilot_min_od = 25; //[0:100]
+
+//pilot test block, largest star outer diameter (as percentage of the thread depth above the root diameter)
+parm_stp_pilot_max_od = 100; //[0:100]
 
 $fn = $preview ? 36 : 360;
 
@@ -101,6 +124,26 @@ function unf_fnr_size(in) = is_list(in) ? in[1] : unf_stToUpper(in);
 //   in = vector describing an unfy_fastener or a string representing the size of one.
 function unf_fnr_diameter(in) = is_list(in) ? in[2] : (is_num(in) ? in : 5);
 
+// Function: unf_fnr_is_st
+// Synopsis: Is this an ISO tapping screw size
+// Description:
+//   Returns true if the size string is an ISO tapping screw size such as "ST2.9".
+// Usage:
+//   unf_fnr_is_st(size)
+// Arguments:
+//   in = size as a string
+function unf_fnr_is_st(in) = is_string(in) && ("s" == in[0] || "S" == in[0]) && ("t" == in[1] || "T" == in[1]);
+
+// Function: unf_fnr_st_to_m
+// Synopsis: Convert an ISO tapping screw size to a metric size
+// Description:
+//   Converts an ISO tapping screw size such as "ST2.9" to the metric size of the same diameter, "M2.9", so it may be looked up in the metric tables. Other sizes are returned unchanged.
+// Usage:
+//   unf_fnr_st_to_m(size)
+// Arguments:
+//   in = size as a string
+function unf_fnr_st_to_m(in) = unf_fnr_is_st(in) ? str("M", unf_sub(in, 2)) : in;
+
 // Function: unf_fnr_shaft_diameter
 // Synopsis: Fastener Shaft Diameter
 // Description:
@@ -110,6 +153,7 @@ function unf_fnr_diameter(in) = is_list(in) ? in[2] : (is_num(in) ? in : 5);
 // Arguments:
 //   in = vector describing an unfy_fastener or a string representing the size of one.
 function unf_fnr_shaft_diameter(in) = is_list(in) ? in[3] : (
+	unf_fnr_is_st(in) ? unf_stToNum(unf_sub(in, 2)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_stToNum(unf_sub(in, 1))
 	) : (
@@ -311,6 +355,7 @@ function unf_cap_v(size) = is_list(size) ? size : [
 // Arguments:
 //   size = size as a string or the unf_cap_v() vector itself
 function unf_cap_head_diameter(in) = is_list(in) ? in[2] : (
+	unf_fnr_is_st(in) ? unf_cap_head_diameter(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -464,6 +509,7 @@ function unf_csk_v(size) = is_list(size) ? size : [
 // Arguments:
 //   size = size as a string or the unf_csk_v() vector itself
 function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
+	unf_fnr_is_st(in) ? unf_csk_head_diameter(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -522,8 +568,9 @@ function unf_csk_head_diameter(in) = is_list(in) ? in[2] : (
 // Usage:
 //   unf_csk_head_height(size_or_vector)
 // Arguments:
-//   size = size as a string or the unf_cap_v() vector itself
+//   size = size as a string or the unf_csk_v() vector itself
 function unf_csk_head_height(in) = is_list(in) ? in[4] : (
+	unf_fnr_is_st(in) ? unf_csk_head_height(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -582,13 +629,13 @@ function unf_csk_head_height(in) = is_list(in) ? in[4] : (
 // Usage:
 //   unf_csk_default_length(size_or_vector)
 // Arguments:
-//   size = size as a string or the unf_cap_v() vector itself
+//   size = size as a string or the unf_csk_v() vector itself
 function unf_csk_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
 
 // Module: unf_csk
 // Synopsis: Countersunk Bolt
 // Description:
-//   Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the cap head is rendered as a simple cylinder with the diameter of the widest part of the actual head. This is because it is meant for being a negative, to recess a bolt and not for printing an actual bolt.
+//   Render a negative for a shaft and/or head-recess for a countersunk bolt.
 // Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): note - the head_ext area is semi-transparent.
 //   $fn = 36;
 //   $over = 0.1;
@@ -600,7 +647,7 @@ function unf_csk_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diamet
 // Usage:
 //   unf_csk(size, length, head_ext, distorted, body_color)
 // Arguments:
-//   size = string representing the size or the unf_cap_v() vector.
+//   size = string representing the size or the unf_csk_v() vector.
 //   length = length in mm
 //   head_ext = length in mm to recess the head beyond just it's thickness
 //   distorted = true/false, should the bolt hole be distorted
@@ -663,6 +710,7 @@ function unf_hex_v(size) = is_list(size) ? size : [
 // Arguments:
 //   size = size as a string or the unf_hex_v() vector itself
 function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
+	unf_fnr_is_st(in) ? unf_hex_head_diameter(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -731,6 +779,7 @@ function unf_hex_head_diameter(in) = is_list(in) ? in[2] : (
 // Arguments:
 //   size = size as a string or the unf_hex_v() vector itself
 function unf_hex_head_height(in) = is_list(in) ? in[4] : (
+	unf_fnr_is_st(in) ? unf_hex_head_height(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -744,7 +793,6 @@ function unf_hex_head_height(in) = is_list(in) ? in[4] : (
 										  [12, 7.5],
 										  [14, 8.8],
 										  [16, 10],
-										  [20, 12.5],
 										  [18, 11.5],
 										  [20, 12.5],
 										  [22, 14],
@@ -796,7 +844,7 @@ function unf_hex_head_height(in) = is_list(in) ? in[4] : (
 // Function: unf_hex_default_length
 // Synopsis: Hex Head Bolt Default Length
 // Description:
-//   Retrieve a default length for a hex head bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_hrx bolt.
+//   Retrieve a default length for a hex head bolt given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_hex bolt.
 // Usage:
 //   unf_hex_default_length(size_or_vector)
 // Arguments:
@@ -849,6 +897,653 @@ module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false, body_
 	}
 }
 
+// Section: Self Tapping Screws - unf_stp_*
+//   Self tapping screws for plastic. These need two different holes. The part being clamped gets a clearance hole, just wide enough for the screw to slide in and out without the threads biting, plus a recess for the head. The part being screwed into gets a pilot hole, narrow enough that the threads cut into the plastic and hold tight but not so narrow that the plastic splits.
+//   .
+//   Pilot holes may be star shaped rather than round. The plastic displaced by the threads then has somewhere to go between the points instead of pushing outward on the surrounding wall. The points are spaced according to $unf_nozzle so they are not so fine that they just print smooth. The inner and outer diameters of the star are set as a percentage of the thread depth above the root (minor) diameter by $unf_stp_pilot_id and $unf_stp_pilot_od. A round pilot hole is made at the average of the two.
+//   .
+//   Metric sizes ("M3", "ST2.9", etc...) use ISO 1478 thread dimensions, ISO 273 fine clearance holes and ISO 7049, 7050, 7051, 1481, 1479, 7053 and 7380 head dimensions. Numbered and inch sizes ("#6", "1/4"", etc...) use ASME B18.6.4 and B18.6.3 dimensions and ASME close fit clearance holes. Head styles which have no ISO standard use the ASME dimensions for metric sizes too. Sizes not in the tables are interpolated by diameter. None of these have been verified against real screws yet.
+//   .
+//   Available head styles, in the negative these are all rendered as either a cylinder or a cone. Self tapping screws turn as they are driven so even hex heads get a round recess.
+//   * "pan"
+//   * "csk" (or "flat", "countersunk")
+//   * "raised_csk" (or "oval", "raised_countersunk")
+//   * "cheese" (or "fillister")
+//   * "button"
+//   * "round"
+//   * "truss"
+//   * "binding"
+//   * "wafer" (or "modified_truss") - no standard, typical proportions
+//   * "hex"
+//   * "hex_washer"
+//   .
+//   The vector representing a self tapping screw will consist of, in order:
+//   * name
+//   * size
+//   * head_diameter
+//   * thread_diameter (major)
+//   * head_height
+//   * default_length
+//   * head_style
+//   * head_shape ("cyl" or "cone")
+//   * minor_diameter
+//   * clearance_diameter
+//   * pitch
+
+// Function: unf_stp_v
+// Synopsis: Self Tapping Screw Vector
+// Description:
+//   Retrieve a vector representing the dimensions of a self tapping screw given the size and head style. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
+// Usage:
+//   unf_stp_v(size_or_vector, [head])
+// Arguments:
+//   size = size as a string or the vector itself
+//   head = head style, see the section description for the list ("pan")
+function unf_stp_v(size="m3", head="pan") = is_list(size) ? size : (
+	let (head = unf_stp_head_style(head)) [
+		"STP", //0
+		unf_fnr_size(size), //1
+		unf_stp_head_diameter(size, head), //2
+		unf_fnr_shaft_diameter(size), //3
+		unf_stp_head_height(size, head), //4
+		unf_stp_default_length(size), //5
+		head, //6
+		unf_stp_head_shape(head), //7
+		unf_stp_minor_diameter(size), //8
+		unf_stp_clearance_diameter(size), //9
+		unf_stp_pitch(size) //10
+	]
+);
+
+// Function: unf_stp_head_style
+// Synopsis: Self Tapping Screw Head Style
+// Description:
+//   Takes a vector describing a self tapping screw or a head style name and returns the normalized head style name. Aliases such as "flat" or "oval" are converted to "csk" and "raised_csk".
+// Usage:
+//   unf_stp_head_style(head_or_vector)
+// Arguments:
+//   in = head style as a string or the unf_stp_v() vector itself
+function unf_stp_head_style(in="pan") = is_list(in) ? in[6] : (
+	let (lower = unf_stToLower(in),
+		  h = ("flat" == lower || "countersunk" == lower) ? "csk" : (
+			  ("oval" == lower || "raised_countersunk" == lower) ? "raised_csk" : (
+				  "fillister" == lower ? "cheese" : (
+					  "modified_truss" == lower ? "wafer" : lower
+				  )
+			  )
+		  ))
+	assert(0 < len([for (s = ["pan", "csk", "raised_csk", "cheese", "button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]) if (s == h) s]), str("unknown self tapping screw head style: ", in))
+	h
+);
+
+// Function: unf_stp_head_shape
+// Synopsis: Self Tapping Screw Head Shape
+// Description:
+//   Takes a vector describing a self tapping screw or a head style name and returns the shape used for the head recess, "cone" for countersunk heads, otherwise "cyl".
+// Usage:
+//   unf_stp_head_shape(head_or_vector)
+// Arguments:
+//   in = head style as a string or the unf_stp_v() vector itself
+function unf_stp_head_shape(in="pan") = is_list(in) ? in[7] : (
+	let (h = unf_stp_head_style(in)) ("csk" == h || "raised_csk" == h) ? "cone" : "cyl"
+);
+
+// Function: unf_stp_is_imperial
+// Synopsis: Is this a numbered or inch size
+// Description:
+//   Returns true if the size string is a numbered ("#6") or inch ("1/4"") size, which use ASME tables, false for metric sizes which use ISO tables.
+// Usage:
+//   unf_stp_is_imperial(size)
+// Arguments:
+//   in = size as a string
+function unf_stp_is_imperial(in) = "#" == in[0] || "\"" == in[len(in)-1];
+
+// Function: unf_stp_inch
+// Synopsis: Convert a table in inches to mm
+// Description:
+//   Multiplies every value in a table of rows by 25.4. Lets the ASME tables be written in inches as published.
+// Usage:
+//   unf_stp_inch(table)
+// Arguments:
+//   t = table, a list of rows of numbers in inches
+function unf_stp_inch(t) = [for (r = t) r * 25.4];
+
+// Function: unf_stp_lookup
+// Synopsis: Self Tapping Screw Table Lookup
+// Description:
+//   Look up a dimension by thread diameter from the ISO table for metric sizes or the ASME table for numbered and inch sizes, interpolating if the size is not in the table. Tables are lists of rows in mm, the first column being the thread diameter.
+// Usage:
+//   unf_stp_lookup(size, iso, asme, [col])
+// Arguments:
+//   in = size as a string
+//   iso = table for metric sizes
+//   asme = table for numbered and inch sizes
+//   col = column of the table holding the wanted dimension (1)
+function unf_stp_lookup(in, iso, asme, col=1) = let (t = unf_stp_is_imperial(in) ? asme : iso) (
+	unf_round(place=-3, num=unf_lookup(unf_fnr_shaft_diameter(in), [for (r = t) [r[0], r[col]]]))
+);
+
+// Function: unf_stp_head_table
+// Synopsis: Self Tapping Screw Head Table
+// Description:
+//   Returns a table of head dimensions for a head style. Each row is [thread diameter, head diameter, head height] in mm. Head diameter is the widest part of the head, across the corners or the washer face for hex heads, the theoretical sharp diameter for countersunk heads.
+// Usage:
+//   unf_stp_head_table(head, imperial)
+// Arguments:
+//   head = head style
+//   imperial = true for the ASME table, false for the ISO table
+function unf_stp_head_table(head="pan", imperial=false) = let (head = unf_stp_head_style(head)) (
+	imperial ? (
+		("csk" == head || "raised_csk" == head) ? unf_stp_inch(
+			[[0.086, 0.172, 0.051], // #2
+			 [0.112, 0.225, 0.067], // #4
+			 [0.138, 0.279, 0.083], // #6
+			 [0.164, 0.332, 0.100], // #8
+			 [0.190, 0.385, 0.116], // #10
+			 [0.216, 0.438, 0.132], // #12
+			 [0.242, 0.507, 0.153], // #14
+			 [0.3125, 0.635, 0.191], // 5/16"
+			 [0.375, 0.762, 0.230]]) : ( // 3/8"
+		"cheese" == head ? unf_stp_inch(
+			[[0.086, 0.140, 0.083], // #2
+			 [0.112, 0.183, 0.107], // #4
+			 [0.138, 0.226, 0.132], // #6
+			 [0.164, 0.270, 0.156], // #8
+			 [0.190, 0.313, 0.180], // #10
+			 [0.216, 0.357, 0.205], // #12
+			 [0.25, 0.414, 0.237], // 1/4"
+			 [0.3125, 0.518, 0.295], // 5/16"
+			 [0.375, 0.622, 0.355]]) : ( // 3/8"
+		("round" == head || "button" == head) ? unf_stp_inch(
+			[[0.086, 0.162, 0.069], // #2
+			 [0.112, 0.211, 0.086], // #4
+			 [0.138, 0.260, 0.103], // #6
+			 [0.164, 0.309, 0.120], // #8
+			 [0.190, 0.359, 0.137], // #10
+			 [0.216, 0.408, 0.153], // #12
+			 [0.25, 0.472, 0.175], // 1/4"
+			 [0.3125, 0.590, 0.216], // 5/16"
+			 [0.375, 0.708, 0.256]]) : ( // 3/8"
+		"truss" == head ? unf_stp_inch(
+			[[0.086, 0.194, 0.053], // #2
+			 [0.112, 0.257, 0.069], // #4
+			 [0.138, 0.321, 0.086], // #6
+			 [0.164, 0.384, 0.102], // #8
+			 [0.190, 0.448, 0.118], // #10
+			 [0.216, 0.511, 0.134], // #12
+			 [0.25, 0.573, 0.150], // 1/4"
+			 [0.3125, 0.698, 0.183], // 5/16"
+			 [0.375, 0.823, 0.215]]) : ( // 3/8"
+		"binding" == head ? unf_stp_inch(
+			[[0.086, 0.181, 0.050], // #2
+			 [0.112, 0.235, 0.064], // #4
+			 [0.138, 0.290, 0.079], // #6
+			 [0.164, 0.344, 0.093], // #8
+			 [0.190, 0.399, 0.108], // #10
+			 [0.216, 0.454, 0.122], // #12
+			 [0.25, 0.513, 0.137], // 1/4"
+			 [0.3125, 0.641, 0.168], // 5/16"
+			 [0.375, 0.769, 0.201]]) : ( // 3/8"
+		"wafer" == head ? unf_stp_head_table("wafer", false) : (
+		"hex" == head ? unf_stp_inch(
+			[[0.086, 0.144, 0.050], // #2, 1/8" across flats
+			 [0.112, 0.217, 0.060], // #4, 3/16" across flats
+			 [0.138, 0.289, 0.080], // #6, 1/4" across flats
+			 [0.164, 0.289, 0.110], // #8, 1/4" across flats
+			 [0.190, 0.360, 0.120], // #10, 5/16" across flats
+			 [0.216, 0.360, 0.155], // #12, 5/16" across flats
+			 [0.242, 0.433, 0.190], // #14, 3/8" across flats
+			 [0.3125, 0.577, 0.230], // 5/16", 1/2" across flats
+			 [0.375, 0.649, 0.295]]) : ( // 3/8", 9/16" across flats
+		"hex_washer" == head ? unf_stp_inch(
+			[[0.086, 0.166, 0.050], // #2
+			 [0.112, 0.225, 0.060], // #4
+			 [0.138, 0.332, 0.080], // #6
+			 [0.164, 0.332, 0.110], // #8
+			 [0.190, 0.422, 0.120], // #10
+			 [0.216, 0.422, 0.155], // #12
+			 [0.242, 0.500, 0.190], // #14
+			 [0.3125, 0.656, 0.230], // 5/16"
+			 [0.375, 0.750, 0.295]]) : ( // 3/8"
+		unf_stp_inch( // pan
+			[[0.086, 0.167, 0.062], // #2
+			 [0.112, 0.219, 0.080], // #4
+			 [0.138, 0.270, 0.097], // #6
+			 [0.164, 0.322, 0.115], // #8
+			 [0.190, 0.373, 0.133], // #10
+			 [0.216, 0.425, 0.151], // #12
+			 [0.242, 0.492, 0.175], // #14
+			 [0.3125, 0.615, 0.218], // 5/16"
+			 [0.375, 0.740, 0.261]]) // 3/8"
+		))))))))
+	) : (
+		("csk" == head || "raised_csk" == head) ? // ISO 7050, ISO 7051
+			[[2.2, 4.4, 1.1],
+			 [2.9, 6.3, 1.7],
+			 [3.5, 8.2, 2.35],
+			 [4.2, 9.4, 2.6],
+			 [4.8, 10.4, 2.8],
+			 [5.5, 11.5, 3.0],
+			 [6.3, 12.6, 3.15],
+			 [8, 17.3, 4.65],
+			 [9.5, 20.0, 5.25]] : (
+		"cheese" == head ? // ISO 1481
+			[[2.2, 4.0, 1.3],
+			 [2.9, 5.6, 1.8],
+			 [3.5, 7.0, 2.1],
+			 [4.2, 8.0, 2.4],
+			 [4.8, 9.5, 3.0],
+			 [5.5, 11.0, 3.2],
+			 [6.3, 12.0, 3.6],
+			 [8, 16.0, 4.8],
+			 [9.5, 20.0, 6.0]] : (
+		"button" == head ? // ISO 7380
+			[[3, 5.7, 1.65],
+			 [4, 7.6, 2.2],
+			 [5, 9.5, 2.75],
+			 [6, 10.5, 3.3],
+			 [8, 14.0, 4.4],
+			 [10, 17.5, 5.5]] : (
+		"wafer" == head ? // no standard, typical proportions
+			[[1, 2.5, 0.4],
+			 [10, 25, 4]] : (
+		"hex" == head ? // ISO 1479, across corners
+			[[2.2, 3.695, 1.6], // 3.2 across flats
+			 [2.9, 5.774, 2.3], // 5 across flats
+			 [3.5, 6.351, 2.6], // 5.5 across flats
+			 [4.2, 8.083, 3.0], // 7 across flats
+			 [4.8, 9.238, 3.8], // 8 across flats
+			 [5.5, 9.238, 4.1], // 8 across flats
+			 [6.3, 11.547, 4.7], // 10 across flats
+			 [8, 15.011, 6.0], // 13 across flats
+			 [9.5, 18.475, 7.5]] : ( // 16 across flats
+		"hex_washer" == head ? // ISO 7053, washer face diameter
+			[[2.2, 4.2, 2.0],
+			 [2.9, 6.3, 2.8],
+			 [3.5, 8.3, 3.4],
+			 [4.2, 8.8, 4.1],
+			 [4.8, 10.5, 4.3],
+			 [5.5, 11.0, 5.4],
+			 [6.3, 13.5, 5.9]] : (
+		"pan" == head ? // ISO 7049
+			[[2.2, 4.0, 1.6],
+			 [2.9, 5.6, 2.4],
+			 [3.5, 7.0, 2.6],
+			 [4.2, 8.0, 3.1],
+			 [4.8, 9.5, 3.7],
+			 [5.5, 11.0, 4.0],
+			 [6.3, 12.0, 4.6],
+			 [8, 16.0, 6.0],
+			 [9.5, 20.0, 7.5]] : (
+		unf_stp_head_table(head, true) // no ISO standard, use ASME
+		)))))))
+	)
+);
+
+// Function: unf_stp_head_diameter
+// Synopsis: Self Tapping Screw Head Clearance Diameter
+// Description:
+//   Retrieve the diameter in mm of the head of a self tapping screw given the size and head style.
+// Usage:
+//   unf_stp_head_diameter(size_or_vector, [head])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   head = head style ("pan")
+function unf_stp_head_diameter(in, head="pan") = is_list(in) ? in[2] : (
+	unf_stp_lookup(in, unf_stp_head_table(head, false), unf_stp_head_table(head, true), 1)
+);
+
+// Function: unf_stp_head_height
+// Synopsis: Self Tapping Screw Head Height
+// Description:
+//   Retrieve the height or thickness in mm of the head of a self tapping screw given the size and head style. For a raised countersunk head this is just the countersunk part, the raised dome stands above the surface.
+// Usage:
+//   unf_stp_head_height(size_or_vector, [head])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   head = head style ("pan")
+function unf_stp_head_height(in, head="pan") = is_list(in) ? in[4] : (
+	unf_stp_lookup(in, unf_stp_head_table(head, false), unf_stp_head_table(head, true), 2)
+);
+
+// Function: unf_stp_default_length
+// Synopsis: Self Tapping Screw Default Length
+// Description:
+//   Retrieve a default length for a self tapping screw given it's size. Probably not very useful in a real design, good for picking a length to demonstrate an example of a unf_stp screw.
+// Usage:
+//   unf_stp_default_length(size_or_vector)
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+function unf_stp_default_length(in) = is_list(in) ? in[5] : unf_fnr_shaft_diameter(in) * 15 / 3;
+
+// Function: unf_stp_minor_diameter
+// Synopsis: Self Tapping Screw Minor Diameter
+// Description:
+//   Retrieve the minor (root) diameter in mm of the threads of a self tapping screw given the size.
+// Usage:
+//   unf_stp_minor_diameter(size_or_vector)
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+function unf_stp_minor_diameter(in) = is_list(in) ? in[8] : (
+	unf_stp_lookup(in,
+						[[1.5, 0.91], // ISO 1478
+						 [1.9, 1.24],
+						 [2.2, 1.63],
+						 [2.6, 1.90],
+						 [2.9, 2.18],
+						 [3.3, 2.39],
+						 [3.5, 2.64],
+						 [3.9, 2.92],
+						 [4.2, 3.10],
+						 [4.8, 3.58],
+						 [5.5, 4.17],
+						 [6.3, 4.88],
+						 [8, 6.20],
+						 [9.5, 7.85]],
+						unf_stp_inch(
+							[[0.086, 0.064], // #2
+							 [0.112, 0.081], // #4
+							 [0.138, 0.095], // #6
+							 [0.164, 0.110], // #8
+							 [0.190, 0.123], // #10
+							 [0.216, 0.148], // #12
+							 [0.242, 0.171], // #14
+							 [0.3125, 0.232], // 5/16"
+							 [0.375, 0.287]])) // 3/8"
+);
+
+// Function: unf_stp_clearance_diameter
+// Synopsis: Self Tapping Screw Clearance Hole Diameter
+// Description:
+//   Retrieve the diameter in mm of a hole a self tapping screw will slide through without the threads biting, given the size.
+// Usage:
+//   unf_stp_clearance_diameter(size_or_vector)
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+function unf_stp_clearance_diameter(in) = is_list(in) ? in[9] : (
+	unf_stp_lookup(in,
+						[[1.6, 1.7], // ISO 273 fine
+						 [2, 2.2],
+						 [2.5, 2.7],
+						 [3, 3.2],
+						 [3.5, 3.7],
+						 [4, 4.3],
+						 [5, 5.3],
+						 [6, 6.4],
+						 [8, 8.4],
+						 [10, 10.5],
+						 [12, 13]],
+						unf_stp_inch(
+							[[0.086, 0.094], // #2, ASME close fit
+							 [0.112, 0.120], // #4
+							 [0.138, 0.145], // #6
+							 [0.164, 0.171], // #8
+							 [0.190, 0.196], // #10
+							 [0.216, 0.221], // #12
+							 [0.25, 0.257], // 1/4"
+							 [0.3125, 0.323], // 5/16"
+							 [0.375, 0.386]])) // 3/8"
+);
+
+// Function: unf_stp_pitch
+// Synopsis: Self Tapping Screw Thread Pitch
+// Description:
+//   Retrieve the thread pitch in mm of a self tapping screw given the size. Used to leave room for the tip of the screw at the bottom of a pilot hole.
+// Usage:
+//   unf_stp_pitch(size_or_vector)
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+function unf_stp_pitch(in) = is_list(in) ? in[10] : (
+	unf_stp_lookup(in,
+						[[1.5, 0.5], // ISO 1478
+						 [1.9, 0.6],
+						 [2.2, 0.8],
+						 [2.6, 0.9],
+						 [2.9, 1.1],
+						 [3.3, 1.3],
+						 [3.5, 1.3],
+						 [3.9, 1.3],
+						 [4.2, 1.4],
+						 [4.8, 1.6],
+						 [5.5, 1.8],
+						 [6.3, 1.8],
+						 [8, 2.1],
+						 [9.5, 2.1]],
+						unf_stp_inch(
+							[[0.086, 1/32], // #2
+							 [0.112, 1/24], // #4
+							 [0.138, 1/20], // #6
+							 [0.164, 1/18], // #8
+							 [0.190, 1/16], // #10
+							 [0.216, 1/14], // #12
+							 [0.242, 1/14], // #14
+							 [0.3125, 1/12], // 5/16"
+							 [0.375, 1/12]])) // 3/8"
+);
+
+// Function: unf_stp_engagement
+// Synopsis: Self Tapping Screw Recommended Engagement
+// Description:
+//   Retrieve a recommended depth in mm of thread engagement into plastic, twice the thread diameter. Useful as a minimum depth for a pilot hole or boss.
+// Usage:
+//   unf_stp_engagement(size_or_vector)
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+function unf_stp_engagement(in) = 2 * unf_fnr_shaft_diameter(in);
+
+// Function: unf_default_nozzle
+// Synopsis: Printer Nozzle Diameter
+// Description:
+//   Returns $unf_nozzle if it is set, otherwise 0.4.
+// Usage:
+//   unf_default_nozzle()
+function unf_default_nozzle() = is_undef($unf_nozzle) ? 0.4 : $unf_nozzle;
+
+// Function: unf_stp_default_pilot_id
+// Synopsis: Default Star Pilot Inner Diameter Percentage
+// Description:
+//   Returns $unf_stp_pilot_id if it is set, otherwise 0, the root of the threads.
+// Usage:
+//   unf_stp_default_pilot_id()
+function unf_stp_default_pilot_id() = is_undef($unf_stp_pilot_id) ? 0 : $unf_stp_pilot_id;
+
+// Function: unf_stp_default_pilot_od
+// Synopsis: Default Star Pilot Outer Diameter Percentage
+// Description:
+//   Returns $unf_stp_pilot_od if it is set, otherwise 50, half way up the threads.
+// Usage:
+//   unf_stp_default_pilot_od()
+function unf_stp_default_pilot_od() = is_undef($unf_stp_pilot_od) ? 50 : $unf_stp_pilot_od;
+
+// Function: unf_stp_pilot_id
+// Synopsis: Self Tapping Screw Star Pilot Inner Diameter
+// Description:
+//   Retrieve the inner diameter in mm, the dips between the points, of a star shaped pilot hole.
+// Usage:
+//   unf_stp_pilot_id(size_or_vector, [id_percent])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   id_percent = percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
+function unf_stp_pilot_id(in, id_percent=unf_stp_default_pilot_id()) = let (minor = unf_stp_minor_diameter(in)) (
+	unf_round(place=-3, num=minor + ((unf_fnr_shaft_diameter(in) - minor) * id_percent / 100))
+);
+
+// Function: unf_stp_pilot_od
+// Synopsis: Self Tapping Screw Star Pilot Outer Diameter
+// Description:
+//   Retrieve the outer diameter in mm, the points, of a star shaped pilot hole.
+// Usage:
+//   unf_stp_pilot_od(size_or_vector, [od_percent])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   od_percent = percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+function unf_stp_pilot_od(in, od_percent=unf_stp_default_pilot_od()) = unf_stp_pilot_id(in, od_percent);
+
+// Function: unf_stp_pilot_diameter
+// Synopsis: Self Tapping Screw Round Pilot Diameter
+// Description:
+//   Retrieve the diameter in mm of a round pilot hole, the average of the star inner and outer diameters.
+// Usage:
+//   unf_stp_pilot_diameter(size_or_vector, [id_percent], [od_percent])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   id_percent = star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
+//   od_percent = star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+function unf_stp_pilot_diameter(in, id_percent=unf_stp_default_pilot_id(), od_percent=unf_stp_default_pilot_od()) = unf_stp_pilot_id(in, (id_percent + od_percent) / 2);
+
+// Function: unf_stp_star_points
+// Synopsis: Self Tapping Screw Star Pilot Point Count
+// Description:
+//   Retrieve the number of points for a star shaped pilot hole. Points are spaced at least 2.5 nozzle widths apart around the outer diameter so they don't just print smooth. Never less than 3.
+// Usage:
+//   unf_stp_star_points(size_or_vector, [od_percent])
+// Arguments:
+//   in = size as a string or the unf_stp_v() vector itself
+//   od_percent = star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+//   ---
+//   $unf_nozzle = printer nozzle diameter in mm
+function unf_stp_star_points(in, od_percent=unf_stp_default_pilot_od()) = max(3, floor(PI * unf_stp_pilot_od(in, od_percent) / (2.5 * unf_default_nozzle())));
+
+// Module: unf_stp_pilot
+// Synopsis: Self Tapping Screw Pilot Hole
+// Description:
+//   Render a negative for the pilot hole a self tapping screw threads into. The hole starts at the origin and goes up along the z axis.
+// Figure(Spin;VPD=30; VPT=[0, 0, 3];  NoAxes): note - the ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_nozzle = 0.4;
+//   $unf_stp_pilot_id = 0;
+//   $unf_stp_pilot_od = 50;
+//   use <unfy_fasteners.scad>;
+//   unf_stp_pilot(size="m3", ext=1);
+// Usage:
+//   unf_stp_pilot(size, length, star, chamfer, tip, ext, id_percent, od_percent, body_color)
+// Arguments:
+//   size = string representing the size or the unf_stp_v() vector.
+//   length = depth in mm of thread engagement, defaults to unf_stp_engagement()
+//   star = true/false, star shaped or round pilot hole
+//   chamfer = true/false, chamfer the mouth of the hole out to the thread diameter so the plastic doesn't bulge up around the screw
+//   tip = true/false, deepen the hole by two thread pitches to leave room for the tip of the screw
+//   ext = length in mm to extend the hole above the origin
+//   id_percent = star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
+//   od_percent = star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+//   body_color = color of the cut surfaces
+//   ---
+//   $unf_nozzle = printer nozzle diameter in mm, sets the spacing of the star points
+//   $unf_stp_pilot_id = default for id_percent
+//   $unf_stp_pilot_od = default for od_percent
+module unf_stp_pilot(size="m3", length=-1, star=true, chamfer=true, tip=true, ext=-1, id_percent=unf_stp_default_pilot_id(), od_percent=unf_stp_default_pilot_od(), body_color="Yellow"){
+	assert(id_percent <= od_percent, "id_percent must not exceed od_percent");
+	let (size = is_list(size) ? size : unf_stp_v(size),
+		  length = 0 < length ? length : unf_stp_engagement(size),
+		  ext = (0 <= ext) ? ext : $over,
+		  depth = length + (tip ? 2 * unf_stp_pitch(size) : 0),
+		  thread_d = unf_fnr_shaft_diameter(size),
+		  id = unf_stp_pilot_id(size, id_percent),
+		  od = unf_stp_pilot_od(size, od_percent),
+		  round_d = unf_stp_pilot_diameter(size, id_percent, od_percent),
+		  mouth_d = chamfer ? thread_d : (star ? od : round_d)){
+		color(body_color){
+			if (star && id < od){
+				linear_extrude(depth){
+					unf_star(od=od, id=id, p=unf_stp_star_points(size, od_percent));
+				}
+			} else {
+				cylinder(h=depth, d=round_d);
+			}
+			if (chamfer){
+				cylinder(h=(thread_d - id) / 2, d1=thread_d, d2=id);
+			}
+			if (0 < ext){
+				translate([0, 0, -ext]){
+					color("grey", 0.25){
+						cylinder(h=ext, d=mouth_d);
+					}
+				}
+			}
+		}
+	}
+}
+
+// Module: unf_stp
+// Synopsis: Self Tapping Screw
+// Description:
+//   Render a negative for a head recess, clearance hole and optionally a pilot hole for a self tapping screw. Like the bolts, the head sits at the origin and the shaft goes up along the z axis for length beyond the head. The first clearance_length of that is a clearance hole for the part being clamped, the rest is a pilot hole for the part being screwed into. Leave clearance_length at -1 for a clearance hole all the way through.
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): Pan head, star pilot. note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_hdist_x = 80;
+//   $unf_hdist_y = 10;
+//   $unf_nozzle = 0.4;
+//   $unf_stp_pilot_id = 0;
+//   $unf_stp_pilot_od = 50;
+//   use <unfy_fasteners.scad>;
+//   unf_stp(size="m3", head="pan", length=12, clearance_length=4, head_ext=2);
+// Figure(Spin;VPD=50; VPT=[0, 0, 5];  NoAxes): Countersunk head, round pilot. note - the head_ext area is semi-transparent.
+//   $fn = 36;
+//   $over = 0.1;
+//   $wall=2;
+//   $unf_hdist_x = 80;
+//   $unf_hdist_y = 10;
+//   $unf_nozzle = 0.4;
+//   $unf_stp_pilot_id = 0;
+//   $unf_stp_pilot_od = 50;
+//   use <unfy_fasteners.scad>;
+//   unf_stp(size="m3", head="csk", length=12, clearance_length=4, head_ext=2, star=false);
+// Usage:
+//   unf_stp(size, head, length, clearance_length, head_ext, star, chamfer, tip, distorted, id_percent, od_percent, body_color)
+// Arguments:
+//   size = string representing the size or the unf_stp_v() vector.
+//   head = head style, ignored if size is a vector ("pan")
+//   length = length in mm beyond the head
+//   clearance_length = length in mm of clearance hole before the pilot hole begins, -1 for no pilot hole
+//   head_ext = length in mm to recess the head beyond just it's thickness
+//   star = true/false, star shaped or round pilot hole
+//   chamfer = true/false, chamfer the mouth of the pilot hole
+//   tip = true/false, deepen the pilot hole by two thread pitches to leave room for the tip of the screw
+//   distorted = true/false, should the clearance hole be distorted, the pilot hole never is
+//   id_percent = star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
+//   od_percent = star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+//   body_color = color in which to render the screw if rendered as a positive, color of the cut surfaces if rendering as a negative.
+//   ---
+//   $unf_hdist_x = width of distortion as a percentage of the diameter (0-100)
+//   $unf_hdist_y = height of distortion as a percentage of the diameter (0-100)
+//   $unf_nozzle = printer nozzle diameter in mm, sets the spacing of the star points
+//   $unf_stp_pilot_id = default for id_percent
+//   $unf_stp_pilot_od = default for od_percent
+module unf_stp(size="m3", head="pan", length=-1, clearance_length=-1, head_ext=-1, star=true, chamfer=true, tip=true, distorted=false, id_percent=unf_stp_default_pilot_id(), od_percent=unf_stp_default_pilot_od(), body_color="Yellow"){
+	color(body_color){
+		let (head_ext = (0 <= head_ext) ? head_ext : $over,
+			  size = is_list(size) ? size : unf_stp_v(size, head),
+			  length = 0 < length ? length : unf_stp_default_length(size),
+			  clearance_length = (0 <= clearance_length && clearance_length < length) ? clearance_length : length){
+			head_d = unf_stp_head_diameter(size);
+			head_height = unf_stp_head_height(size);
+			thread_d = unf_fnr_shaft_diameter(size);
+			if (0 < head_ext){
+				translate([0, 0, -head_ext]){
+					color("grey", 0.25){
+						cylinder(h = head_ext, d = head_d);
+					}
+				}
+			}
+			if ("cone" == unf_stp_head_shape(size)){
+				cylinder(h = head_height, d1 = head_d, d2 = thread_d);
+			} else {
+				cylinder(h = head_height, d = head_d);
+			}
+			unf_shaft(length = head_height + clearance_length, diameter = unf_stp_clearance_diameter(size), distorted = distorted);
+			if (clearance_length < length){
+				translate([0, 0, head_height + clearance_length]){
+					unf_stp_pilot(size=size, length=length-clearance_length, star=star, chamfer=chamfer, tip=tip, ext=0, id_percent=id_percent, od_percent=od_percent);
+				}
+			}
+		}
+	}
+}
+
 // Section: Heatset Inserts - unf_hst_*
 //   The vector representing a heatset insert will contain, in order:
 //   * name
@@ -887,6 +1582,7 @@ function unf_hst_v(size="m3", length="medium", opening_taper_percent=10) = is_li
 // Arguments:
 //   size = size as a string or the unf_hst_v() vector itself
 function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
+	unf_fnr_is_st(in) ? unf_hst_diameter(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -932,6 +1628,7 @@ function unf_hst_diameter(in="m3") = is_list(in) ? in[5] : (
 function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : (
 	let (length = unf_stToLower(length)) (
 		is_list(size) ? size[6] : (
+			unf_fnr_is_st(size) ? unf_hst_length(unf_fnr_st_to_m(size), length) :
 			"m" == size[0] || "M" == size[0] ? (
 				unf_round(place=-3,
 							 num=unf_lookup(unf_stToNum(unf_sub(size, 1)),
@@ -964,10 +1661,13 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
 					"#0000" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
 						"#000" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
 							"#00" == size ? unf_hst_length(str("M", unf_fnr_shaft_diameter(size)), length) : ( // No Data
-								"#" != size[0] ? unf_hst_length("M3") : (
+								"#" != size[0] ? unf_hst_length("M3", length) : (
+									// Only medium lengths are known, small and large are scaled by the metric ratio to medium at the same diameter
+									let (metric = str("M", unf_fnr_shaft_diameter(size)),
+										  scale = "medium" == length ? 1 : unf_hst_length(metric, length) / unf_hst_length(metric, "medium"))
 									unf_round(place=-3,
-												 num=unf_lookup(unf_stToNum(unf_sub(size, 1)),
-																	 [[0, unf_hst_length(str("M", unf_fnr_shaft_diameter("#0")), length=length)], // No Data
+												 num=scale * unf_lookup(unf_stToNum(unf_sub(size, 1)),
+																	 [[0, unf_hst_length(str("M", unf_fnr_shaft_diameter("#0")), length="medium")], // No Data
 																	  [4, 5.8],
 																	  [6, 7.14],
 																	  [8, 9.06],
@@ -1000,7 +1700,7 @@ function unf_hst_length(size="m3", length="medium") = is_num(length) ? length : 
 // Usage:
 //   unf_hst(size, opening_taper_percent, length, head_ext, extra_room, bolt_hole_depth, body_color)
 // Arguments:
-//   size = string representing the size or the unf_cap_v() vector.
+//   size = string representing the size or the unf_hst_v() vector.
 //   opening_taper_percent = enlarge the opening with a taper for ease of insertion.
 //   length = Heatset inserts for the same bolt size do come in a variety of lenghts. Fortunately, because when using them one is melting into the plastic it is not necessary to be 100% accurate. For this field use one of small, medium or large to get holes for smaller to larger heatset inserts respectively.
 //   head_ext = length in mm to recess the head beyond just it's thickness
@@ -1082,10 +1782,11 @@ function unf_nut_v(size) = is_list(size) ? size : [
 //   unf_nut_diameter(size)
 // Arguments
 //   size = fastener size string or vector representing an unfy_nut (hex nut)
-function unf_nut_diameter(size) = is_list(size) ? size[2] : (
-	"m" == size[0] || "M" == size[0] ? (
+function unf_nut_diameter(in) = is_list(in) ? in[2] : (
+	unf_fnr_is_st(in) ? unf_nut_diameter(unf_fnr_st_to_m(in)) :
+	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
-					 unf_lookup(unf_stToNum(unf_sub(size, 1)),
+					 unf_lookup(unf_stToNum(unf_sub(in, 1)),
 									[[0, 0],
 									 [1.6, 3.7],
 									 [2, 4.62],
@@ -1106,9 +1807,9 @@ function unf_nut_diameter(size) = is_list(size) ? size[2] : (
 									 [36, 63.51]])
 		)
 	) : (
-		"\"" == in[len(size)-1] ? (
+		"\"" == in[len(in)-1] ? (
 			unf_round(place=-3,
-						 num=unf_lookup(25.4*unf_stToNum(unf_sub(size, 0, len(size)-1)),
+						 num=unf_lookup(25.4*unf_stToNum(unf_sub(in, 0, len(in)-1)),
 											 [[0, 0],
 											  [6.35, 12], // 1/4" 11.5-too tight
 											  [7.938, 14.3], // 5/16" - confirmed
@@ -1120,7 +1821,7 @@ function unf_nut_diameter(size) = is_list(size) ? size[2] : (
 					"#00" == in ? unf_nut_diameter(str("M", unf_fnr_shaft_diameter(in))) : ( // No Data
 						"#" != in[0] ? unf_nut_diameter("M3") : (
 							unf_round(place=-3,
-										 num=unf_lookup(unf_stToNum(unf_sub(size, 1)),
+										 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 															 [[0, 5.613], //
 															  [6, 8.5], // verified
 															  [8, 9.525], // verified
@@ -1154,6 +1855,7 @@ function unf_nut_small_d(in) = is_list(in) ? in[5] : (unf_nut_diameter(in) * cos
 // Arguments:
 //   size = size as a string or the unf_nut_v() vector itself
 function unf_nut_height(in) = is_list(in) ? in[4] : (
+	unf_fnr_is_st(in) ? unf_nut_height(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1245,8 +1947,11 @@ module unf_nut(size = "m3", ext = -1, body_color="Yellow"){
 // Section: Square Nut - unf_sqr_*
 //   The vector representing a square nut shall contain, in order:
 //   * name
-//   * side_length
+//   * size
+//   * diagonal (widest part)
+//   * shaft_diameter
 //   * height
+//   * side_length
 
 // Function: unf_sqr_v
 // Synopsis: Square Nut Vector
@@ -1259,9 +1964,10 @@ module unf_nut(size = "m3", ext = -1, body_color="Yellow"){
 function unf_sqr_v(size) = is_list(size) ? size : [
 	"SQR", //0
 	unf_fnr_size(size), //1
-	unf_fnr_shaft_diameter(size), //2
-	unf_sqr_length(size), //3
-	unf_sqr_height(size) //4
+	unf_sqr_length(size) * sqrt(2), //2
+	unf_fnr_shaft_diameter(size), //3
+	unf_sqr_height(size), //4
+	unf_sqr_length(size) //5
 ];
 
 // Function: unf_sqr_length
@@ -1271,8 +1977,9 @@ function unf_sqr_v(size) = is_list(size) ? size : [
 // Usage:
 //   unf_sqr_length(size_or_vector)
 // Arguments:
-//   size = size as a string or the unf_cap_v() vector itself
-function unf_sqr_length(in) = is_list(in) ? in[3] : (
+//   size = size as a string or the unf_sqr_v() vector itself
+function unf_sqr_length(in) = is_list(in) ? in[5] : (
+	unf_fnr_is_st(in) ? unf_sqr_length(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1326,8 +2033,9 @@ function unf_sqr_length(in) = is_list(in) ? in[3] : (
 // Usage:
 //   unf_sqr_height(size_or_vector)
 // Arguments:
-//   size = size as a string or the unf_cap_v() vector itself
+//   size = size as a string or the unf_sqr_v() vector itself
 function unf_sqr_height(in) = is_list(in) ? in[4] : (
+	unf_fnr_is_st(in) ? unf_sqr_height(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1350,7 +2058,7 @@ function unf_sqr_height(in) = is_list(in) ? in[4] : (
 			"#0000" == in ? unf_sqr_height(str("M", unf_fnr_shaft_diameter(in))) : ( // No Data
 				"#000" == in ? unf_sqr_height(str("M", unf_fnr_shaft_diameter(in))) : ( // No Data
 					"#00" == in ? unf_sqr_height(str("M", unf_fnr_shaft_diameter(in))) : ( // No Data
-						"#" != in[0] ? unf_nut_height("M3") : (
+						"#" != in[0] ? unf_sqr_height("M3") : (
 							unf_round(place=-3,
 										 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 															 [[0, 1.27], // 0.050"
@@ -1386,14 +2094,13 @@ function unf_sqr_height(in) = is_list(in) ? in[4] : (
 //   unf_sqr(size, ext, body_color)
 // Arguments:
 //   size = string representing the size or the unf_sqr_v() vector.
-//   length = length in mm
 //   ext = Extra height added to the negative for recessing the nut.
 //   body_color = color in which to render the nut if rendered as a positive, color of the cut surfaces if rendering as a negative.
 module unf_sqr(size = "m3", ext = -1, body_color="Yellow"){
 	let (ext = (0 <= ext) ? ext : $over,
-		  size = is_list(size) ? size : unf_nut_v(size)){
+		  size = is_list(size) ? size : unf_sqr_v(size)){
 		length = unf_sqr_length(size);
-		height = unf_nut_height(size);
+		height = unf_sqr_height(size);
 		translate([-length/2, -length/2, 0]){
 			if (0 < ext){
 				translate([0, 0, -ext]){
@@ -1421,7 +2128,7 @@ module unf_sqr(size = "m3", ext = -1, body_color="Yellow"){
 // Description:
 //   Retrieve a vector representing the dimensions of a washer given the size. Will return the passed parameter if passed a vector. Thus sizes and dimension vectors may be treated interchangably.
 // Usage:
-//   unf_wsh_v(size_or_vector, body_color)
+//   unf_wsh_v(size_or_vector)
 // Arguments:
 //   size = size as a string or the vector itself
 function unf_wsh_v(size) = is_list(size) ? size : [
@@ -1442,6 +2149,7 @@ function unf_wsh_v(size) = is_list(size) ? size : [
 // Arguments:
 //   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
+	unf_fnr_is_st(in) ? unf_wsh_diameter(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1529,6 +2237,7 @@ function unf_wsh_diameter(in) = is_list(in) ? in[4] : (
 // Arguments:
 //   size = size as a string or the unf_wsh_v() vector itself
 function unf_wsh_height(in) = is_list(in) ? in[5] : (
+	unf_fnr_is_st(in) ? unf_wsh_height(unf_fnr_st_to_m(in)) :
 	"m" == in[0] || "M" == in[0] ? (
 		unf_round(place=-3,
 					 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
@@ -1588,7 +2297,7 @@ function unf_wsh_height(in) = is_list(in) ? in[5] : (
 			"#0000" == in ? 0.229 : ( // 0.009"
 				"#000" == in ? 0.356 : ( // 0.014"
 					"#00" == in ? 0.508 : ( // 0.020"
-						"#" != in[0] ? unf_csk_head_height("M3") : (
+						"#" != in[0] ? unf_wsh_height("M3") : (
 							unf_round(place=-3,
 										 num=unf_lookup(unf_stToNum(unf_sub(in, 1)),
 															 [[0, 0.660], // 0.026"
@@ -1617,7 +2326,7 @@ function unf_wsh_height(in) = is_list(in) ? in[5] : (
 // Usage:
 //   unf_wsh(size, ext, body_color)
 // Arguments:
-//   size = string representing the size or the unf_cap_v() vector.
+//   size = string representing the size or the unf_wsh_v() vector.
 //   ext = length in mm to recess the washer beyond just it's thickness
 //   body_color = color in which to render the washer if rendered as a positive, color of the cut surfaces if rendering as a negative.
 module unf_wsh(size = "m3", ext = -1, body_color="Yellow"){
@@ -1644,7 +2353,7 @@ module unf_wsh(size = "m3", ext = -1, body_color="Yellow"){
 // Module: unf_pillar_pos
 // Synopsis: Render the positive part of a fastener pillar
 // Description:
-//   *Stil under Construction* Calculates the diameter needed for a support piller that will contain a heatset insert or a nut. Then render the positive part of the pillar.
+//   *Still under Construction* Calculates the diameter needed for a support pillar that will contain a heatset insert or a nut. Then render the positive part of the pillar.
 // Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes):
 //   $fn = 36;
 //   $over = 0.1;
@@ -1656,7 +2365,7 @@ module unf_wsh(size = "m3", ext = -1, body_color="Yellow"){
 // Arguments:
 //   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
 //   bolt = A string representing the bolt size.
-//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   heatset_length = One of "small", "medium" or "large" used only with a heatset insert.
 //   length = length in mm of the pillar
 //   slope = slope in degrees leading from bottom to top of the pillar. *note - future version will use a bezier curve, likely replacing this argument.*
 //   wall = Minimum material thickness between heatset or nut insert and the outside of the pillar.
@@ -1695,7 +2404,7 @@ module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", le
 // Module: unf_pillar_neg
 // Synopsis: Render the negative part of a fastener pillar
 // Description:
-//   *Stil under Construction* Render that which should be subtracted from a pillar so that fasteners may be added.
+//   *Still under Construction* Render that which should be subtracted from a pillar so that fasteners may be added.
 // Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Heatset Insert
 //   $fn = 36;
 //   $over = 0.1;
@@ -1714,7 +2423,7 @@ module unf_pillar_pos(fastener="Heatset", bolt="M3", heatset_length="Medium", le
 //   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
 //   bolt = A string representing the bolt size.
 //   length = length in mm of the pillar
-//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   heatset_length = One of "small", "medium" or "large" used only with a heatset insert.
 //   wall = Minimum material thickness between heatset or nut insert and the outside of the pillar.
 //   ext = length in mm to recess the fastener beyond just it's length
 //   body_color = color in which to render if rendered as a positive, color of the cut surfaces if rendering as a negative.
@@ -1759,7 +2468,7 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 // Module: unf_pillar
 // Synopsis: Render a fastener pillar
 // Description:
-//   *Stil under Construction* Render a pillar which will contain a heatset insert or nut and a bolt hole.
+//   *Still under Construction* Render a pillar which will contain a heatset insert or nut and a bolt hole.
 // Figure(Spin; VPD=50; VPT=[0, 0, 5]; NoAxes): Heatset Insert
 //   $fn = 36;
 //   $over = 0.1;
@@ -1776,7 +2485,7 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 //   unf_pillar_neg(fastener, heatset_length, bolt, length, slope, wall, body_color, subtraction_color)
 // Arguments:
 //   fastener = A string representing the type of fastener that will be contained within the pillar. One of "heatset" or "hexnut". Future support will be added for "squarenut".
-//   heatset_length = One of "short, "medium" or "long" used only with a heatset insert.
+//   heatset_length = One of "small", "medium" or "large" used only with a heatset insert.
 //   bolt = A string representing the bolt size.
 //   length = length in mm of the pillar
 //   slope = slope in degrees leading from bottom to top of the pillar. *note - future version will use a bezier curve, likely replacing this argument.*
@@ -1786,7 +2495,7 @@ module unf_pillar_neg(fastener="Heatset", bolt="M3", length=5, heatset_length="M
 module unf_pillar(fastener="Heatset", heatset_length="Medium", bolt="M3", length=5, slope=45, wall=1, body_color="Blue", subtraction_color="Yellow"){
 	difference(){
 		unf_pillar_pos(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, slope=slope, wall=wall, body_color=body_color);
-		unf_pillar_neg(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, body_color=subtraction_color);
+		unf_pillar_neg(fastener=fastener, bolt=bolt, heatset_length=heatset_length, length=length, wall=wall, body_color=subtraction_color);
 	}
 }
 
@@ -1799,7 +2508,8 @@ module collection(size="m3", spacing=2){
 		  hst=unf_hst_v(size),
 		  nut = unf_nut_v(size),
 		  wsh = unf_wsh_v(size),
-		  sqr = unf_sqr_v(size)
+		  sqr = unf_sqr_v(size),
+		  stp = unf_stp_v(size, parm_stp_head)
 	){
 		echo(str("csk: ", csk));
 		echo(str("cap: ", cap));
@@ -1808,6 +2518,7 @@ module collection(size="m3", spacing=2){
 		echo(str("nut: ", nut));
 		echo(str("wsh: ", wsh));
 		echo(str("sqr: ", sqr));
+		echo(str("stp: ", stp));
 		unf_csk(size = csk, body_color = body_color);
 		translate([(unf_csk_head_diameter(csk) + unf_cap_head_diameter(cap))/2 + spacing, 0, 0]){
 			unf_cap(size = cap, body_color = body_color);
@@ -1821,6 +2532,9 @@ module collection(size="m3", spacing=2){
 							unf_wsh(wsh);
 							translate([(unf_wsh_diameter(wsh) + unf_sqr_length(sqr))/2 + spacing, 0, 0]){
 								unf_sqr(sqr);
+								translate([(unf_sqr_length(sqr) + unf_fnr_diameter(stp))/2 + spacing, 0, 0]){
+									unf_stp(stp, clearance_length=unf_stp_default_length(stp)/2);
+								}
 							}
 						}
 					}
@@ -1859,6 +2573,90 @@ module unf_hst_test_block(size="M3"){
 								unf_hst(size, length="large");
 							}
 						}
+					}
+				}
+			}
+		}
+	}
+}
+
+module unf_stp_test_block(size="M3", head="pan"){
+	let (size=unf_stp_v(size, head)){
+		text_size = 3;
+		height = unf_stp_head_height(size) + 5;
+		spacing = unf_stp_head_diameter(size) + $wall;
+		label_w = text_size + (2*$wall);
+		length = label_w + (2*spacing);
+		width = max(unf_stp_head_diameter(size) + (2*$wall), 2*text_size + $wall);
+
+		difference(){
+			color(body_color){
+				cube([length, width, height]);
+			}
+			translate([$wall, width/2, height-0.6]){
+				color(subtraction_color){
+					linear_extrude(1){
+						rotate([0, 0, 90]){
+							text(unf_fnr_size(size), size=text_size, halign="center");
+						}
+					}
+				}
+			}
+			for (i = [0:1]){
+				translate([label_w + (spacing/2) + (i*spacing), width/2, height]){
+					rotate([180, 0, 0]){
+						unf_stp(size, length=height, body_color=subtraction_color);
+					}
+				}
+			}
+		}
+	}
+}
+
+module unf_stp_pilot_test_block(size="M3", steps=4, min_od=25, max_od=100){
+	let (size=unf_stp_v(size)){
+		text_size = 3;
+		depth = unf_stp_engagement(size);
+		height = depth + (2*unf_stp_pitch(size)) + $wall;
+		spacing = max(unf_stp_clearance_diameter(size) + (2*$wall), 4*text_size);
+		label_w = text_size + (2*$wall);
+		label_h = text_size + (2*$wall);
+		length = label_w + (steps*spacing);
+		width = (2*label_h) + (2*spacing);
+		ods = [for (i = [0:steps-1]) max(unf_stp_default_pilot_id(), round(1 < steps ? min_od + (i*(max_od-min_od)/(steps-1)) : min_od))];
+
+		for (i = [0:steps-1]){
+			echo(str(unf_fnr_size(size), " pilot ", ods[i], "%: star id=", unf_stp_pilot_id(size), " od=", unf_stp_pilot_od(size, ods[i]), " points=", unf_stp_star_points(size, ods[i]), ", round d=", unf_stp_pilot_diameter(size, unf_stp_default_pilot_id(), ods[i])));
+		}
+
+		difference(){
+			color(body_color){
+				cube([length, width, height]);
+			}
+			color(subtraction_color){
+				translate([0, 0, height-0.6]){
+					linear_extrude(1){
+						translate([$wall, width-label_h+$wall]){
+							text(unf_fnr_size(size), size=text_size);
+						}
+						translate([label_w/2, label_h+(spacing/2)]){
+							text("S", size=text_size, halign="center", valign="center");
+						}
+						translate([label_w/2, label_h+(3*spacing/2)]){
+							text("R", size=text_size, halign="center", valign="center");
+						}
+						for (i = [0:steps-1]){
+							translate([label_w + (spacing/2) + (i*spacing), $wall]){
+								text(str(ods[i]), size=text_size, halign="center");
+							}
+						}
+					}
+				}
+			}
+			for (i = [0:steps-1], star = [true, false]){
+				translate([label_w + (spacing/2) + (i*spacing), label_h + (spacing/2) + (star ? 0 : spacing), height]){
+					rotate([180, 0, 0]){
+						unf_stp_pilot(size, length=depth, star=star, od_percent=ods[i], body_color=subtraction_color);
 					}
 				}
 			}
@@ -2151,6 +2949,14 @@ if (parm_part == "CountersunkBolt_Test_Block") {
 
 if (parm_part == "Heatset_Test_Block") {
 	unf_hst_test_block(size=parm_size);
+ }
+
+if (parm_part == "SelfTap_Test_Block") {
+	unf_stp_test_block(size=parm_size, head=parm_stp_head);
+ }
+
+if (parm_part == "SelfTap_Pilot_Test_Block") {
+	unf_stp_pilot_test_block(size=parm_size, steps=parm_stp_pilot_steps, min_od=parm_stp_pilot_min_od, max_od=parm_stp_pilot_max_od);
  }
 
 if (parm_part == "HexNut_Test_Block") {

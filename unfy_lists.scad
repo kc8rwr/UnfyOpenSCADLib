@@ -20,7 +20,7 @@ function unf_lookup(key, values) = 0 == len(values) ? undef : (
   1 == len(values) ? values[0][1] : (
     key < values[0][0] ? values[0][1]-(((values[1][1]-values[0][1])/(values[1][0]-values[0][0])*(values[0][0]-key))) : (
       key <= values[len(values)-1][0] ? lookup(key, values) : (
-	values[len(values)-1][1]+((((values[len(values)-1][0]-values[len(values)-2][0])/(values[len(values)-1][1]-values[len(values)-2][1]))*(key-values[len(values)-1][0])))
+	values[len(values)-1][1]+((((values[len(values)-1][1]-values[len(values)-2][1])/(values[len(values)-1][0]-values[len(values)-2][0]))*(key-values[len(values)-1][0])))
       )
     )
   )
@@ -62,20 +62,20 @@ function unf_vToS(in, pref="", start=0) =
 
 // Function: unf_stToLower
 // Synopsis: Convert a string to lowercase.
-// Description: Take an input string and return a copy where every uppercase character has been converted to it's lowercase equivalent.
+// Description: Take an input string and return a copy where every uppercase character has been converted to it's lowercase equivalent. Anything other than a string is returned unchanged.
 // Usage: unf_stToLower(in)
 // Arguments:
 //   in = the input string
-function unf_stToLower(in, pref="", start=0) =
+function unf_stToLower(in, pref="", start=0) = !is_string(in) ? in :
   start >= len(in) ? pref : unf_stToLower(in, str(in=pref, pref=unf_chToLower(in[start])), start=start+1);
   
 // Function: unf_stToUpper
 // Synopsis: Convert a string to uppercase.
-// Description: Take an input string and return a copy where every lowercase character has been converted to it's uppercase equivalent.
+// Description: Take an input string and return a copy where every lowercase character has been converted to it's uppercase equivalent. Anything other than a string is returned unchanged.
 // Usage: unf_stToUpper(in)
 // Arguments:
 //   in = the input string
-function unf_stToUpper(in, pref="", start=0) =
+function unf_stToUpper(in, pref="", start=0) = !is_string(in) ? in :
   start >= len(in) ? pref : unf_stToUpper(in, str(in=pref, pref=unf_chToUpper(in[start])), start=start+1);
 
 // Function: unf_chToLower
