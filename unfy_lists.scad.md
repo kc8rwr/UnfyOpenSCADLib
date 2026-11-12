@@ -118,7 +118,7 @@ Convert a vector to a string.
 
 **Description:** 
 
-Take an input string and return a copy where every uppercase character has been converted to it's lowercase equivalent.
+Take an input string and return a copy where every uppercase character has been converted to it's lowercase equivalent. Anything other than a string is returned unchanged.
 
 **Arguments:** 
 
@@ -137,7 +137,7 @@ Take an input string and return a copy where every uppercase character has been 
 
 **Description:** 
 
-Take an input string and return a copy where every lowercase character has been converted to it's uppercase equivalent.
+Take an input string and return a copy where every lowercase character has been converted to it's uppercase equivalent. Anything other than a string is returned unchanged.
 
 **Arguments:** 
 
