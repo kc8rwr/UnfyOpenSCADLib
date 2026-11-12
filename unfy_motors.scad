@@ -9,6 +9,10 @@
 
 use <unfy_fasteners.scad>
 
+part = "ServoArmTest"; //["ServoArmTest", "None"]
+
+sides = 3;
+
 $fn = $preview ? 36 : 360;
 $over = 1;
 
@@ -37,7 +41,7 @@ $over = 1;
 //   use <unfy_motors.scad>;
 //   unf_servo_arm(length=22.25, thickness=2.5, coupler_height=2, shaft_end_radius=3.75, end_radius=2.5, sides=4);
 module unf_servo_arm(length, thickness, coupler_height, shaft_end_radius, end_radius, sides=1, distorted = false){
-  let (sides = is_list(sides) ? sides : (is_num(sides) ? [ for (i=[0:360/sides:360 - (360/sides)]) i ] : [0]) ){
+  let (sides = is_list(sides) ? sides : (is_num(sides) ? [ for (i = [0 : sides - 1]) 360 * i / sides ] : [0]) ){
     unf_shaft(diameter = shaft_end_radius*2, length = thickness + coupler_height, distorted = distorted);
     for(clock = sides){
       rotate([0, 0, clock]){
@@ -55,16 +59,16 @@ module unf_servo_arm(length, thickness, coupler_height, shaft_end_radius, end_ra
 }
 
 
-rotate([-90, 180, 0]){
-  difference(){
-    cube([30, 10, 4.5]);
-    translate([7, 5, 0]){
-      translate([0, 0, -$over]){
-	unf_servo_arm(length=22.25, thickness=2.5+$over, coupler_height=2+(2*$over), shaft_end_radius=3.75, end_radius=2.5, distorted = false);
-      }
-    }
-  }
-}
+if ("ServoArmTest" == part){
+	unf_servo_arm(length = 22.25,
+					  thickness = 2.5 + $over,
+					  coupler_height = 2 + (2*$over),
+					  shaft_end_radius=3.75,
+					  end_radius=2.5,
+					  distorted = false,
+					  sides=sides);
+ }
+
 
 // Section: Licensing
 //   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the

@@ -42,7 +42,7 @@ waste_diameter = 8;
 waste_length=3;
 outside_length = 7;
 outside_diameter = 12;
-edge_r = 2;
+edge_r = 1;
 
 $fn = $preview ? 36 : 360;
 
@@ -313,7 +313,7 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
 //   body_color = color of the generated part or false for default (blue)
 //   support_skin = thickness of support skin to print along the outside edge of the waste for preventing overhang (0.6)
 //   support_color = color of generated supports or false for default (yellow)
-//   edge_r = radius of rounded edges (2)
+//   edge_r = radius of the rounded edge at the outside end (1)
 // Figure(Anim;VPD=75;NoAxes):
 //   wall = 2;
 //   $over = 0.01;
@@ -372,12 +372,10 @@ module unf_clipInStrainRelief(
 	support_skin = 0.6,
 	support_color = "Yellow",
 	subtraction_color = "yellow",
-	edge_r = 2
+	edge_r = 1
 ){
 	outside_x = (2*wall) + (num_conductors * cable_d);
 	outside_y = (2*wall) + cable_d;
-	echo(str("outside_x: ", outside_x));
-	echo(str("outside_y: ", outside_y));
 
 	module inner(){
 		cylinder(d=inside_diameter, h=inside_length);

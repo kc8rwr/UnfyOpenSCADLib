@@ -174,7 +174,7 @@ function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
 // Arguments:
 //   radius = radius of the circle or arc
 //   angle = angle in degrees covered by the arc, 360 for a full circle (360)
-function unf_effective_fn(radius, angle=360) = 0 < $fn ? $fn : let (
+function unf_effective_fn(radius, angle=360) = 0 < $fn ? max(1, ceil($fn * (angle/360))) : let (
   pfa = 360 / $fa,
   pfs = (2*PI*radius)/$fs) ceil(max(min(pfa, pfs), 5) * (angle/360));
 
@@ -234,7 +234,7 @@ function unfy_bezier(v) =
       bounds = unfy_bound_size2(v), //not necessarily accurate as control points may be outside
       radius = sqrt(pow(bounds.x, 2) + pow(bounds.y, 2)),
       count = unf_effective_fn(radius, 90),
-      steps = [0: 1/count: 1]
+      steps = [ for (i = [0 : count]) i / count ] //whole number steps so the curve always reaches its last point
     )
   len(v) == 2 ? v : //[for(t = steps) [((1-t)*v[0].x)+(t*v[1].x), ((1-t)*v[0].y)+(t*v[1].y)]] :
   3 == len(v) ? [for(t = steps) [

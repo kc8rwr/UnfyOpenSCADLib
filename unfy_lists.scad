@@ -7,6 +7,8 @@
 //   .
 //   unfy_lists.scad contains functions for working with lists and strings within OpenSCAD.
 
+part = "Demo"; //["Demo", "None"]
+
 // Function: unf_lookup
 // Synopsis: Lookup with interpolation
 // Description: (key, vector[key, value]) - Looks up a value from a table, like the built-in lookup function but interpolate even beyond the bounds of the vector
@@ -235,28 +237,30 @@ module unf_enbox(size=10000, extend_to_y=true, margin=0){
   }
 }
 
-tv = ["H", "e", "l", "l", "o"];
-echo (str("tv = ",tv));
-ts = unf_vToS(tv);
-echo (str("ts = unf_vToS(tv) = ", ts));
-echo (str("unf_sub(tv, 1, 3) = ", unf_sub(tv, 1, 3)));
-echo (str("unf_sub(ts, 1, 3) = ", unf_sub(ts, 1, 3)));
-echo (str("unf_stToLower(ts) = ", unf_stToLower(ts)));
-echo (str("unf_stToUpper(ts) = ", unf_stToUpper(ts)));
-echo (str("unf_stToNum(\"10\") = ", unf_stToNum("10")));
-echo (str("unf_stToNum(\"12.34\") = ", unf_stToNum("12.34")));
-echo (str("unf_stToNum(\".1234\") = ", unf_stToNum(".1234")));
-echo (str("unf_stToNum(\"0.456\") = ", unf_stToNum("0.456")));
-echo (str("unf_stToNum(\"5/6\") = ", unf_stToNum("5/6")));
-linear_extrude(1){
-  unf_enbox(margin=2){
-    text("Hello");
-  }
-}
-color("red"){
-  translate([0, 2, 0]){
-    linear_extrude(2){
+if ("Demo" == part){
+  tv = ["H", "e", "l", "l", "o"];
+  echo (str("tv = ",tv));
+  ts = unf_vToS(tv);
+  echo (str("ts = unf_vToS(tv) = ", ts));
+  echo (str("unf_sub(tv, 1, 3) = ", unf_sub(tv, 1, 3)));
+  echo (str("unf_sub(ts, 1, 3) = ", unf_sub(ts, 1, 3)));
+  echo (str("unf_stToLower(ts) = ", unf_stToLower(ts)));
+  echo (str("unf_stToUpper(ts) = ", unf_stToUpper(ts)));
+  echo (str("unf_stToNum(\"10\") = ", unf_stToNum("10")));
+  echo (str("unf_stToNum(\"12.34\") = ", unf_stToNum("12.34")));
+  echo (str("unf_stToNum(\".1234\") = ", unf_stToNum(".1234")));
+  echo (str("unf_stToNum(\"0.456\") = ", unf_stToNum("0.456")));
+  echo (str("unf_stToNum(\"5/6\") = ", unf_stToNum("5/6")));
+  linear_extrude(1){
+    unf_enbox(margin=2){
       text("Hello");
+    }
+  }
+  color("red"){
+    translate([0, 2, 0]){
+      linear_extrude(2){
+        text("Hello");
+      }
     }
   }
 }

@@ -105,14 +105,15 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
     }
   
     //vertical support (bar between screw holes for supporting pillars when printed on end)
+    //a thin bar in the plane through both screw axes, as deep as the pillars and stopping at the edge of each fastener's hole
+    //(sizes match those unf_pillar uses for its default wall of 1)
     if ("vertical" == support_skin && "plainhole" != fastener && $over < support_skin_t) {
-      color(support_color, alpha=0.5){
-	hull(){
-	  intersection() {
-	    unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin="none", support_skin_t=0, wall=wall);
-	    translate([ear_x/2, (body_y/2)-(support_skin_t/2), -body_depth]){
-	      cube([screw_separation, support_skin_t, body_depth]);
-	    }
+      let(hst_v = unf_hst_v(size=bolt, length=heatset_length),
+	  hole_r = ("hexnut" == fastener) ? unf_nut_diameter(unf_nut_v(bolt)) / 2 : max(unf_hst_diameter(hst_v), unf_fnr_diameter(hst_v)) / 2,
+	  pillar_length = ("hexnut" == fastener) ? 5 : max(5, 1 + unf_hst_length(hst_v, length=heatset_length))){
+	color(support_color, alpha=0.5){
+	  translate([(ear_x/2) + hole_r, (body_y/2)-(support_skin_t/2), -pillar_length]){
+	    cube([screw_separation - (2*hole_r), support_skin_t, pillar_length]);
 	  }
 	}
       }
