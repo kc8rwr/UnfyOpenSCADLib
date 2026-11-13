@@ -39,11 +39,11 @@ bottom_cable_bolt = "M3"; //["M3", "M4", "#6"]
 
 wall = 4;
 $fn = $preview ? 36 : 360;
-$over = 0.01;
+$unf_over = 0.01;
 
-// Module: unf_mounted_power_socket_box
+// Module: unf_mountedPowerSocketBox
 // Usage:
-//   unf_mounted_power_socket_box(&lt;args&gt;);
+//   unf_mountedPowerSocketBox(&lt;args&gt;);
 // Description:
 //   Creates a box with an IEC C14 power inlet socket, a fuse holder hole and cable clips. Mounting tabs on the side and top allow it to be screwed to a surface such as the back of a desk or the side of a machine. The back is open except for a lip around the edges.
 // Arguments:
@@ -60,17 +60,17 @@ $over = 0.01;
 //   fuse_holder_hole_diameter = diameter of the hole for the fuse holder (12)
 //   fuse_holder_outer_diameter = outer diameter of the fuse holder, for spacing (14)
 //   fuse_holder_spacing = space around the fuse holder (4)
-//   fuse_holder_hole_shape = shape of the fuse holder hole, "circle", "d" or "doubled", see unf_DHole() (circle)
+//   fuse_holder_hole_shape = shape of the fuse holder hole, "circle", "d" or "doubled", see unf_dHole() (circle)
 //   fuse_holder_flat_width = for a "d" shaped hole the distance from the flat to the opposite side, for a "doubled" the distance between flats (5)
 //   fuse_holder_rotation = rotation of the fuse holder hole (0)
 //   support_skin = thickness of support skin, 0 for none (0.6)
 //   wall = thickness of walls (4)
 // Figure(Spin;VPD=340;VPT=[38,15,40];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cases/unfy_powerboxes.scad>;
-//   unf_mounted_power_socket_box(top_cable_d=7.5, top_cable_bolt="M3", bottom_cable_d=7.5, bottom_cable_bolt="M3");
-module unf_mounted_power_socket_box(step=[20, 27],
+//   unf_mountedPowerSocketBox(top_cable_d=7.5, top_cable_bolt="M3", bottom_cable_d=7.5, bottom_cable_bolt="M3");
+module unf_mountedPowerSocketBox(step=[20, 27],
 		 bolt_size = "m4",
 		 back_lip = 5,
 		 top_cable_d,
@@ -102,13 +102,13 @@ module unf_mounted_power_socket_box(step=[20, 27],
     }
   }
   
-  let(washer_v = unf_wsh_v(bolt_size),
+  let(washer_v = unf_wshV(bolt_size),
       size = [57, 54],
-      bolt_d = unf_fnr_shaft_diameter(washer_v),
-      tab_length = unf_wsh_diameter(washer_v) + (2*wall),
-      tab_height = wall + unf_wsh_height(washer_v),
+      bolt_d = unf_fnrShaftDiameter(washer_v),
+      tab_length = unf_wshDiameter(washer_v) + (2*wall),
+      tab_height = wall + unf_wshHeight(washer_v),
       c14_zpos = wall,
-      fuse_holder_zpos = c14_zpos + unf_c14_size().x + fuse_holder_spacing,
+      fuse_holder_zpos = c14_zpos + unf_c14Size().x + fuse_holder_spacing,
       back_x = size.x,
       back_y = size.y - tab_length,
       corner_r = min(back_x, back_y)/2,
@@ -125,7 +125,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
       unf_cableClip(location=[front_size.x+back_size.x, (3/4)*front_size.y, 0], rotation=[180, -90, 0], cable_d=bottom_cable_d, bolt=bottom_cable_bolt, hole_ext=front_size.x, body_color=body_color, support="none", center=false)
       
       // Socket
-      unf_C14Socket(rotation=[0, 90, 180], location=[wall-$over, (unf_c14_size().y+front_size.y)/2, unf_c14_size().x+c14_zpos], fastener=socket_fastener, bolt=socket_fastener_size, support_skin="vertical", restriction_l=fuse_holder_spacing, restriction_r=c14_zpos, body_color=body_color, support_color=support_color, support_skin_t=support_skin, wall=wall){
+      unf_c14Socket(rotation=[0, 90, 180], location=[wall-$unf_over, (unf_c14Size().y+front_size.y)/2, unf_c14Size().x+c14_zpos], fastener=socket_fastener, bolt=socket_fastener_size, support_skin="vertical", restriction_l=fuse_holder_spacing, restriction_r=c14_zpos, body_color=body_color, support_color=support_color, support_skin_t=support_skin, wall=wall){
       
       color(body_color){
 
@@ -136,36 +136,36 @@ module unf_mounted_power_socket_box(step=[20, 27],
 	  main_shape(back_size=back_size, front_size=front_size, corner_r=corner_r, back_corner_r=back_corner_r, wall=wall);
 	  //cutout inside, except bottom
 	    translate([wall, wall, wall]){
-	    main_shape(back_size = [max($over, back_size.x-(2*wall)), max($over, back_size.y-(2*wall)), max($over, back_size.z-(2*wall))],
-		       front_size = [max($over, front_size.x-(2*wall)), max($over, front_size.y-(2*wall)), max($over, front_size.z-(2*wall))],
+	    main_shape(back_size = [max($unf_over, back_size.x-(2*wall)), max($unf_over, back_size.y-(2*wall)), max($unf_over, back_size.z-(2*wall))],
+		       front_size = [max($unf_over, front_size.x-(2*wall)), max($unf_over, front_size.y-(2*wall)), max($unf_over, front_size.z-(2*wall))],
 		       corner_r = corner_r, back_corner_r = back_corner_r, wall=wall);
 	  }
 	  //cutout middle of bottom
-	  translate([2*wall, 2*wall, -$over]){
-	    main_shape(back_size = [max($over, back_size.x-(4*wall)), max($over, back_size.y-(4*wall)), max($over, back_size.z-wall+$over)],
-		       front_size = [max($over, front_size.x-(2*wall)), max($over, front_size.y-(4*wall)), max($over, front_size.z-wall+$over)],
+	  translate([2*wall, 2*wall, -$unf_over]){
+	    main_shape(back_size = [max($unf_over, back_size.x-(4*wall)), max($unf_over, back_size.y-(4*wall)), max($unf_over, back_size.z-wall+$unf_over)],
+		       front_size = [max($unf_over, front_size.x-(2*wall)), max($unf_over, front_size.y-(4*wall)), max($unf_over, front_size.z-wall+$unf_over)],
 		       corner_r = corner_r, back_corner_r = back_corner_r, wall=wall);
 	  }
 	  //cut back out of main section
-	  translate([back_lip+wall, back_size.y-(wall+$over), max(wall, back_lip)]){
-	    cube([max($over, back_size.x-(2*wall)-(2*back_lip)), max($over, wall+(2*$over)), max($over, back_size.z-(2*max(wall, back_lip)))]);
+	  translate([back_lip+wall, back_size.y-(wall+$unf_over), max(wall, back_lip)]){
+	    cube([max($unf_over, back_size.x-(2*wall)-(2*back_lip)), max($unf_over, wall+(2*$unf_over)), max($unf_over, back_size.z-(2*max(wall, back_lip)))]);
 	  }
 	  //cut back out of step section
-	  translate([wall+back_lip, back_size.y-(wall+$over), max(wall, back_lip)]){
-	    cube([max($over, size.x+step.x-(2*wall)-(2*back_lip)), max($over, wall+(2*$over)), max($over, front_size.z-(2*max(wall, back_lip)))]);
+	  translate([wall+back_lip, back_size.y-(wall+$unf_over), max(wall, back_lip)]){
+	    cube([max($unf_over, size.x+step.x-(2*wall)-(2*back_lip)), max($unf_over, wall+(2*$unf_over)), max($unf_over, front_size.z-(2*max(wall, back_lip)))]);
 	  }
 
 	  //Fuse Holder
-	  translate([wall+$over, back_size.y/2, fuse_holder_zpos+(fuse_holder_outer_diameter/2)]){
+	  translate([wall+$unf_over, back_size.y/2, fuse_holder_zpos+(fuse_holder_outer_diameter/2)]){
 	    rotate([90, "doubled"==fuse_holder_hole_shape?90:0, -90]){
-	      unf_DHole(diameter=fuse_holder_hole_diameter, shape=fuse_holder_hole_shape, flat_width=fuse_holder_flat_width, angle=fuse_holder_rotation, z=wall+(2*$over));
+	      unf_dHole(diameter=fuse_holder_hole_diameter, shape=fuse_holder_hole_shape, flat_width=fuse_holder_flat_width, angle=fuse_holder_rotation, z=wall+(2*$unf_over));
 	    }
 	  }
 	}
 
 	// Side Tab
 	translate([size.x-corner_r-(tab_length+(4*wall)), -tab_length, 0]){
-	  unf_mount_tab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
+	  unf_mountTab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
 	}
 
 	
@@ -173,7 +173,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
 	translate([tab_length+(5*wall), back_size.y, back_size.z]){
 	  rotate([270, 0, 180]){
 	    translate([0, -tab_length, 0]){
-	      unf_mount_tab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
+	      unf_mountTab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
 	    }
 	  }
 	}
@@ -181,7 +181,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
       }
       
       //Support Skin
-      if ($over < support_skin){
+      if ($unf_over < support_skin){
 	color(support_color, alpha=0.5){
 	  //hold up corner of step
 	  translate([back_size.x-back_lip-wall, back_size.y-wall, 0]){
@@ -189,7 +189,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
 	  }
 	  //backing of main section
 	  translate([back_lip+wall, back_size.y-support_skin, 0]){
-	    cube([back_size.x-(2*wall)-(2*back_lip), support_skin, back_size.z+$over-max(wall, back_lip)]);
+	    cube([back_size.x-(2*wall)-(2*back_lip), support_skin, back_size.z+$unf_over-max(wall, back_lip)]);
 	  }
 	  //backing of step
 	  translate([back_size.x-back_lip-wall, back_size.y-support_skin, 0]){
@@ -203,7 +203,7 @@ module unf_mounted_power_socket_box(step=[20, 27],
 
 if ("MountedPowerBox" == part){
 
-  unf_mounted_power_socket_box(bolt_size = bolt_size,
+  unf_mountedPowerSocketBox(bolt_size = bolt_size,
 	    top_cable_d = top_cable_d,
 	    top_cable_bolt = top_cable_bolt,
 	    bottom_cable_d = bottom_cable_d,

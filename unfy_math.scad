@@ -6,29 +6,29 @@
 //   This file is part of UnfyOpenSCADLib.
 //   .
 //   unfy_math contains math functions for rounding, angles, regular polygons, circles, curve resolution and bezier curves.
-demonstrate_unf_distance_to_bounding_circle = false; //grapgical demo of unf_distance_to_bounding_circle() 
+demonstrate_unf_distance_to_bounding_circle = false; //grapgical demo of unf_distanceToBoundingCircle() 
 
 $fn = $preview ? 36 : 360;
 
 // Section: Basic Math
 
-// Function: unf_INF
+// Function: unf_inf
 // Synopsis: Infinity
 // Description:
 //   Returns positive infinity. Adapted from https://forums.openscad.org/is-nan-td28336.html
 // Usage:
-//   unf_INF()
-function unf_INF() = 1/0;
+//   unf_inf()
+function unf_inf() = 1/0;
 
-// Function: unf_is_nan
+// Function: unf_isNan
 // Synopsis: Test for NaN
 // Description:
 //   Returns true if x is NaN (not a number). NaN is the only value which is not equal to itself. Adapted from https://forums.openscad.org/is-nan-td28336.html
 // Usage:
-//   unf_is_nan(x)
+//   unf_isNan(x)
 // Arguments:
 //   x = the value to test
-function unf_is_nan(x) = x!=x;
+function unf_isNan(x) = x!=x;
 
 // Function: unf_round
 // Synopsis: Round to any decimal place
@@ -53,15 +53,15 @@ function unf_round(num, place=0) = round(num / pow(10, place)) * pow(10, place);
 //   x = the input number
 function unf_signum(x) = x < 0 ? -1 : (x ==0 ? 0 : 1);
 
-// Function: unf_normalize_angle
+// Function: unf_normalizeAngle
 // Synopsis: Normalize an angle to [0, 360)
 // Description:
 //   Convert any angle to an equivalent positive (or 0) angle within a single circle. For example -90 becomes 270 and 450 becomes 90.
 // Usage:
-//   unf_normalize_angle(angle)
+//   unf_normalizeAngle(angle)
 // Arguments:
 //   angle = the angle in degrees
-function unf_normalize_angle(angle) = let(a = angle % 360) 0 > a ? 360 + a  : a;
+function unf_normalizeAngle(angle) = let(a = angle % 360) 0 > a ? 360 + a  : a;
 
 // Function: unf_quadratic
 // Synopsis: Solve a quadratic equation
@@ -79,67 +79,67 @@ function unf_quadratic(a, b, c) = let(m = sqrt(pow(b, 2) - (4 * a * c)),
 
 // Section: Regular Polygons
 
-// Function: unf_calc_polygon_diameter
+// Function: unf_calcPolygonDiameter
 // Synopsis: Regular polygon diameter from distance across flats
 // Description:
 //   Calculate the diameter of a regular polygon (the diameter of the circle passing through its vertices) from the distance between opposite sides. Useful for sizing a circle() with a low $fn, such as a hexagonal nut trap.
 // Usage:
-//   unf_calc_polygon_diameter(f, n)
+//   unf_calcPolygonDiameter(f, n)
 // Arguments:
 //   f = distance between flats
 //   n = number of sides
-function unf_calc_polygon_diameter(f, n) = f / cos(180 / n);
+function unf_calcPolygonDiameter(f, n) = f / cos(180 / n);
 
-// Function: unf_calc_polygon_interior_angle
+// Function: unf_calcPolygonInteriorAngle
 // Synopsis: Regular polygon interior angle
 // Description:
 //   Calculate the interior angles of a regular polygon given the number of sides.
 // Usage:
-//   unf_calc_polygon_interior_angle(n)
+//   unf_calcPolygonInteriorAngle(n)
 // Arguments:
 //   n = number of sides
-function unf_calc_polygon_interior_angle(n) = 180 * (n-2) / n;
+function unf_calcPolygonInteriorAngle(n) = 180 * (n-2) / n;
 
-// Function: unf_calc_polygon_exterior_angle
+// Function: unf_calcPolygonExteriorAngle
 // Synopsis: Regular polygon exterior angle
 // Description:
 //   Calculate the exterior angles of a regular polygon given the number of sides.
 // Usage:
-//   unf_calc_polygon_exterior_angle(n)
+//   unf_calcPolygonExteriorAngle(n)
 // Arguments:
 //   n = number of sides
-function unf_calc_polygon_exterior_angle(n) = 360 / n;
+function unf_calcPolygonExteriorAngle(n) = 360 / n;
 
-// Function: unf_calc_polygon_central_angle
+// Function: unf_calcPolygonCentralAngle
 // Synopsis: Regular polygon central angle
 // Description:
 //   Calculate the central angle of a regular polygon (the angle between two adjacent vertices, as seen from the center) given the number of sides.
 // Usage:
-//   unf_calc_polygon_central_angle(n)
+//   unf_calcPolygonCentralAngle(n)
 // Arguments:
 //   n = number of sides
-function unf_calc_polygon_central_angle(n) = 360 / n;
+function unf_calcPolygonCentralAngle(n) = 360 / n;
 
 // Section: Circles
 
-// Function: unf_distance_to_bounding_circle
+// Function: unf_distanceToBoundingCircle
 // Synopsis: Distance from a point inside a circle to its edge
 // Description:
 //   Calculate the distance from a point within a circle to it's circumference along a given angle.
 //   .
 //   Set demonstrate_unf_distance_to_bounding_circle to true and open this file in OpenSCAD for a graphical demonstration. Set steps to 360 to animate it.
 // Usage:
-//   unf_distance_to_bounding_circle(radius, point, angle, [focus])
+//   unf_distanceToBoundingCircle(radius, point, angle, [focus])
 // Arguments:
 //   radius = radius of the circle
 //   point = [x, y] location of the point within the circle
 //   angle = direction in degrees in which to measure, counter-clockwise from the X axis
 //   focus = [x, y] location of the center of the circle ([0, 0])
-function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
-  focus.x != 0 || focus.y != 0 ? unf_distance_to_bounding_circle(radius=radius, point=[point.x-focus.x, point.y-focus.y], angle=angle, focus=[0, 0]) : // shift so point is origin, simplifies rotation
-  360 <= angle || 0 > angle ? unf_distance_to_bounding_circle(radius=radius, point=point, focus=focus, angle=(0 < angle ? (angle % 360) : (360 + (angle % 360)))) : //ensure angle is between 0, 360
+function unf_distanceToBoundingCircle(radius, point, angle, focus=[0, 0]) =
+  focus.x != 0 || focus.y != 0 ? unf_distanceToBoundingCircle(radius=radius, point=[point.x-focus.x, point.y-focus.y], angle=angle, focus=[0, 0]) : // shift so point is origin, simplifies rotation
+  360 <= angle || 0 > angle ? unf_distanceToBoundingCircle(radius=radius, point=point, focus=focus, angle=(0 < angle ? (angle % 360) : (360 + (angle % 360)))) : //ensure angle is between 0, 360
   90 == angle ? sqrt(pow(radius,2)-pow(point.x, 2))-point.y : // 90 degrees is special
-  90 < angle ? let(rot=(angle%90)-angle, cr=cos(rot), sr=sin(rot)) unf_distance_to_bounding_circle(radius=radius, focus=focus, angle=angle%90, point=[point.x*cr-point.y*sr, cr*point.y+sr*point.x]) : // rotate into quadrant I if not already there
+  90 < angle ? let(rot=(angle%90)-angle, cr=cos(rot), sr=sin(rot)) unf_distanceToBoundingCircle(radius=radius, focus=focus, angle=angle%90, point=[point.x*cr-point.y*sr, cr*point.y+sr*point.x]) : // rotate into quadrant I if not already there
   let(
     e = point.x,
     f = point.y,
@@ -147,7 +147,7 @@ function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
   )
   0 > e
   ?
-  unf_distance_to_bounding_circle(radius, [0, f - (e*tan(angle))], angle, [0, 0]) - (e/cos(angle))
+  unf_distanceToBoundingCircle(radius, [0, f - (e*tan(angle))], angle, [0, 0]) - (e/cos(angle))
   :
   (
     let (
@@ -165,50 +165,50 @@ function unf_distance_to_bounding_circle(radius, point, angle, focus=[0, 0]) =
 //   .
 //   Adapted from Post by MichaelAtOz https://openscad.rocklinux.narkive.com/jhqIIcOm/fn-fa-and-fs
 
-// Function: unf_effective_fn
+// Function: unf_effectiveFn
 // Synopsis: Effective $fn
 // Description:
 //   Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fn value.
 // Usage:
-//   unf_effective_fn(radius, [angle])
+//   unf_effectiveFn(radius, [angle])
 // Arguments:
 //   radius = radius of the circle or arc
 //   angle = angle in degrees covered by the arc, 360 for a full circle (360)
-function unf_effective_fn(radius, angle=360) = 0 < $fn ? max(1, ceil($fn * (angle/360))) : let (
+function unf_effectiveFn(radius, angle=360) = 0 < $fn ? max(1, ceil($fn * (angle/360))) : let (
   pfa = 360 / $fa,
   pfs = (2*PI*radius)/$fs) ceil(max(min(pfa, pfs), 5) * (angle/360));
 
-// Function: unf_effective_fa
+// Function: unf_effectiveFa
 // Synopsis: Effective $fa
 // Description:
 //   Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fa value.
 // Usage:
-//   unf_effective_fa(radius)
+//   unf_effectiveFa(radius)
 // Arguments:
 //   radius = radius of the circle
-function unf_effective_fa(radius) = 360 / unf_effective_fn(radius);
+function unf_effectiveFa(radius) = 360 / unf_effectiveFn(radius);
 
-// Function: unf_effective_fs
+// Function: unf_effectiveFs
 // Synopsis: Effective $fs
 // Description:
 //   Determine which of $fa, $fs or $fn currently takes precidence, calculate and return an equivalent $fs value.
 // Usage:
-//   unf_effective_fs(radius)
+//   unf_effectiveFs(radius)
 // Arguments:
 //   radius = radius of the circle
-function unf_effective_fs(radius) = 2*PI*radius / unf_effective_fn(radius);
+function unf_effectiveFs(radius) = 2*PI*radius / unf_effectiveFn(radius);
 
 // Section: Curves
 
-// Function: unfy_bound_size2
+// Function: unf_boundSize2
 // Synopsis: Bounding size of 2d points
 // Description:
 //   Determine the bounding size of a vector of 2 dimensional vectors. Returns [width, height], or 0 if fewer than 2 points are given.
 // Usage:
-//   unfy_bound_size2(v)
+//   unf_boundSize2(v)
 // Arguments:
 //   v = vector of [x, y] points
-function unfy_bound_size2(v) =
+function unf_boundSize2(v) =
   len(v) < 2 ? 0 :
     let (
       mnx = min([for(i=v)i.x]),
@@ -218,22 +218,22 @@ function unfy_bound_size2(v) =
     )
 	[mxx - mnx, mxy - mny];
 
-// Function: unfy_bezier
+// Function: unf_bezier
 // Synopsis: Points along a bezier curve
 // Description:
 //   Take a vector of control points, return a vector of points on the curve. Linear, quadratic and cubic curves (2, 3 or 4 control points) are supported. The number of points is determined by the current $fn, $fa and $fs.
 // Usage:
-//   unfy_bezier(v)
+//   unf_bezier(v)
 // Arguments:
 //   v = vector of 1 to 4 [x, y] control points
-function unfy_bezier(v) =
+function unf_bezier(v) =
   assert(len(v) < 5, "Sorry, curves with order > 3 are not yet supported")
   assert(len(v) > 0, "Empty vector!")
     1 == len(v) ? [v[0]] :
     let(
-      bounds = unfy_bound_size2(v), //not necessarily accurate as control points may be outside
+      bounds = unf_boundSize2(v), //not necessarily accurate as control points may be outside
       radius = sqrt(pow(bounds.x, 2) + pow(bounds.y, 2)),
-      count = unf_effective_fn(radius, 90),
+      count = unf_effectiveFn(radius, 90),
       steps = [ for (i = [0 : count]) i / count ] //whole number steps so the curve always reaches its last point
     )
   len(v) == 2 ? v : //[for(t = steps) [((1-t)*v[0].x)+(t*v[1].x), ((1-t)*v[0].y)+(t*v[1].y)]] :
@@ -245,38 +245,38 @@ function unfy_bezier(v) =
     (pow(1-t, 3)*v[0].y) + (3*pow(1-t, 2)*t*v[1].y) + (3*(1-t)*pow(t, 2)*v[2].y) + (pow(t, 3)*v[3].y)]] :
     [[0, 0]];
 
-// Function: unf_cartesian_from_polar
+// Function: unf_cartesianFromPolar
 // Synopsis: Convert polar coordinates to cartesian
 // Description:
 //   Convert a polar coordinate to an [x, y] cartesian coordinate.
 // Usage:
-//   unf_cartesian_from_polar([r], [theta])
+//   unf_cartesianFromPolar([r], [theta])
 // Arguments:
 //   r = distance from the origin (1)
 //   theta = angle in degrees, counter-clockwise from the X axis (90)
-function unf_cartesian_from_polar(r=1, theta=90) = let (theta=unf_normalize_angle(theta)) [r*cos(theta), r*sin(theta)];
+function unf_cartesianFromPolar(r=1, theta=90) = let (theta=unf_normalizeAngle(theta)) [r*cos(theta), r*sin(theta)];
 
-// Function: unf_chord_distance
+// Function: unf_chordDistance
 // Synopsis: Chord length from distance to center
 // Description:
 //   Returns the length of a chord given it's distance from the vertex and the radius.
 // Usage:
-//   unf_chord_distance([r], [d])
+//   unf_chordDistance([r], [d])
 // Arguments:
 //   r = radius of the circle (1)
 //   d = distance of the chord from the center of the circle (0.5)
-function unf_chord_distance(r=1, d=0.5) = 2 * sqrt(pow(r, 2) - pow(d, 2));
+function unf_chordDistance(r=1, d=0.5) = 2 * sqrt(pow(r, 2) - pow(d, 2));
 
-// Function: unf_chord_angle
+// Function: unf_chordAngle
 // Synopsis: Chord length from angle
 // Description:
 //   Returns the length of a chord given the angle the chord forms with the vertex and the radius.
 // Usage:
-//   unf_chord_angle([r], [a])
+//   unf_chordAngle([r], [a])
 // Arguments:
 //   r = radius of the circle (1)
 //   a = angle in degrees between the two ends of the chord, as seen from the center (45)
-function unf_chord_angle(r=1, a=45) = 2*r*sin(a/2);
+function unf_chordAngle(r=1, a=45) = 2*r*sin(a/2);
 
 // ******************************* Demo Stuff
 
@@ -288,7 +288,7 @@ if (demonstrate_unf_distance_to_bounding_circle) {
   for (point = [[0, 0, 0], [2, 4, 45], [-2, 4, 135], [-2, -4, 225], [2, -4, -45]]){
     let(ang = angle+point.z){
       cylinder(r = radius, h=0.1);
-      length = unf_distance_to_bounding_circle(radius=radius, point=[point.x, point.y], angle=ang);
+      length = unf_distanceToBoundingCircle(radius=radius, point=[point.x, point.y], angle=ang);
       translate([point.x, point.y, 0]){
 	rotate([0, 0, ang]){
 	  color("blue") cube([length, 0.2, 0.2]);
@@ -312,7 +312,7 @@ if (demonstrate_unf_distance_to_bounding_circle) {
   echo(str("unf_round(52.43, -3)=", unf_round(52.43, -3)));
   
   control = [[0, 5],  [5, 1], [14, 15],[20, 8]];
-  bez=unfy_bezier(v=control);
+  bez=unf_bezier(v=control);
   v = concat([[0, 0]], bez, [[20, 0]]);
   echo(str(v));
   linear_extrude(0.5) polygon(v);

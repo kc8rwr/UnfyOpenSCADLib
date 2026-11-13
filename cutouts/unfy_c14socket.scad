@@ -24,16 +24,16 @@ support_skin_t = 0.02;
 body_color = "Blue"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 support_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 
-$over = 0.01;
+$unf_over = 0.01;
 
 use <../unfy_fasteners.scad>
 use <../unfy_lists.scad>
 
 $fn = $preview ? 15 : 360;
 
-// Module: unf_C14Socket_Positive
+// Module: unf_c14SocketPositive
 // Usage:
-//   unf_C14Socket_Positive(&lt;args&gt;);
+//   unf_c14SocketPositive(&lt;args&gt;);
 // Description:
 //   Just the positive part of a C14 socket mount. This is the pillars which hold the socket's screws, plus any optional support skin for printing.
 // Arguments:
@@ -49,11 +49,11 @@ $fn = $preview ? 15 : 360;
 //   restriction_r = if set, limits how far the pillars may extend to the right beyond the socket's ears, for fitting against nearby walls (false)
 //   wall = thickness of the panel the socket is mounted in (4)
 // Figure(Spin;VPD=140;VPT=[26,11,-5];NoAxes): fastener="Heatset"
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_c14socket.scad>;
-//   unf_C14Socket_Positive(fastener="Heatset");
-module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
+//   unf_c14SocketPositive(fastener="Heatset");
+module unf_c14SocketPositive(bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
   let(fastener = unf_stToLower(fastener),
       support_skin = unf_stToLower(support_skin),
       body_x = 26,
@@ -85,21 +85,21 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 	      }
 	    }
 	  }
-	  translate([ear_x, 0, $over]){
-	    unf_C14Body(depth=body_depth+$over);
+	  translate([ear_x, 0, $unf_over]){
+	    unf_c14Body(depth=body_depth+$unf_over);
 	  }
 	}
       }
     }
       
     //support skin
-    if ("none" != support_skin && $over < support_skin_t){
+    if ("none" != support_skin && $unf_over < support_skin_t){
       color(support_color, alpha=0.5){
 	translate([0, 0, wall-support_skin_t]){
-	  unf_C14Cape(hood_thickness=support_skin_t);
+	  unf_c14Cape(hood_thickness=support_skin_t);
 	}
 	translate([ear_x, 0, 0]){
-	  unf_C14Body(depth=support_skin_t);
+	  unf_c14Body(depth=support_skin_t);
 	}
       }
     }
@@ -107,10 +107,10 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
     //vertical support (bar between screw holes for supporting pillars when printed on end)
     //a thin bar in the plane through both screw axes, as deep as the pillars and stopping at the edge of each fastener's hole
     //(sizes match those unf_pillar uses for its default wall of 1)
-    if ("vertical" == support_skin && "plainhole" != fastener && $over < support_skin_t) {
-      let(hst_v = unf_hst_v(size=bolt, length=heatset_length),
-	  hole_r = ("hexnut" == fastener) ? unf_nut_diameter(unf_nut_v(bolt)) / 2 : max(unf_hst_diameter(hst_v), unf_fnr_diameter(hst_v)) / 2,
-	  pillar_length = ("hexnut" == fastener) ? 5 : max(5, 1 + unf_hst_length(hst_v, length=heatset_length))){
+    if ("vertical" == support_skin && "plainhole" != fastener && $unf_over < support_skin_t) {
+      let(hst_v = unf_hstV(size=bolt, length=heatset_length),
+	  hole_r = ("hexnut" == fastener) ? unf_nutDiameter(unf_nutV(bolt)) / 2 : max(unf_hstDiameter(hst_v), unf_fnrDiameter(hst_v)) / 2,
+	  pillar_length = ("hexnut" == fastener) ? 5 : max(5, 1 + unf_hstLength(hst_v, length=heatset_length))){
 	color(support_color, alpha=0.5){
 	  translate([(ear_x/2) + hole_r, (body_y/2)-(support_skin_t/2), -pillar_length]){
 	    cube([screw_separation - (2*hole_r), support_skin_t, pillar_length]);
@@ -122,9 +122,9 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 }
 
 
-// Module: unf_C14Socket_Negative
+// Module: unf_c14SocketNegative
 // Usage:
-//   unf_C14Socket_Negative(&lt;args&gt;);
+//   unf_c14SocketNegative(&lt;args&gt;);
 // Description:
 //   Just the negative part of a C14 socket mount. This is the cutout for the socket body, the recess for the socket's flange and the screw holes.
 // Arguments:
@@ -133,20 +133,20 @@ module unf_C14Socket_Positive(bolt="M4", fastener="plainhole", heatset_length="M
 //   hood_thickness = depth of the recess for the socket's flange (3)
 //   wall = thickness of the panel the socket is mounted in (4)
 // Figure(Spin;VPD=140;VPT=[26,11,-10];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_c14socket.scad>;
-//   unf_C14Socket_Negative();
-module unf_C14Socket_Negative(bolt="M4", hood_thickness=3, wall=4){  
-  let(bolt_d = unf_fnr_shaft_diameter(bolt),
+//   unf_c14SocketNegative();
+module unf_c14SocketNegative(bolt="M4", hood_thickness=3, wall=4){  
+  let(bolt_d = unf_fnrShaftDiameter(bolt),
       body_x = 26,
       body_y = 22.7,
       body_depth = 18,
       ear_x=13,
       screw_separation=40){
-    unf_C14Cape(hood_thickness=hood_thickness);
-    translate([ear_x, 0, -$over]){
-      unf_C14Body(depth=body_depth+$over);
+    unf_c14Cape(hood_thickness=hood_thickness);
+    translate([ear_x, 0, -$unf_over]){
+      unf_c14Body(depth=body_depth+$unf_over);
     }
     translate([0, 0, -(wall+body_depth)]){
       //screw holes
@@ -159,20 +159,20 @@ module unf_C14Socket_Negative(bolt="M4", hood_thickness=3, wall=4){
   }
 }
 
-// Module: unf_C14Cape
+// Module: unf_c14Cape
 // Usage:
-//   unf_C14Cape(&lt;args&gt;);
+//   unf_c14Cape(&lt;args&gt;);
 // Description:
 //   The shape of the flange (cape) around the front of a C14 socket, including the ears with the screw holes. Used for cutting a recess for the flange or for support skins.
 // Arguments:
 //   ---
 //   hood_thickness = thickness of the flange (3)
 // Figure(Spin;VPD=120;VPT=[26,11,0];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_c14socket.scad>;
-//   unf_C14Cape();
-module unf_C14Cape(hood_thickness=3){
+//   unf_c14Cape();
+module unf_c14Cape(hood_thickness=3){
   body_x = 26;
   body_y = 22.7;
   screw_separation = 40;
@@ -194,20 +194,20 @@ module unf_C14Cape(hood_thickness=3){
   }  
 }
 
-// Module: unf_C14Body
+// Module: unf_c14Body
 // Usage:
-//   unf_C14Body(&lt;args&gt;);
+//   unf_c14Body(&lt;args&gt;);
 // Description:
 //   The shape of the body of a C14 socket, behind the flange. Used for cutting the hole that the socket fits through.
 // Arguments:
 //   ---
 //   depth = depth of the body (18)
 // Figure(Spin;VPD=100;VPT=[13,11,-9];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_c14socket.scad>;
-//   unf_C14Body();
-module unf_C14Body(depth=18){
+//   unf_c14Body();
+module unf_c14Body(depth=18){
   body_x = 26;
   body_y = 22.7;
   ear_x=13;
@@ -230,11 +230,11 @@ module unf_C14Body(depth=18){
   }
 }
 
-// Module: unf_C14Socket
+// Module: unf_c14Socket
 // Usage:
-//   unf_C14Socket(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
+//   unf_c14Socket(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
 // Description:
-//   Operator module that uses unf_C14Socket_Positive() and unf_C14Socket_Negative() to cut a C14 socket hole through the child object(s) and add any mounting pillars.
+//   Operator module that uses unf_c14SocketPositive() and unf_c14SocketNegative() to cut a C14 socket hole through the child object(s) and add any mounting pillars.
 // Arguments:
 //   ---
 //   location = where to place the socket relative to the child/childrens' origin ([0, 0, 0])
@@ -251,38 +251,38 @@ module unf_C14Body(depth=18){
 //   restriction_r = if set, limits how far the pillars may extend to the right beyond the socket's ears, for fitting against nearby walls (false)
 //   wall = thickness of the panel the socket is mounted in (4)
 // Figure(Spin;VPD=150;VPT=[32,15,-5];NoAxes): fastener="Heatset"
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_c14socket.scad>;
-//   unf_C14Socket(location=[6, 4, 0], fastener="Heatset", hood_thickness=2, wall=3){
+//   unf_c14Socket(location=[6, 4, 0], fastener="Heatset", hood_thickness=2, wall=3){
 //     color("Blue") cube([65, 30, 3]);
 //   }
-module unf_C14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
+module unf_c14Socket(location=[0, 0, 0], rotation=0, hood_thickness=3, bolt="M4", fastener="plainhole", heatset_length="Medium", support_skin="none", support_skin_t=0.2, body_color="Blue", support_color="Yellow", restriction_l=false, restriction_r=false, wall=4){
 
   difference(){
     children();
     translate(location){
       rotate(rotation){
-	translate([0, 0, wall+$over]){
-	  unf_C14Socket_Negative(bolt=bolt, hood_thickness=hood_thickness+$over, wall=wall);
+	translate([0, 0, wall+$unf_over]){
+	  unf_c14SocketNegative(bolt=bolt, hood_thickness=hood_thickness+$unf_over, wall=wall);
 	}
       }
     }
   }
   translate(location){
     rotate(rotation){
-      unf_C14Socket_Positive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, body_color=body_color, support_color=support_color, restriction_l=restriction_l, restriction_r=restriction_r, wall=wall);
+      unf_c14SocketPositive(bolt=bolt, fastener=fastener, heatset_length=heatset_length, support_skin=support_skin, support_skin_t=support_skin_t, body_color=body_color, support_color=support_color, restriction_l=restriction_l, restriction_r=restriction_r, wall=wall);
     }
   }
 }
 
-// Function: unf_c14_size
+// Function: unf_c14Size
 // Synopsis: C14 Socket Size
 // Description:
 //   Returns the [x, y] size of the front of a C14 socket including the ears.
 // Usage:
-//   unf_c14_size()
-function unf_c14_size() = let(body_x = 26,
+//   unf_c14Size()
+function unf_c14Size() = let(body_x = 26,
 			      body_y = 22.7,
 			      ear_x=13,
 			      screw_separation=40) [body_x+(2*ear_x), body_y];
@@ -290,7 +290,7 @@ function unf_c14_size() = let(body_x = 26,
 
 back_size=[65, 25, wall];
 
-unf_C14Socket(bolt=bolt,
+unf_c14Socket(bolt=bolt,
 	      fastener=fastener,
 	      heatset_length=heatset_length,
 	      support_skin=support_skin,

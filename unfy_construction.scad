@@ -51,28 +51,28 @@ frame_color = "DimGray"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "
 base_color = "Black"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 lens_color = "Gold"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 
-$over = 0.01;
+$unf_over = 0.01;
 
 $fn = $preview ? 36 : 180;
 
-// Function: unf_cnst_split
+// Function: unf_cnstSplit
 // Usage:
-//   lines = unf_cnst_split(str, sep);
+//   lines = unf_cnstSplit(str, sep);
 // Description:
 //   Splits a string into a list of strings on a single separator character. A list passed in is returned unchanged.
 // Arguments:
 //   ---
 //   str = the string to split, or a list of strings
 //   sep = the single-character separator ("|")
-function unf_cnst_split(str, sep = "|", i = 0, cur = "") =
+function unf_cnstSplit(str, sep = "|", i = 0, cur = "") =
 	is_list(str) ? str :
 	i >= len(str) ? [cur] :
-	str[i] == sep ? concat([cur], unf_cnst_split(str, sep, i+1, "")) :
-	unf_cnst_split(str, sep, i+1, str(cur, str[i]));
+	str[i] == sep ? concat([cur], unf_cnstSplit(str, sep, i+1, "")) :
+	unf_cnstSplit(str, sep, i+1, str(cur, str[i]));
 
-// Module: unf_cnst_text_block
+// Module: unf_cnstTextBlock
 // Usage:
-//   unf_cnst_text_block(&lt;args&gt;);
+//   unf_cnstTextBlock(&lt;args&gt;);
 // Description:
 //   Creates 2d, centered, multi-line text scaled to fit within the given width and height.
 // Arguments:
@@ -80,7 +80,7 @@ function unf_cnst_split(str, sep = "|", i = 0, cur = "") =
 //   lines = a list of strings, one per line
 //   size = [width, height] of the area the text must fit within
 //   font = font to use ("Liberation Sans:style=Bold")
-module unf_cnst_text_block(lines, size, font = "Liberation Sans:style=Bold"){
+module unf_cnstTextBlock(lines, size, font = "Liberation Sans:style=Bold"){
 	let(count = len(lines),
 		 longest = max([ for (l = lines) len(l) ]),
 		 line_h = size.y / count,
@@ -94,9 +94,9 @@ module unf_cnst_text_block(lines, size, font = "Liberation Sans:style=Bold"){
 	}
 }
 
-// Module: unf_cnst_striped_board
+// Module: unf_cnstStripedBoard
 // Usage:
-//   unf_cnst_striped_board(&lt;args&gt;);
+//   unf_cnstStripedBoard(&lt;args&gt;);
 // Description:
 //   Creates a flat board with diagonal hazard stripes. The board lies in the XZ plane, centered on X, with its front face at y=0 and its back at y=size.y.
 // Arguments:
@@ -108,11 +108,11 @@ module unf_cnst_text_block(lines, size, font = "Liberation Sans:style=Bold"){
 //   stripe_color = color of the stripes ("OrangeRed")
 //   stripe_alt_color = color between the stripes ("White")
 // Figure(Spin;VPD=250;NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_cnst_striped_board(size=[150, 3, 20]);
-module unf_cnst_striped_board(size = [150, 3, 20], stripe_width = false, angle = 45, stripes = true, stripe_color = "OrangeRed", stripe_alt_color = "White"){
+//   unf_cnstStripedBoard(size=[150, 3, 20]);
+module unf_cnstStripedBoard(size = [150, 3, 20], stripe_width = false, angle = 45, stripes = true, stripe_color = "OrangeRed", stripe_alt_color = "White"){
 	let(stripe_width = stripe_width ? stripe_width : size.z,
 		 count = ceil((size.x + size.z) / stripe_width) + 2){
 		rotate([90, 0, 0]){
@@ -166,9 +166,9 @@ module unf_cnst_striped_board(size = [150, 3, 20], stripe_width = false, angle =
 	}
 }
 
-// Module: unf_construction_light
+// Module: unf_constructionLight
 // Usage:
-//   unf_construction_light(&lt;args&gt;);
+//   unf_constructionLight(&lt;args&gt;);
 // Description:
 //   Creates a barricade warning light: a housing with a domed lens facing forward (-Y). The origin is at the bottom center of the housing.
 // Arguments:
@@ -177,11 +177,11 @@ module unf_cnst_striped_board(size = [150, 3, 20], stripe_width = false, angle =
 //   housing_color = color of the housing ("Black")
 //   lens_color = color of the lens ("Gold")
 // Figure(Spin;VPD=60;NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_light();
-module unf_construction_light(size = 10, housing_color = "Black", lens_color = "Gold"){
+//   unf_constructionLight();
+module unf_constructionLight(size = 10, housing_color = "Black", lens_color = "Gold"){
 	let(depth = size * 0.5,
 		 lens_r = size * 0.42){
 		color(housing_color){
@@ -196,13 +196,13 @@ module unf_construction_light(size = 10, housing_color = "Black", lens_color = "
 			}
 		}
 		color(lens_color){
-			translate([0, -depth/2 + $over, size * 0.8]){
+			translate([0, -depth/2 + $unf_over, size * 0.8]){
 				rotate([90, 0, 0]){
 					scale([1, 1, 0.5]){
 						difference(){
 							sphere(r = lens_r);
 							translate([0, 0, -lens_r]){
-								cylinder(r = lens_r + $over, h = lens_r);
+								cylinder(r = lens_r + $unf_over, h = lens_r);
 							}
 						}
 					}
@@ -212,9 +212,9 @@ module unf_construction_light(size = 10, housing_color = "Black", lens_color = "
 	}
 }
 
-// Module: unf_construction_sign
+// Module: unf_constructionSign
 // Usage:
-//   unf_construction_sign(&lt;args&gt;);
+//   unf_constructionSign(&lt;args&gt;);
 // Description:
 //   Creates a road-work style sign with a message on a post and folding X base. The sign faces -Y and the origin is at the center of the base on the ground.
 // Arguments:
@@ -230,16 +230,16 @@ module unf_construction_light(size = 10, housing_color = "Black", lens_color = "
 //   text_color = color of the message and border ("Black")
 //   frame_color = color of the post and base ("DimGray")
 // Figure(Spin;VPD=350;VPT=[0,0,80];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_sign();
+//   unf_constructionSign();
 // Figure(Spin;VPD=350;VPT=[0,0,80];NoAxes): rectangle, multi-line
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_sign(message="WORK|IN|PROGRESS", shape="rectangle");
-module unf_construction_sign(message = "UNDER|CONSTRUCTION",
+//   unf_constructionSign(message="WORK|IN|PROGRESS", shape="rectangle");
+module unf_constructionSign(message = "UNDER|CONSTRUCTION",
 									  size = 100,
 									  shape = "diamond",
 									  height = 60,
@@ -249,7 +249,7 @@ module unf_construction_sign(message = "UNDER|CONSTRUCTION",
 									  sign_color = "Orange",
 									  text_color = "Black",
 									  frame_color = "DimGray"){
-	let(lines = unf_cnst_split(message, line_separator),
+	let(lines = unf_cnstSplit(message, line_separator),
 		 diamond = ("diamond" == shape),
 		 panel_w = diamond ? size * sqrt(2) : size,
 		 panel_h = diamond ? size * sqrt(2) : size * 0.6,
@@ -267,18 +267,18 @@ module unf_construction_sign(message = "UNDER|CONSTRUCTION",
 				translate([0, 0, -thickness]){
 					color(sign_color){
 						linear_extrude(thickness){
-							unf_cnst_sign_outline(diamond, size, panel_w, panel_h, 0);
+							unf_cnstSignOutline(diamond, size, panel_w, panel_h, 0);
 						}
 					}
 					// border and message stand proud of the front face
 					color(text_color){
-						translate([0, 0, thickness - $over]){
-							linear_extrude(relief + $over){
+						translate([0, 0, thickness - $unf_over]){
+							linear_extrude(relief + $unf_over){
 								difference(){
-									unf_cnst_sign_outline(diamond, size, panel_w, panel_h, border);
-									unf_cnst_sign_outline(diamond, size, panel_w, panel_h, 2*border);
+									unf_cnstSignOutline(diamond, size, panel_w, panel_h, border);
+									unf_cnstSignOutline(diamond, size, panel_w, panel_h, 2*border);
 								}
-								unf_cnst_text_block(lines, text_area, font);
+								unf_cnstTextBlock(lines, text_area, font);
 							}
 						}
 					}
@@ -304,7 +304,7 @@ module unf_construction_sign(message = "UNDER|CONSTRUCTION",
 }
 
 // Outline of the sign panel, inset by the given amount.
-module unf_cnst_sign_outline(diamond, size, panel_w, panel_h, inset){
+module unf_cnstSignOutline(diamond, size, panel_w, panel_h, inset){
 	if (diamond){
 		rotate(45){
 			offset(r = size * 0.04){
@@ -318,9 +318,9 @@ module unf_cnst_sign_outline(diamond, size, panel_w, panel_h, inset){
 	}
 }
 
-// Module: unf_construction_barricade
+// Module: unf_constructionBarricade
 // Usage:
-//   unf_construction_barricade(&lt;args&gt;);
+//   unf_constructionBarricade(&lt;args&gt;);
 // Description:
 //   Creates a sawhorse style barricade: a striped board atop two A-frame leg sets, optionally with a warning light. The board faces -Y and the origin is at the center of the barricade on the ground.
 // Arguments:
@@ -337,11 +337,11 @@ module unf_cnst_sign_outline(diamond, size, panel_w, panel_h, inset){
 //   frame_color = color of the legs ("DimGray")
 //   lens_color = color of the light's lens ("Gold")
 // Figure(Spin;VPD=350;VPT=[0,0,35];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_barricade();
-module unf_construction_barricade(length = 160,
+//   unf_constructionBarricade();
+module unf_constructionBarricade(length = 160,
 											 height = 70,
 											 board_height = false,
 											 thickness = 3,
@@ -361,7 +361,7 @@ module unf_construction_barricade(length = 160,
 
 		// board, back face against the front of the legs
 		translate([0, -leg_w/2, height - board_height]){
-			unf_cnst_striped_board(size = [length, thickness, board_height], stripes = stripes, stripe_color = stripe_color, stripe_alt_color = stripe_alt_color);
+			unf_cnstStripedBoard(size = [length, thickness, board_height], stripes = stripes, stripe_color = stripe_color, stripe_alt_color = stripe_alt_color);
 		}
 
 		color(frame_color){
@@ -391,15 +391,15 @@ module unf_construction_barricade(length = 160,
 
 		if (light){
 			translate([leg_x, 0, height]){
-				unf_construction_light(size = light_size, lens_color = lens_color);
+				unf_constructionLight(size = light_size, lens_color = lens_color);
 			}
 		}
 	}
 }
 
-// Module: unf_construction_barrel
+// Module: unf_constructionBarrel
 // Usage:
-//   unf_construction_barrel(&lt;args&gt;);
+//   unf_constructionBarrel(&lt;args&gt;);
 // Description:
 //   Creates a traffic drum (barrel) with alternating reflective bands, a weighted base ring and optionally a warning light on top. The origin is at the center of the base on the ground.
 // Arguments:
@@ -414,11 +414,11 @@ module unf_construction_barricade(length = 160,
 //   base_color = color of the base ring ("Black")
 //   lens_color = color of the light's lens ("Gold")
 // Figure(Spin;VPD=200;VPT=[0,0,40];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_barrel();
-module unf_construction_barrel(diameter = 45,
+//   unf_constructionBarrel();
+module unf_constructionBarrel(diameter = 45,
 										 height = 70,
 										 bands = 4,
 										 light = true,
@@ -448,23 +448,23 @@ module unf_construction_barrel(diameter = 45,
 			}
 			// lid
 			color(stripe_color){
-				translate([0, 0, body_h - $over]){
-					unf_roundedCylinder(d = top_d, h = height * 0.03 + $over, edge2_r = height * 0.015);
+				translate([0, 0, body_h - $unf_over]){
+					unf_roundedCylinder(d = top_d, h = height * 0.03 + $unf_over, edge2_r = height * 0.015);
 				}
 			}
 		}
 
 		if (light){
 			translate([0, 0, height + height * 0.03]){
-				unf_construction_light(size = light_size, lens_color = lens_color);
+				unf_constructionLight(size = light_size, lens_color = lens_color);
 			}
 		}
 	}
 }
 
-// Module: unf_construction_cone
+// Module: unf_constructionCone
 // Usage:
-//   unf_construction_cone(&lt;args&gt;);
+//   unf_constructionCone(&lt;args&gt;);
 // Description:
 //   Creates a traffic cone on a square base with a reflective collar. The origin is at the center of the base on the ground.
 // Arguments:
@@ -474,11 +474,11 @@ module unf_construction_barrel(diameter = 45,
 //   band_color = color of the reflective collar ("White")
 //   base_color = color of the base ("Black")
 // Figure(Spin;VPD=150;VPT=[0,0,20];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_cone();
-module unf_construction_cone(height = 45, cone_color = "OrangeRed", band_color = "White", base_color = "Black"){
+//   unf_constructionCone();
+module unf_constructionCone(height = 45, cone_color = "OrangeRed", band_color = "White", base_color = "Black"){
 	let(base_w = height * 0.65,
 		 base_h = height * 0.05,
 		 bottom_d = height * 0.5,
@@ -493,7 +493,7 @@ module unf_construction_cone(height = 45, cone_color = "OrangeRed", band_color =
 				unf_roundedCuboid(size = [base_w, base_w, base_h], corners = base_w * 0.15, edge_r = 0);
 			}
 		}
-		translate([0, 0, base_h - $over]){
+		translate([0, 0, base_h - $unf_over]){
 			color(cone_color){
 				cylinder(d1 = bottom_d, d2 = d_at(band_lo), h = band_lo);
 				translate([0, 0, band_hi]){
@@ -509,9 +509,9 @@ module unf_construction_cone(height = 45, cone_color = "OrangeRed", band_color =
 	}
 }
 
-// Module: unf_construction_scene
+// Module: unf_constructionScene
 // Usage:
-//   unf_construction_scene(&lt;args&gt;);
+//   unf_constructionScene(&lt;args&gt;);
 // Description:
 //   Creates a complete "under construction" scene. A sign stands behind a barricade which is flanked by barrels with a row of cones in front. Each detail may be turned on or off. The scene faces -Y and the origin is at the center of the barricade on the ground.
 // Arguments:
@@ -544,16 +544,16 @@ module unf_construction_cone(height = 45, cone_color = "OrangeRed", band_color =
 //   base_color = color of barrel and cone bases ("Black")
 //   lens_color = color of the warning light lenses ("Gold")
 // Figure(Spin;VPD=700;VPT=[0,0,60];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_scene();
+//   unf_constructionScene();
 // Figure(Spin;VPD=500;VPT=[0,0,50];NoAxes): sign only, custom message
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_scene(message="COMING|SOON", show_barricade=false, show_barrels=false, show_cones=false);
-module unf_construction_scene(message = "UNDER|CONSTRUCTION",
+//   unf_constructionScene(message="COMING|SOON", show_barricade=false, show_barrels=false, show_cones=false);
+module unf_constructionScene(message = "UNDER|CONSTRUCTION",
 										show_sign = true,
 										show_barricade = true,
 										show_barrels = true,
@@ -587,7 +587,7 @@ module unf_construction_scene(message = "UNDER|CONSTRUCTION",
 
 		if (show_sign){
 			translate([0, show_barricade ? depth/2 + sign_size * 0.4 : 0, 0]){
-				unf_construction_sign(message = message,
+				unf_constructionSign(message = message,
 											 size = sign_size,
 											 shape = sign_shape,
 											 height = sign_height,
@@ -600,7 +600,7 @@ module unf_construction_scene(message = "UNDER|CONSTRUCTION",
 		}
 
 		if (show_barricade){
-			unf_construction_barricade(length = barricade_length,
+			unf_constructionBarricade(length = barricade_length,
 												height = barricade_height,
 												stripes = show_stripes,
 												light = show_lights,
@@ -616,7 +616,7 @@ module unf_construction_scene(message = "UNDER|CONSTRUCTION",
 				for (i = [0 : barrel_count - 1]){
 					// alternate right, left, working outward
 					translate([(0 == i % 2 ? 1 : -1) * (inner_x + floor(i/2) * barrel_pitch), 0, 0]){
-						unf_construction_barrel(diameter = barrel_diameter,
+						unf_constructionBarrel(diameter = barrel_diameter,
 														height = barrel_height,
 														light = show_lights,
 														light_size = light_size,
@@ -632,7 +632,7 @@ module unf_construction_scene(message = "UNDER|CONSTRUCTION",
 		if (show_cones && cone_count > 0){
 			for (i = [0 : cone_count - 1]){
 				translate([(i - (cone_count - 1)/2) * cone_pitch, cone_y, 0]){
-					unf_construction_cone(height = cone_height,
+					unf_constructionCone(height = cone_height,
 												 cone_color = stripe_color,
 												 band_color = stripe_alt_color,
 												 base_color = base_color);
@@ -643,7 +643,7 @@ module unf_construction_scene(message = "UNDER|CONSTRUCTION",
 }
 
 if ("Scene" == part){
-	unf_construction_scene(message = message,
+	unf_constructionScene(message = message,
 								  show_sign = show_sign,
 								  show_barricade = show_barricade,
 								  show_barrels = show_barrels,
@@ -674,7 +674,7 @@ if ("Scene" == part){
 }
 
 if ("Sign" == part){
-	unf_construction_sign(message = message,
+	unf_constructionSign(message = message,
 								 size = sign_size,
 								 shape = sign_shape,
 								 height = sign_height,
@@ -687,7 +687,7 @@ if ("Sign" == part){
 }
 
 if ("Barricade" == part){
-	unf_construction_barricade(length = barricade_length,
+	unf_constructionBarricade(length = barricade_length,
 										height = barricade_height,
 										stripes = show_stripes,
 										light = show_lights,
@@ -700,7 +700,7 @@ if ("Barricade" == part){
 }
 
 if ("Barrel" == part){
-	unf_construction_barrel(diameter = barrel_diameter,
+	unf_constructionBarrel(diameter = barrel_diameter,
 									height = barrel_height,
 									light = show_lights,
 									light_size = light_size,
@@ -712,7 +712,7 @@ if ("Barrel" == part){
 }
 
 if ("Cone" == part){
-	unf_construction_cone(height = cone_height,
+	unf_constructionCone(height = cone_height,
 								 cone_color = stripe_color,
 								 band_color = stripe_alt_color,
 								 base_color = base_color
@@ -720,7 +720,7 @@ if ("Cone" == part){
 }
 
 if ("Light" == part){
-	unf_construction_light(size = light_size, lens_color = lens_color);
+	unf_constructionLight(size = light_size, lens_color = lens_color);
 }
 
 // Section: Licensing

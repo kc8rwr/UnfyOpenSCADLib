@@ -9,10 +9,10 @@
 //   .
 //   Written with help from Claude (Anthropic)
 
-// Module: unf_path_extrude
+// Module: unf_pathExtrude
 // Synopsis: Sweep a 2d child along a polyline
 // Usage:
-//   unf_path_extrude(path, &lt;args&gt;) child2d();
+//   unf_pathExtrude(path, &lt;args&gt;) child2d();
 // Description:
 //   Sweep a 2D child along a polyline that starts at the origin.
 //   .
@@ -26,7 +26,7 @@
 //   * Non-uniform scale combined with twist is only approximate at joints.
 //   * The module can't see the child's size, so it can't check that a fillet radius exceeds the profile's reach toward the inside of the turn. Too small a radius makes rotate_extrude fail (no twist/scale) or produces self-intersecting geometry (twist/scale).
 //   .
-//   All helpers are defined inside unf_path_extrude(), so they are private to it.
+//   All helpers are defined inside unf_pathExtrude(), so they are private to it.
 // Arguments:
 //   path = [[x,y,z], [x,y,z,r], ...] Points to extrude to, in order. The extrusion always starts at [0,0,0]. The optional 4th value is the fillet radius for the corner at that point; 0 or omitted gives a sharp, mitered corner. The last point's radius is ignored.
 //   ---
@@ -36,24 +36,24 @@
 // Figure(Spin;VPD=180;VPT=[20,20,20];NoAxes): filleted corners
 //   $fn = 36;
 //   use <unfy_path.scad>;
-//   unf_path_extrude([[0,0,20,10], [40,0,20,10], [40,40,40]]) circle(3);
+//   unf_pathExtrude([[0,0,20,10], [40,0,20,10], [40,40,40]]) circle(3);
 // Figure(Spin;VPD=180;VPT=[20,20,20];NoAxes): twist=180, profile_r=5
 //   $fn = 36;
 //   use <unfy_path.scad>;
-//   unf_path_extrude([[0,0,20], [40,0,20,10], [40,40,40]], twist = 180, profile_r = 5) square([6,3], center = true);
-module unf_path_extrude(path, twist = 0, scale = 1, profile_r = 100) {
+//   unf_pathExtrude([[0,0,20], [40,0,20,10], [40,40,40]], twist = 180, profile_r = 5) square([6,3], center = true);
+module unf_pathExtrude(path, twist = 0, scale = 1, profile_r = 100) {
 
     // ---- input checks -----------------------------------------------------
 
     function check_path(path) =
         assert(is_list(path) && len(path) > 0,
-               "unf_path_extrude: path must be a non-empty list of points")
+               "unf_pathExtrude: path must be a non-empty list of points")
         assert(len([for (p = path)
                     if (!(is_list(p) && (len(p) == 3 || len(p) == 4)
                           && len([for (c = p) if (!is_num(c)) 1]) == 0)) 1]) == 0,
-               "unf_path_extrude: each point must be [x,y,z] or [x,y,z,r] (numbers only)")
+               "unf_pathExtrude: each point must be [x,y,z] or [x,y,z,r] (numbers only)")
         assert(len([for (p = path) if (len(p) == 4 && p[3] < 0) 1]) == 0,
-               "unf_path_extrude: corner radius must be >= 0")
+               "unf_pathExtrude: corner radius must be >= 0")
         path;
 
     // ---- vector helpers ---------------------------------------------------
@@ -173,12 +173,12 @@ module unf_path_extrude(path, twist = 0, scale = 1, profile_r = 100) {
     // ---- main -------------------------------------------------------------
 
     p3 = check_path(path);
-    sv = assert(is_num(twist), "unf_path_extrude: twist must be a number")
+    sv = assert(is_num(twist), "unf_pathExtrude: twist must be a number")
          assert(is_num(scale) ? scale >= 0
                 : (is_list(scale) && len(scale) == 2 && is_num(scale[0]) && is_num(scale[1])
                    && scale[0] >= 0 && scale[1] >= 0),
-                "unf_path_extrude: scale must be a number >= 0 or [sx, sy]")
-         assert(is_num(profile_r) && profile_r > 0, "unf_path_extrude: profile_r must be > 0")
+                "unf_pathExtrude: scale must be a number >= 0 or [sx, sy]")
+         assert(is_num(profile_r) && profile_r > 0, "unf_pathExtrude: profile_r must be > 0")
          is_num(scale) ? [scale, scale] : scale;
     slow = twist != 0 || sv != [1, 1];
 
@@ -187,13 +187,13 @@ module unf_path_extrude(path, twist = 0, scale = 1, profile_r = 100) {
     n = len(pts) - 1;
     slen = [for (i = [0:n-1])
         let(l = norm(pts[i+1] - pts[i]))
-        assert(l > eps, str("unf_path_extrude: zero-length segment ending at path[", i, "]"))
+        assert(l > eps, str("unf_pathExtrude: zero-length segment ending at path[", i, "]"))
         l];
     sdir = [for (i = [0:n-1]) (pts[i+1] - pts[i]) / slen[i]];
     rad  = [for (j = [0:n]) (j == 0 || j == n || len(p3[j-1]) < 4) ? 0 : p3[j-1][3]];
     phi  = [for (j = [0:n]) (j == 0 || j == n) ? 0 :
         let(a = angle(sdir[j-1], sdir[j]))
-        assert(a < 180 - 1e-6, str("unf_path_extrude: path reverses direction at path[", j-1, "]"))
+        assert(a < 180 - 1e-6, str("unf_pathExtrude: path reverses direction at path[", j-1, "]"))
         a];
     // How far each fillet eats into the segments on either side of its corner.
     sb = [for (j = [0:n]) (rad[j] > 0 && phi[j] > 1e-6) ? rad[j] * tan(phi[j] / 2) : 0];
@@ -203,7 +203,7 @@ module unf_path_extrude(path, twist = 0, scale = 1, profile_r = 100) {
         let(S = pts[i] + sdir[i] * sb[i],
             E = pts[i+1] - sdir[i] * sb[i+1],
             _ = assert(sb[i] + sb[i+1] <= slen[i] + 1e-9,
-                str("unf_path_extrude: fillets don't fit on the segment ending at path[", i,
+                str("unf_pathExtrude: fillets don't fit on the segment ending at path[", i,
                     "]: they need ", sb[i] + sb[i+1], " but it is ", slen[i], " long")))
         each concat(
             norm(E - S) > eps ? [["L", S, E]] : [],

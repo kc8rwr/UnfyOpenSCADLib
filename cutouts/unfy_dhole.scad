@@ -22,14 +22,14 @@ angle = 0; //[0:360]
 //depth of hole to make
 z = 4;
 
-$over = 0.01;
+$unf_over = 0.01;
 $fn = $preview ? 36 : 360;
 
 use <../unfy_lists.scad>
 
-// Module: unf_DHole
+// Module: unf_dHole
 // Usage:
-//   unf_DHole(&lt;args&gt;);
+//   unf_dHole(&lt;args&gt;);
 // Description:
 //   Creates d, double-d and circle shapes for cutouts such as fuse holder, toggle switch, etc.. mounts.
 //   Reason for circle (which could obviously be done without this) is to make easy user-customization, the shape may be passed straight through from a customizer drop-down.
@@ -41,21 +41,21 @@ use <../unfy_lists.scad>
 //   z = depth of hole to make (4)
 //   shape = "d", "doubled" or "circle", case insensitive (d)
 // Figure(Spin;VPD=50;NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_dhole.scad>;
-//   unf_DHole();
+//   unf_dHole();
 // Figure(Spin;VPD=50;NoAxes): shape="DoubleD", flat_width=8
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_dhole.scad>;
-//   unf_DHole(shape="DoubleD", flat_width=8);
+//   unf_dHole(shape="DoubleD", flat_width=8);
 // Figure(Spin;VPD=50;NoAxes): shape="circle"
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cutouts/unfy_dhole.scad>;
-//   unf_DHole(shape="circle");
-module unf_DHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
+//   unf_dHole(shape="circle");
+module unf_dHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
   let (shape = unf_stToLower(shape)){
     assert ("d" == shape || "doubled" == shape || "circle" == shape, "Shape must be one of 'd', 'doubled' or 'circle'.");
     assert (0 < diameter, "Diameter must be greater than 0.");
@@ -76,7 +76,7 @@ module unf_DHole(diameter=11.3, flat_width=10.54, angle=0, z=4, shape="d"){
   }
 }
 
-unf_DHole(diameter=diameter, flat_width=flat_width, angle=angle, z=z, shape=shape);
+unf_dHole(diameter=diameter, flat_width=flat_width, angle=angle, z=z, shape=shape);
 
 // Section: Licensing
 //   UnfyOpenSCADLib is free software: you can redistribute it and/or modify it under the terms of the

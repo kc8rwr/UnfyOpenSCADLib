@@ -35,11 +35,11 @@ mbx_cable_bolt = "M3"; //["M3", "M4", "#6"]
 /* [ advanced ] */
 wall = 4;
 $fn = $preview ? 18 : 360;
-$over = 0.01;
+$unf_over = 0.01;
 
-// Module: unf_mounted_power_switch_box
+// Module: unf_mountedPowerSwitchBox
 // Usage:
-//   unf_mounted_power_switch_box(&lt;args&gt;);
+//   unf_mountedPowerSwitchBox(&lt;args&gt;);
 // Description:
 //   Creates a box for a pop-in power switch. The switch is held in an angled face on top of a base with mounting tabs on either side, so that it may be screwed to a surface such as a desk or the side of a machine. A cable clip on the end holds the cable.
 // Arguments:
@@ -47,7 +47,7 @@ $over = 0.01;
 //   angle = angle of the switch face (45)
 //   corner = radius of rounded corners (5)
 //   edge = radius of rounded edges (2)
-//   device = name of the pop-in switch, see unf_Popin() in cutouts/unfy_popins.scad (RLEIL_R2)
+//   device = name of the pop-in switch, see unf_popin() in cutouts/unfy_popins.scad (RLEIL_R2)
 //   device_space_z = space around the switch along its length (4)
 //   device_space_y = space around the switch along its width (4)
 //   fastener_spacing = distance between the mounting bolts (100)
@@ -60,17 +60,17 @@ $over = 0.01;
 //   max_skinless_angle = support skin is only added to the switch opening if the face angle is greater than this (50)
 //   wall = thickness of walls (2)
 // Figure(Spin;Render;VPD=280;VPT=[25,45,20];NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <cases/unfy_switchboxes.scad>;
-//   unf_mounted_power_switch_box();
-module unf_mounted_power_switch_box(angle=45, corner=5, edge=2, device="RLEIL_R2", device_space_z=4, device_space_y=4, fastener_spacing=100, fastener_size="#6", cable_d=7.5, cable_bolt="M3", body_color="Blue", support_color="Yellow", support_skin=0.6, max_skinless_angle=50, wall=2){
-  let(switch_d = unf_Popin_Dims(device = device),
-      washer_v = unf_wsh_v(fastener_size),
-      bolt_d = unf_fnr_shaft_diameter(washer_v),
-      tab_length = unf_wsh_diameter(washer_v) + (2*wall),
-      tab_width = unf_wsh_diameter(washer_v) + (6*wall),
-      tab_height = wall + unf_wsh_height(washer_v),
+//   unf_mountedPowerSwitchBox();
+module unf_mountedPowerSwitchBox(angle=45, corner=5, edge=2, device="RLEIL_R2", device_space_z=4, device_space_y=4, fastener_spacing=100, fastener_size="#6", cable_d=7.5, cable_bolt="M3", body_color="Blue", support_color="Yellow", support_skin=0.6, max_skinless_angle=50, wall=2){
+  let(switch_d = unf_popinDims(device = device),
+      washer_v = unf_wshV(fastener_size),
+      bolt_d = unf_fnrShaftDiameter(washer_v),
+      tab_length = unf_wshDiameter(washer_v) + (2*wall),
+      tab_width = unf_wshDiameter(washer_v) + (6*wall),
+      tab_height = wall + unf_wshHeight(washer_v),
 
       face_width = switch_d.y+(2*max(corner, wall, device_space_y)),
       face_length = switch_d.x+(2*max(corner, wall, device_space_z)),
@@ -85,7 +85,7 @@ module unf_mounted_power_switch_box(angle=45, corner=5, edge=2, device="RLEIL_R2
       base = [base_depth, base_width, base_height],
       dimMax = max(face.x, face.y, face.z, base.x, base.y, base.z)
   ) {
-    unf_cableClip(location=[0, base.y/2, (cable_d/2)+1.5], rotation=[0, -90, 0], cable_d=cable_d, bolt=cable_bolt, hole_ext=wall+$over, support="none", body_color=body_color, support_color=support_color, wall=1.5){
+    unf_cableClip(location=[0, base.y/2, (cable_d/2)+1.5], rotation=[0, -90, 0], cable_d=cable_d, bolt=cable_bolt, hole_ext=wall+$unf_over, support="none", body_color=body_color, support_color=support_color, wall=1.5){
       difference(){
 	union(){
 	  //base
@@ -96,12 +96,12 @@ module unf_mounted_power_switch_box(angle=45, corner=5, edge=2, device="RLEIL_R2
 	    translate([base_depth-edge, 0, base_height]){
 	      rotate([0, angle-90, 0]){
 		translate([-face_depth, (base_width/2)-(face_width/2), 0]){
-		  unf_Popin(location=[face.x, (face.y/2)-(switch_d.y/2), (face.z/2)-(switch_d.x/2)], rotation=[0, -90, 0], device=device, wall=wall, body_color=body_color, support_color=support_color, support_skin=angle>max_skinless_angle?support_skin:0, do_render=false){
+		  unf_popin(location=[face.x, (face.y/2)-(switch_d.y/2), (face.z/2)-(switch_d.x/2)], rotation=[0, -90, 0], device=device, wall=wall, body_color=body_color, support_color=support_color, support_skin=angle>max_skinless_angle?support_skin:0, do_render=false){
 		    color(body_color){
 		      difference(){
 			unf_roundedCuboid(size=face, corners=[0, corner, corner, 0], edge_r=[edge, 0]);
-			translate([-$over, wall, wall]){
-			  unf_roundedCuboid(size=[face.x+$over-wall, face.y-(2*wall), face.z-(2*wall)], corners=[0, corner, corner, 0], edge_r=[edge, 0]);
+			translate([-$unf_over, wall, wall]){
+			  unf_roundedCuboid(size=[face.x+$unf_over-wall, face.y-(2*wall), face.z-(2*wall)], corners=[0, corner, corner, 0], edge_r=[edge, 0]);
 			}
 		      }
 		    }
@@ -125,25 +125,25 @@ module unf_mounted_power_switch_box(angle=45, corner=5, edge=2, device="RLEIL_R2
 	  
 	  translate([(base.x/2)-(tab_width/2), -tab_length, 0]){
 	    color(body_color){
-	      unf_mount_tab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
+	      unf_mountTab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
 	    }
 	  }
 	  translate([(base.x/2)+(tab_width/2), tab_length+base.y, 0]){
 	    rotate([0, 0, 180]){
 	      color(body_color){
-		unf_mount_tab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
+		unf_mountTab(tab_length=tab_length, tab_height=tab_height, bolt_d=bolt_d, washer_v=washer_v, wall=wall);
 	      }
 	    }
 	  }
 	}
 	
 	//base opening
-	translate([wall, wall, -$over]){
-	  unf_roundedCuboid(size=[base.x-(2*wall), base.y-(2*wall), base.z-wall+$over], corners=corner, edge_r=[edge, 0]);
+	translate([wall, wall, -$unf_over]){
+	  unf_roundedCuboid(size=[base.x-(2*wall), base.y-(2*wall), base.z-wall+$unf_over], corners=corner, edge_r=[edge, 0]);
 	}
 	//opening between base and head
 	translate([max(wall, edge), (base.y/2)-((face.y-(2*wall))/2), 0]){
-	  cube([base.x-(2*max(wall,edge)), face.y-(2*wall), base.z+$over]);
+	  cube([base.x-(2*max(wall,edge)), face.y-(2*wall), base.z+$unf_over]);
 	}
       }
       //base support skin
@@ -162,7 +162,7 @@ module unf_mounted_power_switch_box(angle=45, corner=5, edge=2, device="RLEIL_R2
 }
 
 
-unf_mounted_power_switch_box(angle = mbx_angle,
+unf_mountedPowerSwitchBox(angle = mbx_angle,
 		 device=device,
 		 device_space_z = device_space_z,
 		 device_space_y = device_space_y,

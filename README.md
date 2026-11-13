@@ -25,9 +25,9 @@ Documentation is also built via [openscad-docsgen](https://github.com/BelfrySCAD
 
 _Not all files have docsgen comments yet and therefore not all show up in this documentation. This will be fixed shortly._
 
-Because OpenSCAD does not allow for classes or namespaces every module and function name should be prefixed with the characters "unf_". This way they will be unlikely to conflict with other libraries one might wish to use.
+Because OpenSCAD does not allow for classes or namespaces every module and function name is prefixed with the characters "unf_", and special variables with "$unf_". This way they will be unlikely to conflict with other libraries one might wish to use. After the prefix names are camelCase, such as unf_roundedCuboid() or $unf_hdistX.
 
-*This might not be consistent yet, with some prefixed by "unfy_" instead. This will be changing soon.*
+Bring the files into a project with USE rather than INCLUDE. USE imports only the modules and functions. INCLUDE would also bring in each file's customizer variables and preview geometry.
 
 Much attention has been placed on giving the user choices, such as choosing different models of switches or sizes of fasteners. Fastener sizes are specified with natural strings. For example metric sizes are "M_" such as "M4" for an M4 bolt. Numbered SAE sizes are specifed "#_" such as "#6" for a Number 6 screw. Inch sizes are just the number such as "0.25" for a 1/4 inch screw. Numbers may even contain a "/" for division so "1/4" should also work for a 1/4 inch screw.
 

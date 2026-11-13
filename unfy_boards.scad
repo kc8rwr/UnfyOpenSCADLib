@@ -29,16 +29,16 @@ standoff_ext = 2;
 heatset_length = "medium"; //["small", "medium", "large"]
 
 wall = 2;
-$over = 0.001;
+$unf_over = 0.001;
 $fn = $preview ? 36 : 360;
 
 use <unfy_shapes.scad>
 
 // Section: Boards
 
-// Module: rak19007
+// Module: unf_rak19007
 // Usage:
-//   rak19007(&lt;args&gt;);
+//   unf_rak19007(&lt;args&gt;);
 // Description:
 //   Creates a mockup of a RAKwireless RAK19007 WisBlock base board, with its mounting holes and cutouts. The board is rendered as a transparent background (%) object so it shows in preview but is not part of the rendered model.
 // Arguments:
@@ -49,11 +49,11 @@ use <unfy_shapes.scad>
 //   subtraction_color = color of the holes and cutouts in the board (yellow)
 //   support_color = color of any generated supports (gray)
 // Figure(Spin;VPD=150;VPT=[15,30,5];NoAxes): defaults
-//   $over = 0.001;
+//   $unf_over = 0.001;
 //   $fn = 36;
 //   use <unfy_boards.scad>;
-//   rak19007();
-module rak19007(
+//   unf_rak19007();
+module unf_rak19007(
 	show_board = true,
 	standoff_height = 5,
 	pcb_color = "green",
@@ -72,16 +72,16 @@ module rak19007(
 					}
 				}
 				color(subtraction_color){
-					translate([-$over, 60-(15.5+13), -$over]){
-						unf_roundedCuboid(size=[8, 13, 1.6 + (2*$over)], corners=[0, 1, 1, 0], edge_r=0);
+					translate([-$unf_over, 60-(15.5+13), -$unf_over]){
+						unf_roundedCuboid(size=[8, 13, 1.6 + (2*$unf_over)], corners=[0, 1, 1, 0], edge_r=0);
 					}
-					translate([6.9, -$over, -$over]){
-						unf_roundedCuboid([14.5, 8+$over, 1.6+(2*$over)], corners=[0, 0, 1, 1], edge_r=0);
+					translate([6.9, -$unf_over, -$unf_over]){
+						unf_roundedCuboid([14.5, 8+$unf_over, 1.6+(2*$unf_over)], corners=[0, 0, 1, 1], edge_r=0);
 					}
 					//screw holes
 					for(t = hole_positions){
-						translate([t.x, t.y, -$over]){
-							cylinder(d=2.7, h=1.6+(2*$over));
+						translate([t.x, t.y, -$unf_over]){
+							cylinder(d=2.7, h=1.6+(2*$unf_over));
 						}
 					}
 				}
@@ -92,14 +92,14 @@ module rak19007(
 
 // Section: Standoffs
 // Figure(3D;Med;VPD=800;VPT=[0,20,90];VPR=[70,0,20];NoAxes): Standoffs are not yet ready to use, coming soon!
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_construction.scad>;
-//   unf_construction_scene();
+//   unf_constructionScene();
 
-// Module: standoff
+// Module: unf_standoff
 // Usage:
-//   standoff(&lt;args&gt;);
+//   unf_standoff(&lt;args&gt;);
 // Description:
 //   Creates a standoff for mounting a board. Render once with positive=true to create the standoff itself and once with positive=false to create the bolt hole and nut trap to subtract from it.
 // Arguments:
@@ -112,15 +112,15 @@ module rak19007(
 //   wall_ext = how far the base of the standoff extends down into the wall it is mounted on (1)
 //   heatset_length = length of heatset insert, "small", "medium" or "large" (medium)
 // Figure(Spin;VPD=50;VPT=[0,0,2];NoAxes): defaults, cut away to show the hole
-//   $over = 0.001;
+//   $unf_over = 0.001;
 //   $fn = 36;
 //   use <unfy_boards.scad>;
 //   difference(){
-//     color("Blue") standoff(positive=true);
-//     color("Yellow") standoff(positive=false);
+//     color("Blue") unf_standoff(positive=true);
+//     color("Yellow") unf_standoff(positive=false);
 //     color("Yellow") translate([0, -10, -10]) cube(20);
 //   }
-module standoff(
+module unf_standoff(
 	positive = true,
 	type = "bottom_heatset",
 	bolt_size = "m3",
@@ -129,17 +129,17 @@ module standoff(
 	wall_ext = 1,
 	heatset_length = "medium",
 ){
-	bolt_d = unf_fnr_shaft_diameter(bolt_size);
-	nut_v = unf_nut_v(bolt_size);
-	hst_v = unf_hst_v(size=bolt_size, length=heatset_length);
+	bolt_d = unf_fnrShaftDiameter(bolt_size);
+	nut_v = unf_nutV(bolt_size);
+	hst_v = unf_hstV(size=bolt_size, length=heatset_length);
 
 	base_d = max(bolt_d+(2*wall),
 					 (
 						 "bottom_nut" == standoff_type ?
-						 (unf_nut_diameter(nut_v) + (2*wall)) :
+						 (unf_nutDiameter(nut_v) + (2*wall)) :
 						 (
 							 "bottom_hst" == standoff_type ?
-							 (unf_hst_diameter(hst_v) + (2*wall)) : 0
+							 (unf_hstDiameter(hst_v) + (2*wall)) : 0
 						 )
 					 )
 	);
@@ -149,20 +149,20 @@ module standoff(
 			base_ext,
 			(
 				"bottom_nut" == standoff_type ?
-				(unf_nut_height(nut_v) + wall) :
+				(unf_nutHeight(nut_v) + wall) :
 				(
 					"bottom_heatset" == standoff_type ?
-					(unf_hst_length(hst_v) + wall) :
+					(unf_hstLength(hst_v) + wall) :
 					0
 				)
 			)
 		);
 		base_offset = max(0, base_z-wall_ext);
 		
-		top_z = "top_heatset" == standoff_type ? (unf_hst_length(hst_v) + wall) : 0;
+		top_z = "top_heatset" == standoff_type ? (unf_hstLength(hst_v) + wall) : 0;
 		top_d = max(bolt_d+(2*wall),
 						(
-							"top_heatset" == standoff_type ? (unf_hst_diameter(hst_v) + wall) : 0
+							"top_heatset" == standoff_type ? (unf_hstDiameter(hst_v) + wall) : 0
 						)
 		);
 		if (0 < base_z){
@@ -181,17 +181,17 @@ module standoff(
 			}
 		}
 	} else {
-		translate([0, 0, -(base_ext + $over)]){
-			cylinder(h=height+base_ext, d=bolt_d+(2*$over));
+		translate([0, 0, -(base_ext + $unf_over)]){
+			cylinder(h=height+base_ext, d=bolt_d+(2*$unf_over));
 		}
 		if("bottom_nut" == standoff_type){
 			translate([0, 0, -base_ext]){
-				unf_nut(size=nut_v, ext=$over);
+				unf_nut(size=nut_v, ext=$unf_over);
 			}
 		} else if("side_nut" == standoff_type){
 			unf_nut(size=nut_v, ext=0);
-			translate([0, -unf_nut_small_d(nut_v)/2, 0]){
-				cube([$over+(base_d/2), unf_nut_small_d(nut_v), unf_nut_height(nut_v)]);
+			translate([0, -unf_nutSmallD(nut_v)/2, 0]){
+				cube([$unf_over+(base_d/2), unf_nutSmallD(nut_v), unf_nutHeight(nut_v)]);
 			}
 		}
 	}
@@ -199,7 +199,7 @@ module standoff(
 
 if (part == "standoff"){
 	difference(){
-		*standoff(
+		*unf_standoff(
 			type = "bottom_heatset",
 			bolt_size = standoff_bolt_size,
 			base_ext = 2.5,
@@ -208,7 +208,7 @@ if (part == "standoff"){
 			heatset_length = "medium",
 			positive = true,
 		);
-		#standoff(
+		#unf_standoff(
 			type = "bottom_heatset",
 			bolt_size = standoff_bolt_size,
 			base_ext = 2.5,
@@ -221,7 +221,7 @@ if (part == "standoff"){
  }
 
 if (part == "rak19007"){
-	rak19007(
+	unf_rak19007(
 		show_board = show_board,
 		standoff_height = standoff_height,
 		pcb_color = pcb_color,

@@ -24,13 +24,13 @@ body_color = "Blue"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuch
 subtraction_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 
 wall = 3;
-$over = 0.01;
+$unf_over = 0.01;
 
 $fn = $preview ? 36 : 360;
 
-// Module: unf_simple_bracket
+// Module: unf_simpleBracket
 // Usage:
-//   unf_simple_bracket(&lt;args&gt;);
+//   unf_simpleBracket(&lt;args&gt;);
 // Description:
 //   Creates a simple bracket.
 // Arguments:
@@ -44,16 +44,16 @@ $fn = $preview ? 36 : 360;
 //   body_color = color of the bracket or false for default (false)
 //   wall = width of both sides of the bracket (4)
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_brackets.scad>;
-//   unf_simple_bracket(body_color="Blue", subtraction_color="Yellow");
+//   unf_simpleBracket(body_color="Blue", subtraction_color="Yellow");
 // Figure(Spin;VPD=150;NoAxes): bottom_bolt_position=22, bottom_slot_length=15
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_brackets.scad>;
-//   unf_simple_bracket(bottom_bolt_position=22, bottom_slot_length=15, body_color="Blue", subtraction_color="Yellow");
-module unf_simple_bracket(top_bolt_size = "M4",
+//   unf_simpleBracket(bottom_bolt_position=22, bottom_slot_length=15, body_color="Blue", subtraction_color="Yellow");
+module unf_simpleBracket(top_bolt_size = "M4",
 								  top_slot_length = 0,
 								  top_bolt_position = 11,
 								  bottom_bolt_size = "#6",
@@ -62,12 +62,12 @@ module unf_simple_bracket(top_bolt_size = "M4",
 								  body_color = false,
 								  subtraction_color = false,
 								  wall = 4){
-	let(top_washer_v = unf_wsh_v(top_bolt_size),
-		 top_washer_d = unf_wsh_diameter(top_washer_v),
-		 top_bolt_d = unf_fnr_shaft_diameter(top_bolt_size),
-		 bottom_washer_v = unf_wsh_v(bottom_bolt_size),
-		 bottom_washer_d = unf_wsh_diameter(bottom_washer_v),
-		 bottom_bolt_d = unf_fnr_shaft_diameter(bottom_bolt_size),
+	let(top_washer_v = unf_wshV(top_bolt_size),
+		 top_washer_d = unf_wshDiameter(top_washer_v),
+		 top_bolt_d = unf_fnrShaftDiameter(top_bolt_size),
+		 bottom_washer_v = unf_wshV(bottom_bolt_size),
+		 bottom_washer_d = unf_wshDiameter(bottom_washer_v),
+		 bottom_bolt_d = unf_fnrShaftDiameter(bottom_bolt_size),
 		 width = max(top_washer_d, bottom_washer_d) + (4*wall), //4*wall = 2 wall-widthed webs + 2 wall-widthed outer edges
 		 top_length = top_bolt_position + (top_washer_d / 2)  + max(0, top_slot_length-(top_bolt_d/2)) + wall,
 		 bottom_length = bottom_bolt_position + (bottom_washer_d / 2) + max(0, bottom_slot_length-(bottom_bolt_d/2)) + wall, //2*wall = wall taken up by width of top_side + wall-widthed outer edge
@@ -110,30 +110,30 @@ module unf_simple_bracket(top_bolt_size = "M4",
 					
 				//Bottom bolt hole or slot
 				translate([width/2, -bottom_bolt_position, 0]){
-					translate([0, 0, wall+$over]){
+					translate([0, 0, wall+$unf_over]){
 						rotate([0, 180, 0]){
 							if (bottom_bolt_d < bottom_slot_length){
 								hull(){
-									unf_wsh(size=bottom_washer_v, ext=wall+$over);
+									unf_wsh(size=bottom_washer_v, ext=wall+$unf_over);
 									translate([0, -(bottom_slot_length-bottom_bolt_d), 0]){
-										unf_wsh(size=bottom_washer_v, ext=wall+$over);
+										unf_wsh(size=bottom_washer_v, ext=wall+$unf_over);
 									}
 								}
 							}else{
-								unf_wsh(size=bottom_washer_v, ext=wall+$over);
+								unf_wsh(size=bottom_washer_v, ext=wall+$unf_over);
 							}
 						}
 					}
-					translate([0, 0, -$over]){
+					translate([0, 0, -$unf_over]){
 						if (bottom_bolt_d < bottom_slot_length){
 							hull(){
-								cylinder(d=bottom_bolt_d, h=wall+(2*$over));
+								cylinder(d=bottom_bolt_d, h=wall+(2*$unf_over));
 								translate([0, -(bottom_slot_length-bottom_bolt_d), 0]){
-									cylinder(d=bottom_bolt_d, h=wall+(2*$over));
+									cylinder(d=bottom_bolt_d, h=wall+(2*$unf_over));
 								}
 							}
 						}else{
-							cylinder(d=bottom_bolt_d, h=wall+(2*$over));
+							cylinder(d=bottom_bolt_d, h=wall+(2*$unf_over));
 						}
 					}
 				}
@@ -143,24 +143,24 @@ module unf_simple_bracket(top_bolt_size = "M4",
 					rotate([-90, 0, 0]){
 						if (top_bolt_d < top_slot_length){
 							hull(){
-								unf_wsh(size=top_washer_v, ext=wall+$over);
+								unf_wsh(size=top_washer_v, ext=wall+$unf_over);
 								translate([0, -(top_slot_length-top_bolt_d), 0]){
-									unf_wsh(size=top_washer_v, ext=wall+$over);
+									unf_wsh(size=top_washer_v, ext=wall+$unf_over);
 								}
 							}
 						}else{
-							unf_wsh(size=top_washer_v, ext=wall+$over);
+							unf_wsh(size=top_washer_v, ext=wall+$unf_over);
 						}
-						translate([0, 0, -$over]){
+						translate([0, 0, -$unf_over]){
 							if (top_bolt_d < top_slot_length){
 								hull(){
-									cylinder(d=top_bolt_d, h=wall+(2*$over));
+									cylinder(d=top_bolt_d, h=wall+(2*$unf_over));
 									translate([0, -(top_slot_length-top_bolt_d), 0]){
-										cylinder(d=top_bolt_d, h=wall+(2*$over));
+										cylinder(d=top_bolt_d, h=wall+(2*$unf_over));
 									}
 								}
 							}else{
-								cylinder(d=top_bolt_d, h=wall+(2*$over));
+								cylinder(d=top_bolt_d, h=wall+(2*$unf_over));
 							}
 						}
 					}
@@ -171,7 +171,7 @@ module unf_simple_bracket(top_bolt_size = "M4",
 }
 
 if ("SimpleBracket" == part){
-	unf_simple_bracket(top_bolt_size = top_bolt_size,
+	unf_simpleBracket(top_bolt_size = top_bolt_size,
 							 top_slot_length = top_slot_length,
 							 top_bolt_position = top_bolt_position,
 							 bottom_bolt_size = bottom_bolt_size,

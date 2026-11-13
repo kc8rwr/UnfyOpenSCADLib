@@ -20,7 +20,7 @@ support_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", 
 subtraction_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
 
 parent_color = "Yellow"; //["Lavender", "Thistle", "Plum", "Violet", "Orchid", "Fuchsia", "Magenta", "MediumOrchid", "MediumPurple", "BlueViolet", "DarkViolet", "DarkOrchid", "DarkMagenta", "Purple", "Indigo", "DarkSlateBlue", "SlateBlue", "MediumSlateBlue", "Pink", "LightPink", "HotPink", "DeepPink", "MediumVioletRed", "PaleVioletRed", "Aqua", "Cyan", "LightCyan", "PaleTurquoise", "Aquamarine", "Turquoise", "MediumTurquoise", "DarkTurquoise", "CadetBlue", "SteelBlue", "LightSteelBlue", "PowderBlue", "LightBlue", "SkyBlue", "LightSkyBlue", "DeepSkyBlue", "DodgerBlue", "CornflowerBlue", "RoyalBlue", "Blue", "MediumBlue", "DarkBlue", "Navy", "MidnightBlue", "IndianRed", "LightCoral", "Salmon", "DarkSalmon", "LightSalmon", "Red", "Crimson", "FireBrick", "DarkRed", "GreenYellow", "Chartreuse", "LawnGreen", "Lime", "LimeGreen", "PaleGreen", "LightGreen", "MediumSpringGreen", "SpringGreen", "MediumSeaGreen", "SeaGreen", "ForestGreen", "Green", "DarkGreen", "YellowGreen", "OliveDrab", "Olive", "DarkOliveGreen", "MediumAquamarine", "DarkSeaGreen", "LightSeaGreen", "DarkCyan", "Teal", "LightSalmon", "Coral", "Tomato", "OrangeRed", "DarkOrange", "Orange", "Gold", "Yellow", "LightYellow", "LemonChiffon", "LightGoldenrodYellow", "PapayaWhip", "Moccasin", "PeachPuff", "PaleGoldenrod", "Khaki", "DarkKhaki", "Cornsilk", "BlanchedAlmond", "Bisque", "NavajoWhite", "Wheat", "BurlyWood", "Tan", "RosyBrown", "SandyBrown", "Goldenrod", "DarkGoldenrod", "Peru", "Chocolate", "SaddleBrown", "Sienna", "Brown", "Maroon", "White", "Snow", "Honeydew", "MintCream", "Azure", "AliceBlue", "GhostWhite", "WhiteSmoke", "Seashell", "Beige", "OldLace", "FloralWhite", "Ivory", "AntiqueWhite", "Linen", "LavenderBlush", "MistyRose", "Gainsboro", "LightGrey", "Silver", "DarkGray", "Gray", "DimGray", "LightSlateGray", "SlateGray", "DarkSlateGray", "Black"]
-$over = 0.01;
+$unf_over = 0.01;
 
 
 /* [Cable Clip] */
@@ -46,9 +46,9 @@ edge_r = 1;
 
 $fn = $preview ? 36 : 360;
 
-// Module: unf_cableClip_Positive
+// Module: unf_cableClipPositive
 // Usage:
-//   unf_cableClip_Positive(&lt;args&gt;);
+//   unf_cableClipPositive(&lt;args&gt;);
 // Description:
 //   Just the positive part of a cable clip.
 // Arguments:
@@ -65,19 +65,19 @@ $fn = $preview ? 36 : 360;
 //   support_color = color of generated supports or false for default (yellow)
 //   center = center the part (true)
 // Figure(Spin;VPD=75;VPT=[0, 0, 5];NoAxes):
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_cablemanagement.scad>;
-//   unf_cableClip_Positive();
-module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, tooth_count=4, wall=1.5, support="none", support_skin=0.6, body_color="blue", support_color="yellow", subtraction_color="yellow", center=true){
-	washer_v = unf_wsh_v(bolt);
-	nut_v = unf_nut_v(bolt);
+//   unf_cableClipPositive();
+module unf_cableClipPositive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, tooth_count=4, wall=1.5, support="none", support_skin=0.6, body_color="blue", support_color="yellow", subtraction_color="yellow", center=true){
+	washer_v = unf_wshV(bolt);
+	nut_v = unf_nutV(bolt);
 
-	bolt_d = unf_fnr_shaft_diameter(washer_v);
-	washer_d = unf_wsh_diameter(washer_v);
-	washer_t = unf_wsh_height(washer_v);
-	nut_d = unf_nut_diameter(nut_v);
-	nut_t = unf_nut_height(nut_v);
+	bolt_d = unf_fnrShaftDiameter(washer_v);
+	washer_d = unf_wshDiameter(washer_v);
+	washer_t = unf_wshHeight(washer_v);
+	nut_d = unf_nutDiameter(nut_v);
+	nut_t = unf_nutHeight(nut_v);
 
 	tab_side = washer_d + (2*wall);
 	washer_tab_t = washer_t + wall;
@@ -115,25 +115,25 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 				}
 			}
 			color(subtraction_color){
-				translate([0, 0, -$over]){
-					cylinder(d=cable_d, h=wall+tab_side+(2*$over));
+				translate([0, 0, -$unf_over]){
+					cylinder(d=cable_d, h=wall+tab_side+(2*$unf_over));
 					translate([0, -gap/2, 0]){
-						cube([(cable_d/2)+wall+$over, gap, wall+tab_side+(2*$over)]);
+						cube([(cable_d/2)+wall+$unf_over, gap, wall+tab_side+(2*$unf_over)]);
 					}
 				}
-				translate([-(cable_d/2)-wall-$over, -gap/2, -$over]){
-					cube([cable_d+(2*wall)+$over, (cable_d/2)+(gap/2)+wall, wall+$over]);
+				translate([-(cable_d/2)-wall-$unf_over, -gap/2, -$unf_over]){
+					cube([cable_d+(2*wall)+$unf_over, (cable_d/2)+(gap/2)+wall, wall+$unf_over]);
 				}
-				translate([(cable_d/2)+wall+(tab_side/2), (gap/2)+(washer_tab_t)+$over, wall+(tab_side/2)]){
+				translate([(cable_d/2)+wall+(tab_side/2), (gap/2)+(washer_tab_t)+$unf_over, wall+(tab_side/2)]){
 					rotate([90, 0, 0]){
-						cylinder(d=bolt_d, h=gap+washer_tab_t+nut_tab_t+(2*$over));
+						cylinder(d=bolt_d, h=gap+washer_tab_t+nut_tab_t+(2*$unf_over));
 						translate([0, 0, washer_tab_t+gap+nut_tab_t]){
 							rotate([180, 0, 0]){
-								unf_nut(size=nut_v, ext=(2*$over));
+								unf_nut(size=nut_v, ext=(2*$unf_over));
 							}
 						}
 						translate([0, 0, 0]){
-							unf_wsh(size=washer_v, ext=$over);
+							unf_wsh(size=washer_v, ext=$unf_over);
 						}
 					}
 				}
@@ -152,8 +152,8 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 							}
 						}
 					}
-					translate([0, -gap/2, wall-$over]){
-						cube([(cable_d/2)+$over, gap, tab_side+(2*$over)]);
+					translate([0, -gap/2, wall-$unf_over]){
+						cube([(cable_d/2)+$unf_over, gap, tab_side+(2*$unf_over)]);
 					}
 				}
 			}
@@ -170,8 +170,8 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 					rotate([-90, 0, 0]){
 						difference(){
 							cylinder(d=bolt_d+(2*support_skin), h=gap+washer_tab_t+nut_tab_t);
-							translate([0, 0, -$over]){
-								cylinder(d=bolt_d, h=gap+washer_tab_t+nut_tab_t+(2*$over));
+							translate([0, 0, -$unf_over]){
+								cylinder(d=bolt_d, h=gap+washer_tab_t+nut_tab_t+(2*$unf_over));
 							}
 						}
 					}
@@ -181,10 +181,10 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 			color(support_color){
 				difference(){
 					cylinder(d=cable_d+wall+(support_skin/2), h=wall);
-					translate([0, 0, -$over]){
-						cylinder(d=cable_d+wall-(support_skin/2), h=wall+(2*$over));
+					translate([0, 0, -$unf_over]){
+						cylinder(d=cable_d+wall-(support_skin/2), h=wall+(2*$unf_over));
 						translate([0, -gap/2, 0]){
-							cube([(cable_d/2)+wall+wall, gap, wall+2*$over]);
+							cube([(cable_d/2)+wall+wall, gap, wall+2*$unf_over]);
 						}
 					}
 				}
@@ -193,9 +193,9 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 	}
 }
 
-// Module: unf_cableClip_Negative
+// Module: unf_cableClipNegative
 // Usage:
-//   unf_cableClip_Negative(&lt;args&gt;);
+//   unf_cableClipNegative(&lt;args&gt;);
 // Description:
 //   Just the negative part of a cable clip. Really, this is just a cylinder to extend the cable hole into the object the clip attaches to.
 //   What is useful here is that if rendered in the same location as the positive part it will locate the hole in the correct place.
@@ -207,16 +207,16 @@ module unf_cableClip_Positive(cable_d=7.5, gap=3, bolt="M3", tooth_length=0.5, t
 //   hole_ext = how far to extend the cable hole in (3)
 //   center = center the part (true)
 // Figure(NoAxes):
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 360;
 //   use <unfy_cablemanagement.scad>;
 //   color("yellow"){
-//      unf_cableClip_Negative();
+//      unf_cableClipNegative();
 //   }
-module unf_cableClip_Negative(cable_d=2.5, bolt="M3", wall=1.5, hole_ext=3, center=true, subtraction_color="yellow"){
-	nut_v = unf_nut_v(bolt);
+module unf_cableClipNegative(cable_d=2.5, bolt="M3", wall=1.5, hole_ext=3, center=true, subtraction_color="yellow"){
+	nut_v = unf_nutV(bolt);
 
-	nut_t = unf_nut_height(nut_v);
+	nut_t = unf_nutHeight(nut_v);
 	nut_tab_t = nut_t + wall;
 
 	center_x_offset = center ? 0 : (wall+(cable_d/2));
@@ -224,7 +224,7 @@ module unf_cableClip_Negative(cable_d=2.5, bolt="M3", wall=1.5, hole_ext=3, cent
 
 	color(subtraction_color){
 		translate([center_x_offset, center_y_offset, -hole_ext]){
-			cylinder(d=cable_d, h=hole_ext+wall+$over);
+			cylinder(d=cable_d, h=hole_ext+wall+$unf_over);
 		}
 	}
 }
@@ -233,7 +233,7 @@ module unf_cableClip_Negative(cable_d=2.5, bolt="M3", wall=1.5, hole_ext=3, cent
 // Usage:
 //   unf_cableClip(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
 // Description:
-//   Operator module that uses unf_cableClip_Positive() and unf_cableClip_Negative() to place a cable clip on and a cable hole through the child object(s).
+//   Operator module that uses unf_cableClipPositive() and unf_cableClipNegative() to place a cable clip on and a cable hole through the child object(s).
 // Arguments:
 //   ---
 //   location = where to place the clip relative to the child/childrens' origin. ([0, 0, 0])
@@ -251,7 +251,7 @@ module unf_cableClip_Negative(cable_d=2.5, bolt="M3", wall=1.5, hole_ext=3, cent
 //   support_color = color of generated supports or false for default (yellow)
 //   center = center the part (true)
 // Figure(Spin;VPD=75;VPT=[0, 0, 5];NoAxes):
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   wall = 1.5;
 //   use <unfy_cablemanagement.scad>;
@@ -267,7 +267,7 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
 		children();
 		translate(location){
 			rotate(rotation){
-				unf_cableClip_Negative(cable_d = cable_d,
+				unf_cableClipNegative(cable_d = cable_d,
 											  bolt = bolt,
 											  wall = wall,
 											  hole_ext=hole_ext,
@@ -278,7 +278,7 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
 	}
 	translate(location){
 		rotate(rotation){
-			unf_cableClip_Positive(cable_d = cable_d,
+			unf_cableClipPositive(cable_d = cable_d,
 										  gap = gap,
 										  bolt = bolt,
 										  tooth_length = tooth_length,
@@ -316,16 +316,16 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
 //   edge_r = radius of the rounded edge at the outside end (1)
 // Figure(Anim;VPD=75;NoAxes):
 //   wall = 2;
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   use <unfy_cablemanagement.scad>;
 //   module chassis(x, y, diameter){
 //     color("Yellow"){
 //   		difference(){
 //   			cube([x, wall, y]);
-//   			translate([x/2, wall+$over, 0]){
+//   			translate([x/2, wall+$unf_over, 0]){
 //   				rotate([90, 0, 0]){
-//   					cylinder(d=diameter, h=wall+(2*$over));
+//   					cylinder(d=diameter, h=wall+(2*$unf_over));
 //   				}
 //   			}
 //   		}
@@ -353,7 +353,7 @@ module unf_cableClip(location=[0, 0, 0], rotation=0, cable_d=7.5, bolt="M3", gap
 //   	}
 //   }
 // Figure(Spin;VPD=50;VPT=[0, 0, 5];NoAxes):
-//   $over = 0.01;
+//   $unf_over = 0.01;
 //   $fn = 36;
 //   wall = 1.5;
 //   use <unfy_cablemanagement.scad>;
@@ -379,9 +379,9 @@ module unf_clipInStrainRelief(
 
 	module inner(){
 		cylinder(d=inside_diameter, h=inside_length);
-		cylinder(d=waste_diameter, h=inside_length+waste_length+$over);
+		cylinder(d=waste_diameter, h=inside_length+waste_length+$unf_over);
 		translate([0, 0, inside_length+waste_length]){
-			unf_bezier_frustrum(
+			unf_bezierFrustum(
 				base_d = outside_diameter,
 				end_edge_r = edge_r,
 				end_dx = outside_x,
@@ -402,8 +402,8 @@ module unf_clipInStrainRelief(
 				color(support_color){
 					linear_extrude(inside_length+waste_length){
 						difference(){
-							circle(d=inside_diameter-$over);
-							circle(d=inside_diameter-(2*support_skin)-$over);
+							circle(d=inside_diameter-$unf_over);
+							circle(d=inside_diameter-(2*support_skin)-$unf_over);
 						}
 					}
 				}
@@ -411,8 +411,8 @@ module unf_clipInStrainRelief(
 		} //end positive part
 		// cable
 		color(subtraction_color){
-			translate([(cable_d/2) - (cable_d * num_conductors / 2), 0, -$over]){
-				linear_extrude((2*$over) + inside_length + waste_length + outside_length){
+			translate([(cable_d/2) - (cable_d * num_conductors / 2), 0, -$unf_over]){
+				linear_extrude((2*$unf_over) + inside_length + waste_length + outside_length){
 					union(){
 						for (x = [0:num_conductors-1]){
 							translate([cable_d * x, 0]){

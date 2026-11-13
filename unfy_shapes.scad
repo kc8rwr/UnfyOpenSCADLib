@@ -10,10 +10,10 @@
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
 
-test_shape="unf_roundedCuboid"; //["unf_roundedRectangle", "unf_roundedCuboid", "unf_roundedCylinder", "oval", "star", "tube", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
+test_shape="unf_roundedCuboid"; //["unf_roundedRectangle", "unf_roundedCuboid", "unf_roundedCylinder", "oval", "star", "tube", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustum"]
 
 $fn = $preview ? 36 : 360;
-$over = 0.1;
+$unf_over = 0.1;
 
 /* [ unf_roundedRectangle ] */
 rectangle_size=[50, 25];
@@ -60,7 +60,7 @@ bez2d_custom_v = [1.25, 3.75];
 bez3d_size=[5, 15, 15];
 bez3d_rounded_edges = [1, 2];
 
-/* [ Bezier Frustrum ] */
+/* [ Bezier Frustum ] */
 bezfr_base_dx = 8; //[1:10]
 bezfr_base_dy = 6; //[1:10]
 bezfr_base_edge_r = 0; //[0:0.01:4]
@@ -75,9 +75,9 @@ bezfr_length = 15; //[1:30]
 // arcs = point count for each corner, 1 for a sharp corner, sides = segment count for [front & back, right & left]
 // Corners too large to fit along their sides are reduced to fit, where both corners on a side are too large they shrink in proportion.
 // Every ring made with the same arcs and sides has the same number of points so rings can be stitched together.
-function _unf_rounded_ring(s, arcs, sides) = let(
+function _unf_roundedRing(s, arcs, sides) = let(
     x0 = s[0], y0 = s[1], x1 = s[0] + s[2], y1 = s[1] + s[3], z = s[4],
-    eps = $over / 10, //keeps every point distinct - corners never quite reach 0 or meet across a side
+    eps = $unf_over / 10, //keeps every point distinct - corners never quite reach 0 or meet across a side
     side_len = [s[2], s[3], s[2], s[3]], //front, right, back, left - side k runs from corner k to corner k+1
     wanted = [ for (k = [0 : 3]) 1 == arcs[k] ? 0 : min(s[5][k], s[2] - eps, s[3] - eps) ],
     // where a side's two corners don't fit along it both shrink in proportion, each corner takes the tighter of its two sides
@@ -91,7 +91,7 @@ function _unf_rounded_ring(s, arcs, sides) = let(
   [ for (k = [0 : 3]) each concat(arc_points[k], side(arc_points[k][arcs[k] - 1], arc_points[(k + 1) % 4][0], sides[k % 2])) ];
 
 // Point count for each corner arc of a rounded rectangle, 1 for a sharp corner, at least min_points for a rounded one
-function _unf_corner_arcs(corners, min_points=2) = [ for (c = corners) 0 == c ? 1 : max(2, min_points, unf_effective_fn(radius=c, angle=90) + 1) ];
+function _unf_cornerArcs(corners, min_points=2) = [ for (c = corners) 0 == c ? 1 : max(2, min_points, unf_effectiveFn(radius=c, angle=90) + 1) ];
 
 // Module: unf_roundedRectangle
 // Usage:
@@ -105,12 +105,12 @@ function _unf_corner_arcs(corners, min_points=2) = [ for (c = corners) 0 == c ? 
 //   size = may be a 2d vector [x, y] or a single number creating a square equivalent to [x, x] ([18, 5])
 //   corners = a vector containing the radiuses of each rounded corner (0 for no-rounding) [(0, 0), (x, 0), (x, y), (0, y)] or a single number to make all corners the same ([1, 1, 1, 1])
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedRectangle();
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedRectangle(size=[40, 20], corners=[0, 4, 8, 12]);
@@ -126,7 +126,7 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
       assert(false, "corners must be zero, a positive number or a vector of 4 such numbers");
     }
 
-    polygon([ for (p = _unf_rounded_ring([0, 0, size.x, size.y, 0, corners], _unf_corner_arcs(corners), [1, 1])) [p.x, p.y] ]);
+    polygon([ for (p = _unf_roundedRing([0, 0, size.x, size.y, 0, corners], _unf_cornerArcs(corners), [1, 1])) [p.x, p.y] ]);
   }
 }
 
@@ -149,40 +149,40 @@ module unf_roundedRectangle(size=[18, 5], corners=[1, 1, 1, 1]){
 //   bend_r = radius of the cylinder to bend around, 0 for no bend (0)
 //   bend_plane = 2 vectors [along, up] defining the plane the cuboid bends in, along is wrapped around the cylinder, up points away from it and need not be exactly perpendicular to along ([[1, 0, 0], [0, 1, 0]])
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCuboid();
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCuboid(size=[30, 20, 10], corners=2, edge_r=3);
 // Figure(Spin;VPD=200;NoAxes): bent into a rainbow
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCuboid(size=[60, 8, 5], corners=2, edge_r=1, bend_r=25);
 // Figure(Spin;VPD=200;NoAxes): bent into a bridge
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCuboid(size=[30, 60, 3], corners=2, edge_r=1, bend_r=25, bend_plane=[[0, 1, 0], [0, 0, 1]]);
 module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1, 2, 1, 2, 1, 2], bend_r=0, bend_plane=[[1, 0, 0], [0, 1, 0]]){
   // Slices of one rounded band (top or bottom), from where it meets the middle (z=0) out to the flat face (z=r_max).
   // r = edge radiuses [F, R, B, L], c = corner radiuses, min_slices = fewest slices to use
-  // Each slice is [x_offset, y_offset, x_size, y_size, z, corners], slices are kept at least 2*$over apart
+  // Each slice is [x_offset, y_offset, x_size, y_size, z, corners], slices are kept at least 2*$unf_over apart
   function calc(base_x, base_y, r, c, min_slices=1) = let(r_max = max(r),
-							   slices = max(min_slices, 1, min(unf_effective_fn(radius=r_max, angle=90), floor(r_max/(2*$over)))))
+							   slices = max(min_slices, 1, min(unf_effectiveFn(radius=r_max, angle=90), floor(r_max/(2*$unf_over)))))
     [ for (i = [0 : slices])
 	let(z = r_max * i / slices, //integer index so the last slice lands exactly on r_max
 	    d = [ for (j = [0 : 3]) let(start = r_max - r[j]) z <= start ? 0 : r[j] - sqrt(max(0, pow(r[j], 2) - pow(z - start, 2))) ],
 	    x_size = base_x - (d[1] + d[3]),
 	    y_size = base_y - (d[0] + d[2]))
-	[ d[3] - (max(0, $over - x_size) / 2), //fully rounded sides shrink to a $over wide centered sliver rather than vanishing
-	  d[0] - (max(0, $over - y_size) / 2),
-	  max($over, x_size),
-	  max($over, y_size),
+	[ d[3] - (max(0, $unf_over - x_size) / 2), //fully rounded sides shrink to a $unf_over wide centered sliver rather than vanishing
+	  d[0] - (max(0, $unf_over - y_size) / 2),
+	  max($unf_over, x_size),
+	  max($unf_over, y_size),
 	  z,
 	  [ max(0, c[0] - min(d[0], d[3])), //shrink corners with the edges so the two roundings blend
 	    max(0, c[1] - min(d[0], d[1])),
@@ -276,10 +276,10 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 
 	// The bend is linear across and out of the plane so only distance along it needs dividing, into steps no longer than step.
 	// Unbent, flat faces need no dividing at all.
-	let (step = bent ? (a_max - a_min) / unf_effective_fn(radius=outer_r, angle=span) : 0,
+	let (step = bent ? (a_max - a_min) / unf_effectiveFn(radius=outer_r, angle=span) : 0,
 	     divide = function(length) bent ? max(1, ceil(length / step)) : 1,
 	     sides = [divide(size.x * abs(u.x)), divide(size.y * abs(u.y))],
-	     arcs = [ for (k = [0 : 3]) _unf_corner_arcs(corners, divide(corners[k] * (PI / 2) * norm([u.x, u.y])) + 1)[k] ],
+	     arcs = [ for (k = [0 : 3]) _unf_cornerArcs(corners, divide(corners[k] * (PI / 2) * norm([u.x, u.y])) + 1)[k] ],
 	     top_calcs = 0 < top_height ? calc(size.x, size.y, top_r, corners, divide(top_height * abs(u.z))) : [],
 	     bottom_calcs = 0 < bottom_height ? calc(size.x, size.y, bottom_r, corners, divide(bottom_height * abs(u.z))) : [],
 	     middle_steps = divide(middle_height * abs(u.z)),
@@ -288,7 +288,7 @@ module unf_roundedCuboid(size=[20, 10, 5], corners=[1, 1, 1, 1], edge_r=[1, 2, 1
 	     slices = concat(0 < bottom_height ? [ for (i = [len(bottom_calcs) - 1 : -1 : 1]) with_z(bottom_calcs[i], bottom_height - bottom_calcs[i][4]) ] : [],
 			     [ for (j = [0 : (0 < middle_height ? middle_steps : 0)]) with_z(full, bottom_height + (middle_height * j / middle_steps)) ],
 			     0 < top_height ? [ for (i = [1 : len(top_calcs) - 1]) with_z(top_calcs[i], bottom_height + middle_height + top_calcs[i][4]) ] : []),
-	     walls = [ for (s = slices) _unf_rounded_ring(s, arcs, sides) ],
+	     walls = [ for (s = slices) _unf_roundedRing(s, arcs, sides) ],
 	     bottom = slices[0],
 	     top = slices[len(slices) - 1],
 	     bottom_center = [bottom[0] + (bottom[2] / 2), bottom[1] + (bottom[3] / 2), bottom[4]],
@@ -353,18 +353,18 @@ module _unf_loft(rings, fan=false, convexity=2){
 //   edge1_r = bottom edge radius (0)
 //   edge2_r = top edge radius (0)
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCylinder(r=10, h=20, edge_r=2);
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_roundedCylinder(r1=15, r2=5, h=25, edge1_r=3, edge2_r=1);
 module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge1_r=0, edge2_r=0) {
-	// number of whole steps across a rounded edge of radius r, each at least $over thick
-	function steps(r) = max(1, min(unf_effective_fn(radius=r, angle=90), floor(r/$over)));
+	// number of whole steps across a rounded edge of radius r, each at least $unf_over thick
+	function steps(r) = max(1, min(unf_effectiveFn(radius=r, angle=90), floor(r/$unf_over)));
 	// how far out from the inset (base_r - e) the curve of an edge of radius e reaches at distance t from the flat face
 	function reach(e, t) = sqrt(max(0, pow(e, 2) - pow(e - t, 2)));
 
@@ -420,12 +420,12 @@ module unf_roundedCylinder(r=0, d=0, r1=0, r2=0, d1=0, d2=0, h=1, edge_r=0, edge
 //   ---
 //   size = 2d vector [x, y] for oval dimensions ([8, 4])
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_oval();
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_oval(size=[30, 10]);
@@ -450,12 +450,12 @@ module unf_oval(size = [8, 4]){
 //   id = inner diameter, of the circle around the dips between the points, must not exceed od (10)
 //   p = number of points, a whole number of at least 2 (5)
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_star();
 // Figure(Spin;VPD=100;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_star(od=30, id=22, p=8);
@@ -491,12 +491,12 @@ module unf_star(od=20, id=10, p=5){
 //   w = wall thickness, only used when id is 0 (0)
 //   l = length (50)
 // Figure(Spin;VPD=140;VPT=[0, 0, 25];NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_tube();
 // Figure(Spin;VPD=120;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_tube(od=30, w=2, l=20);
@@ -512,8 +512,8 @@ module unf_tube(od=15.875, id=0, w=0, l=50){
     difference(){
       cylinder(d=od, h=l);
       if (0 < id){
-	translate([0, 0, -$over]){
-	  cylinder(d=id, h=l + (2 * $over));
+	translate([0, 0, -$unf_over]){
+	  cylinder(d=id, h=l + (2 * $unf_over));
 	}
       }
     }
@@ -530,12 +530,12 @@ module unf_tube(od=15.875, id=0, w=0, l=50){
 //   size = a 2d vector [x, y] or a single number ([5, 15])
 //   v = a vector to affect the shape of the bezier curve (false)
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_bezierWedge2d();
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_bezierWedge2d(size=[10, 20], v=[2, 8]);
@@ -553,7 +553,7 @@ module unf_bezierWedge2d(size=[5, 15], v=false){
 
     
     h = concat([[0, size.y]], [v], [[size.x, 0]]);
-    bez = unfy_bezier(h);
+    bez = unf_bezier(h);
     polygon(concat([[0, 0]], bez, [[0, 0]]));
   }
 }
@@ -568,18 +568,18 @@ module unf_bezierWedge2d(size=[5, 15], v=false){
 //   size = a 3d vector [x, y, z] or a single number ([5, 15, 15])
 //   rounded_edges = vector or number for edge rounding ([1, 1])
 // Figure(Spin;VPD=100;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_bezierWedge3d();
 // Figure(Spin;VPD=150;NoAxes): custom
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
 //   unf_bezierWedge3d(size=[10, 20, 20], rounded_edges=[2, 3]);
 module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
-	// number of whole steps across a rounded edge of radius r, each at least $over thick
-	function steps(r) = max(1, min(unf_effective_fn(radius=r, angle=90), floor(r/$over)));
+	// number of whole steps across a rounded edge of radius r, each at least $unf_over thick
+	function steps(r) = max(1, min(unf_effectiveFn(radius=r, angle=90), floor(r/$unf_over)));
 	// how far a rounded edge of radius r is inset at distance t from where it meets the middle
 	function inset(r, t) = r - sqrt(max(0, pow(r, 2) - pow(t, 2)));
 
@@ -607,7 +607,7 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 			 middle_height = size.z - (top_r + bottom_r),
 			 middle_top = bottom_r + middle_height,
 			 // unf_bezierWedge2d's outline for a 1x1 wedge, it only ever scales, counterclockwise from the right angle's corner
-			 count = unf_effective_fn(radius=norm([size.x, size.y]), angle=90),
+			 count = unf_effectiveFn(radius=norm([size.x, size.y]), angle=90),
 			 unit = concat([[0, 0]], [ for (j = [count : -1 : 0]) let(t = j / count)
 				 [(2 * t * (1 - t) / 4) + pow(t, 2), pow(1 - t, 2) + (2 * t * (1 - t) / 4)] ]),
 			 // [z, inset] of every ring from the bottom face to the top face
@@ -616,7 +616,7 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 			 levels = concat(0 < bottom_r ? [ for (i = [0 : nb]) [bottom_r * i / nb, inset(bottom_r, bottom_r * (nb - i) / nb)] ] : [[0, 0]],
 					 0 < middle_height ? [[middle_top, 0]] : [],
 					 0 < top_r ? [ for (i = [1 : nt]) [middle_top + (top_r * i / nt), inset(top_r, top_r * i / nt)] ] : []),
-			 rings = [ for (l = levels) let(sx = max($over, size.x - l[1]), sy = max($over, size.y - l[1]))
+			 rings = [ for (l = levels) let(sx = max($unf_over, size.x - l[1]), sy = max($unf_over, size.y - l[1]))
 				 [ for (p = unit) [p.x * sx, p.y * sy, l[0]] ] ]){
 
 			translate([0, size.z, 0]){
@@ -628,9 +628,9 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 	}
 }
 
-// Module: unf_bezier_frustrum
+// Module: unf_bezierFrustum
 // Usage:
-//   unf_bezier_frustrum(<args>);
+//   unf_bezierFrustum(<args>);
 // Description:
 //   Creates a 3D frustum shaped object transitioning via bezier curves with optional edge rounding.
 // Arguments:
@@ -647,11 +647,11 @@ module unf_bezierWedge3d(size=[5, 15, 15], rounded_edges=[1, 1]){
 //   control_pinch_pct = pinch percentage for bezier control point (50)
 //   length = total length along z axis (300)
 // Figure(Spin;VPD=150;NoAxes): defaults
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
-//   unf_bezier_frustrum(base_dx=40, base_dy=30, end_dx=10, end_dy=20, length=100);
-module unf_bezier_frustrum(
+//   unf_bezierFrustum(base_dx=40, base_dy=30, end_dx=10, end_dy=20, length=100);
+module unf_bezierFrustum(
 	base_d = 0,
 	base_dx = 80,
 	base_dy = 60,
@@ -683,11 +683,11 @@ module unf_bezier_frustrum(
 		control_z = length * control_height_pct / 100;
 		control_x = (base_dx + ((end_dx-base_dx)*control_height_pct/100)) * control_pinch_pct / 100;
 		control_y = (base_dy + ((end_dy-base_dy)*control_height_pct/100)) * control_pinch_pct / 100;
-		bez_x = unfy_bezier([[base_dx, 0], [control_x, control_z], [end_dx, length]]);
-		bez_y = unfy_bezier([[0, base_dy], [control_z, control_y], [length, end_dy]]);
+		bez_x = unf_bezier([[base_dx, 0], [control_x, control_z], [end_dx, length]]);
+		bez_y = unf_bezier([[0, base_dy], [control_z, control_y], [length, end_dy]]);
 
 		// rings at every point of the curve, plus enough within each rounded edge to follow its curve
-		steps = function(r) max(1, min(unf_effective_fn(radius=r, angle=90), floor(r/$over)));
+		steps = function(r) max(1, min(unf_effectiveFn(radius=r, angle=90), floor(r/$unf_over)));
 		nb = 0 < base_edge_r ? steps(base_edge_r) : 0;
 		ne = 0 < end_edge_r ? steps(end_edge_r) : 0;
 		zs = concat(0 < base_edge_r ? [ for (i = [0 : nb]) base_edge_r * i / nb ] : [0],
@@ -696,16 +696,16 @@ module unf_bezier_frustrum(
 		bez_xz = [ for (p = bez_x) [p.y, p.x] ];
 		lip = function(z) (z < base_edge_r) ? base_edge_r - sqrt(max(0, pow(base_edge_r, 2) - pow(base_edge_r - z, 2))) :
 				   (z > length - end_edge_r) ? end_edge_r - sqrt(max(0, pow(end_edge_r, 2) - pow(z - (length - end_edge_r), 2))) : 0;
-		segments = unf_effective_fn(radius=max(base_dx, base_dy, end_dx, end_dy, control_x, control_y) / 2);
-		rings = [ for (z = zs) let(dx = max($over, lookup(z, bez_xz) - (2 * lip(z))), dy = max($over, lookup(z, bez_y) - (2 * lip(z))))
+		segments = unf_effectiveFn(radius=max(base_dx, base_dy, end_dx, end_dy, control_x, control_y) / 2);
+		rings = [ for (z = zs) let(dx = max($unf_over, lookup(z, bez_xz) - (2 * lip(z))), dy = max($unf_over, lookup(z, bez_y) - (2 * lip(z))))
 			   [ for (j = [0 : segments - 1]) let(a = 360 * j / segments) [(dx / 2) * cos(a), (dy / 2) * sin(a), z] ] ];
 		_unf_loft(rings);
 	}
 }
 
-// Module: unf_mount_tab
+// Module: unf_mountTab
 // Usage:
-//   unf_mount_tab(<args>);
+//   unf_mountTab(<args>);
 // Description:
 //   Creates a mounting tab with an integrated bolt hole, washer recess, and reinforcing web supports.
 // Arguments:
@@ -716,17 +716,17 @@ module unf_bezier_frustrum(
 //   washer_v = washer definition vector for the recess
 //   wall = wall thickness parameter
 // Figure(Spin;VPD=150;NoAxes): sample
-//   $over = 0.1;
+//   $unf_over = 0.1;
 //   $fn = 36;
 //   use <unfy_shapes.scad>;
-//   unf_mount_tab(tab_length=20, tab_height=5, bolt_d=4.5, washer_v=[8, 1], wall=3);
-module unf_mount_tab(tab_length, tab_height, bolt_d, washer_v, wall){
+//   unf_mountTab(tab_length=20, tab_height=5, bolt_d=4.5, washer_v=[8, 1], wall=3);
+module unf_mountTab(tab_length, tab_height, bolt_d, washer_v, wall){
   difference(){
     unf_roundedCuboid([tab_length+(4*wall), tab_length, tab_height], edge_r=[wall, wall, 0, wall, 0, 0, 0, 0], corners=[wall, wall, 0, 0]);
-    translate([(tab_length/2)+(2*wall), tab_length/2, -$over]){
-      cylinder(d=bolt_d, h=tab_height+(2*$over));
-      translate([0, 0, wall+(2*$over)]){
-	unf_wsh(size=washer_v, ext=$over);
+    translate([(tab_length/2)+(2*wall), tab_length/2, -$unf_over]){
+      cylinder(d=bolt_d, h=tab_height+(2*$unf_over));
+      translate([0, 0, wall+(2*$unf_over)]){
+	unf_wsh(size=washer_v, ext=$unf_over);
       }
     }
   }
@@ -780,8 +780,8 @@ if ("bezier_wedge_3d" == test_shape){
   unf_bezierWedge3d(size=bez3d_size, rounded_edges=bez3d_rounded_edges);
 }
 
-if ("bezier_frustrum" == test_shape){
-	unf_bezier_frustrum(
+if ("bezier_frustum" == test_shape){
+	unf_bezierFrustum(
 		base_dx = bezfr_base_dx,
 		base_dy = bezfr_base_dy,
 		base_edge_r = bezfr_base_edge_r,

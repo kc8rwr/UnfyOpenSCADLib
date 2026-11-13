@@ -14,11 +14,11 @@ part = "ServoArmTest"; //["ServoArmTest", "None"]
 sides = 3;
 
 $fn = $preview ? 36 : 360;
-$over = 1;
+$unf_over = 1;
 
-// Module: unf_servo_arm
+// Module: unf_servoArm
 // Usage:
-//   unf_servo_arm(&lt;args&gt;);
+//   unf_servoArm(&lt;args&gt;);
 // Description:
 //   Creates the shape of a servo arm (horn) including the coupler which fits over the servo shaft. Intended for subtracting from a part to create a pocket that a servo arm fits into.
 // Arguments:
@@ -31,16 +31,16 @@ $over = 1;
 //   sides = number of arms, evenly spaced, or a vector of the angles at which to place each arm (1)
 //   distorted = distort the coupler hole to compensate for sagging when printed horizontally, see unf_shaft() in unfy_fasteners.scad (false)
 // Figure(Spin;VPD=100;VPT=[8,0,0];NoAxes): single arm
-//   $over = 1;
+//   $unf_over = 1;
 //   $fn = 36;
 //   use <unfy_motors.scad>;
-//   unf_servo_arm(length=22.25, thickness=2.5, coupler_height=2, shaft_end_radius=3.75, end_radius=2.5);
+//   unf_servoArm(length=22.25, thickness=2.5, coupler_height=2, shaft_end_radius=3.75, end_radius=2.5);
 // Figure(Spin;VPD=100;NoAxes): sides=4
-//   $over = 1;
+//   $unf_over = 1;
 //   $fn = 36;
 //   use <unfy_motors.scad>;
-//   unf_servo_arm(length=22.25, thickness=2.5, coupler_height=2, shaft_end_radius=3.75, end_radius=2.5, sides=4);
-module unf_servo_arm(length, thickness, coupler_height, shaft_end_radius, end_radius, sides=1, distorted = false){
+//   unf_servoArm(length=22.25, thickness=2.5, coupler_height=2, shaft_end_radius=3.75, end_radius=2.5, sides=4);
+module unf_servoArm(length, thickness, coupler_height, shaft_end_radius, end_radius, sides=1, distorted = false){
   let (sides = is_list(sides) ? sides : (is_num(sides) ? [ for (i = [0 : sides - 1]) 360 * i / sides ] : [0]) ){
     unf_shaft(diameter = shaft_end_radius*2, length = thickness + coupler_height, distorted = distorted);
     for(clock = sides){
@@ -60,9 +60,9 @@ module unf_servo_arm(length, thickness, coupler_height, shaft_end_radius, end_ra
 
 
 if ("ServoArmTest" == part){
-	unf_servo_arm(length = 22.25,
-					  thickness = 2.5 + $over,
-					  coupler_height = 2 + (2*$over),
+	unf_servoArm(length = 22.25,
+					  thickness = 2.5 + $unf_over,
+					  coupler_height = 2 + (2*$unf_over),
 					  shaft_end_radius=3.75,
 					  end_radius=2.5,
 					  distorted = false,
