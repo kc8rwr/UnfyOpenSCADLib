@@ -12,18 +12,18 @@ Written with help from Claude (Anthropic)
 
 ## File Contents
 
-- [`unf_path_extrude`](#module-unf_path_extrude) – Sweep a 2d child along a polyline
+- [`unf_pathExtrude`](#module-unf_pathextrude) – Sweep a 2d child along a polyline
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_path\_extrude
+### Module: unf\_pathExtrude
 
 **Synopsis:** Sweep a 2d child along a polyline
 
 **Usage:** 
 
-- unf_path_extrude(path, &lt;args&gt;) child2d();
+- unf_pathExtrude(path, &lt;args&gt;) child2d();
 
 **Description:** 
 
@@ -39,7 +39,7 @@ Limits:
 * Non-uniform scale combined with twist is only approximate at joints.
 * The module can't see the child's size, so it can't check that a fillet radius exceeds the profile's reach toward the inside of the turn. Too small a radius makes rotate_extrude fail (no twist/scale) or produces self-intersecting geometry (twist/scale).
 
-All helpers are defined inside unf_path_extrude(), so they are private to it.
+All helpers are defined inside unf_pathExtrude(), so they are private to it.
 
 **Arguments:** 
 
@@ -55,13 +55,13 @@ All helpers are defined inside unf_path_extrude(), so they are private to it.
 
 **Figure 1.1.1:** filleted corners
 
-<img align="left" alt="unf\_path\_extrude Figure 1.1.1" src="images/unfy_path/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_pathExtrude Figure 1.1.1" src="images/unfy_path/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" />
 
 **Figure 1.1.2:** twist=180, profile\_r=5
 
-<img align="left" alt="unf\_path\_extrude Figure 1.1.2" src="images/unfy_path/figure_1_1_2.png" width="320" height="240">
+<img align="left" alt="unf\_pathExtrude Figure 1.1.2" src="images/unfy_path/figure_1_1_2.png" width="320" height="240">
 
 <br clear="all" />
 

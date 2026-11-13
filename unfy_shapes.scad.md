@@ -18,8 +18,8 @@ unfy_shapes contains a collection of modules for generating geometric shapes wit
 - [`unf_tube`](#module-unf_tube)
 - [`unf_bezierWedge2d`](#module-unf_bezierwedge2d)
 - [`unf_bezierWedge3d`](#module-unf_bezierwedge3d)
-- [`unf_bezier_frustrum`](#module-unf_bezier_frustrum)
-- [`unf_mount_tab`](#module-unf_mount_tab)
+- [`unf_bezierFrustum`](#module-unf_bezierfrustum)
+- [`unf_mountTab`](#module-unf_mounttab)
 
 2. [Section: Licensing](#section-licensing)
 
@@ -307,11 +307,11 @@ A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along
 
 ---
 
-### Module: unf\_bezier\_frustrum
+### Module: unf\_bezierFrustum
 
 **Usage:** 
 
-- unf_bezier_frustrum(<args>);
+- unf_bezierFrustum(<args>);
 
 **Description:** 
 
@@ -335,17 +335,17 @@ Creates a 3D frustum shaped object transitioning via bezier curves with optional
 
 **Figure 1.9.1:** defaults
 
-<img align="left" alt="unf\_bezier\_frustrum Figure 1.9.1" src="images/unfy_shapes/figure_1_9_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezierFrustum Figure 1.9.1" src="images/unfy_shapes/figure_1_9_1.png" width="320" height="240">
 
 <br clear="all" />
 
 ---
 
-### Module: unf\_mount\_tab
+### Module: unf\_mountTab
 
 **Usage:** 
 
-- unf_mount_tab(<args>);
+- unf_mountTab(<args>);
 
 **Description:** 
 
@@ -363,7 +363,7 @@ Creates a mounting tab with an integrated bolt hole, washer recess, and reinforc
 
 **Figure 1.10.1:** sample
 
-<img align="left" alt="unf\_mount\_tab Figure 1.10.1" src="images/unfy_shapes/figure_1_10_1.png" width="320" height="240">
+<img align="left" alt="unf\_mountTab Figure 1.10.1" src="images/unfy_shapes/figure_1_10_1.png" width="320" height="240">
 
 <br clear="all" />
 

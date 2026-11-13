@@ -16,109 +16,109 @@ Functions are included to look up the various dimensions of fasteners by size an
 
 The goal here is to allow the user to create customizable designs where the end user may choose parts that they already have on hand or parts that are easily available. Designers are encouraged to give the end-user plenty of choices. Perfectly valid arguments regarding the merits of measurement systems aside, the best fastener size is the one you already have on hand. The next best is the one your local hardware store sells in bulk rather than the specialty isle.
 
-Provisions are included for distorting horizontal bolt holes, to remove some extra material from the top side. This way when printing via fused filament fabrication plastic which sags down will just cancel this distortion out rather than requiring drilling so the bolt can fit cleanly. The distortion is defined by two special variables, $unf-hdist_y and $unf_hdist_x. These define the extra removed material by height and width respectively, both as a percentage of the shaft diameter.
+Provisions are included for distorting horizontal bolt holes, to remove some extra material from the top side. This way when printing via fused filament fabrication plastic which sags down will just cancel this distortion out rather than requiring drilling so the bolt can fit cleanly. The distortion is defined by two special variables, $unf-hdist_y and $unf_hdistX. These define the extra removed material by height and width respectively, both as a percentage of the shaft diameter.
 
 So far this feature has been developed only for bolt holes and not the other parts. The original intention was to distort every part depending on the angle at which it is rendered. Unfortunately there is no good way to know what angle a part is being rendered in OpenSCAD so it relies on the user telling it. Thus this feature has not been furtner developed.
 
 ## File Contents
 
-- [`unf_fnr_type`](#function-unf_fnr_type) – Fastener Type
-- [`unf_fnr_size`](#function-unf_fnr_size) – Fastener Size
-- [`unf_fnr_diameter`](#function-unf_fnr_diameter) – Fastener Clearance Diameter
-- [`unf_fnr_is_st`](#function-unf_fnr_is_st) – Is this an ISO tapping screw size
-- [`unf_fnr_st_to_m`](#function-unf_fnr_st_to_m) – Convert an ISO tapping screw size to a metric size
-- [`unf_fnr_shaft_diameter`](#function-unf_fnr_shaft_diameter) – Fastener Shaft Diameter
+- [`unf_fnrType`](#function-unf_fnrtype) – Fastener Type
+- [`unf_fnrSize`](#function-unf_fnrsize) – Fastener Size
+- [`unf_fnrDiameter`](#function-unf_fnrdiameter) – Fastener Clearance Diameter
+- [`unf_fnrIsSt`](#function-unf_fnrisst) – Is this an ISO tapping screw size
+- [`unf_fnrStToM`](#function-unf_fnrsttom) – Convert an ISO tapping screw size to a metric size
+- [`unf_fnrShaftDiameter`](#function-unf_fnrshaftdiameter) – Fastener Shaft Diameter
 
 2. [Section: Distorted Shafts](#section-distorted-shafts)
     - [`unf_shaft`](#module-unf_shaft) – Fastener Shaft
-    - [`distortion_test_block`](#module-distortion_test_block) – Shaft Distortion Test Block
+    - [`unf_distortionTestBlock`](#module-unf_distortiontestblock) – Shaft Distortion Test Block
 
-3. [Section: Cap Bolts - unf\_cap\_*](#section-cap-bolts---unf_cap_)
-    - [`unf_cap_v`](#function-unf_cap_v) – Cap Head Bolt Vector
-    - [`unf_cap_head_diameter`](#function-unf_cap_head_diameter) – Cap Head Bolt Clearance Diameter
-    - [`unf_cap_head_height`](#function-unf_cap_head_height) – Cap Head Bolt Head Height
-    - [`unf_cap_default_length`](#function-unf_cap_default_length) – Cap Head Bolt Default Length
+3. [Section: Cap Bolts - unf\_cap*](#section-cap-bolts---unf_cap)
+    - [`unf_capV`](#function-unf_capv) – Cap Head Bolt Vector
+    - [`unf_capHeadDiameter`](#function-unf_capheaddiameter) – Cap Head Bolt Clearance Diameter
+    - [`unf_capHeadHeight`](#function-unf_capheadheight) – Cap Head Bolt Head Height
+    - [`unf_capDefaultLength`](#function-unf_capdefaultlength) – Cap Head Bolt Default Length
     - [`unf_cap`](#module-unf_cap) – Cap Head Bolt
 
-4. [Section: Countersunk Bolts - unf\_csk\_*](#section-countersunk-bolts---unf_csk_)
-    - [`unf_csk_v`](#function-unf_csk_v) – Counter Sunk Bolt Vector
-    - [`unf_csk_head_diameter`](#function-unf_csk_head_diameter) – Countersunk Head Clearance Diameter
-    - [`unf_csk_head_height`](#function-unf_csk_head_height) – Countersunk Head Height
-    - [`unf_csk_default_length`](#function-unf_csk_default_length) – Countersunk Bolt Default Length
+4. [Section: Countersunk Bolts - unf\_csk*](#section-countersunk-bolts---unf_csk)
+    - [`unf_cskV`](#function-unf_cskv) – Counter Sunk Bolt Vector
+    - [`unf_cskHeadDiameter`](#function-unf_cskheaddiameter) – Countersunk Head Clearance Diameter
+    - [`unf_cskHeadHeight`](#function-unf_cskheadheight) – Countersunk Head Height
+    - [`unf_cskDefaultLength`](#function-unf_cskdefaultlength) – Countersunk Bolt Default Length
     - [`unf_csk`](#module-unf_csk) – Countersunk Bolt
 
-5. [Section: Hex Head Bolts - unf\_hex\_*](#section-hex-head-bolts---unf_hex_)
-    - [`unf_hex_v`](#function-unf_hex_v) – Hex Head Bolt Vector
-    - [`unf_hex_head_diameter`](#function-unf_hex_head_diameter) – Hex Head Bolt Clearance Diameter
-    - [`unf_hex_head_height`](#function-unf_hex_head_height) – Hex Head Height
-    - [`unf_hex_default_length`](#function-unf_hex_default_length) – Hex Head Bolt Default Length
+5. [Section: Hex Head Bolts - unf\_hex*](#section-hex-head-bolts---unf_hex)
+    - [`unf_hexV`](#function-unf_hexv) – Hex Head Bolt Vector
+    - [`unf_hexHeadDiameter`](#function-unf_hexheaddiameter) – Hex Head Bolt Clearance Diameter
+    - [`unf_hexHeadHeight`](#function-unf_hexheadheight) – Hex Head Height
+    - [`unf_hexDefaultLength`](#function-unf_hexdefaultlength) – Hex Head Bolt Default Length
     - [`unf_hex`](#module-unf_hex) – Hex Head Bolt
 
-6. [Section: Self Tapping Screws - unf\_stp\_*](#section-self-tapping-screws---unf_stp_)
-    - [`unf_stp_v`](#function-unf_stp_v) – Self Tapping Screw Vector
-    - [`unf_stp_head_style`](#function-unf_stp_head_style) – Self Tapping Screw Head Style
-    - [`unf_stp_head_shape`](#function-unf_stp_head_shape) – Self Tapping Screw Head Shape
-    - [`unf_stp_is_imperial`](#function-unf_stp_is_imperial) – Is this a numbered or inch size
-    - [`unf_stp_inch`](#function-unf_stp_inch) – Convert a table in inches to mm
-    - [`unf_stp_lookup`](#function-unf_stp_lookup) – Self Tapping Screw Table Lookup
-    - [`unf_stp_head_table`](#function-unf_stp_head_table) – Self Tapping Screw Head Table
-    - [`unf_stp_head_diameter`](#function-unf_stp_head_diameter) – Self Tapping Screw Head Clearance Diameter
-    - [`unf_stp_head_height`](#function-unf_stp_head_height) – Self Tapping Screw Head Height
-    - [`unf_stp_default_length`](#function-unf_stp_default_length) – Self Tapping Screw Default Length
-    - [`unf_stp_minor_diameter`](#function-unf_stp_minor_diameter) – Self Tapping Screw Minor Diameter
-    - [`unf_stp_clearance_diameter`](#function-unf_stp_clearance_diameter) – Self Tapping Screw Clearance Hole Diameter
-    - [`unf_stp_pitch`](#function-unf_stp_pitch) – Self Tapping Screw Thread Pitch
-    - [`unf_stp_engagement`](#function-unf_stp_engagement) – Self Tapping Screw Recommended Engagement
-    - [`unf_default_nozzle`](#function-unf_default_nozzle) – Printer Nozzle Diameter
-    - [`unf_stp_default_pilot_id`](#function-unf_stp_default_pilot_id) – Default Star Pilot Inner Diameter Percentage
-    - [`unf_stp_default_pilot_od`](#function-unf_stp_default_pilot_od) – Default Star Pilot Outer Diameter Percentage
-    - [`unf_stp_pilot_id`](#function-unf_stp_pilot_id) – Self Tapping Screw Star Pilot Inner Diameter
-    - [`unf_stp_pilot_od`](#function-unf_stp_pilot_od) – Self Tapping Screw Star Pilot Outer Diameter
-    - [`unf_stp_pilot_diameter`](#function-unf_stp_pilot_diameter) – Self Tapping Screw Round Pilot Diameter
-    - [`unf_stp_star_points`](#function-unf_stp_star_points) – Self Tapping Screw Star Pilot Point Count
-    - [`unf_stp_pilot`](#module-unf_stp_pilot) – Self Tapping Screw Pilot Hole
+6. [Section: Self Tapping Screws - unf\_stp*](#section-self-tapping-screws---unf_stp)
+    - [`unf_stpV`](#function-unf_stpv) – Self Tapping Screw Vector
+    - [`unf_stpHeadStyle`](#function-unf_stpheadstyle) – Self Tapping Screw Head Style
+    - [`unf_stpHeadShape`](#function-unf_stpheadshape) – Self Tapping Screw Head Shape
+    - [`unf_stpIsImperial`](#function-unf_stpisimperial) – Is this a numbered or inch size
+    - [`unf_stpInch`](#function-unf_stpinch) – Convert a table in inches to mm
+    - [`unf_stpLookup`](#function-unf_stplookup) – Self Tapping Screw Table Lookup
+    - [`unf_stpHeadTable`](#function-unf_stpheadtable) – Self Tapping Screw Head Table
+    - [`unf_stpHeadDiameter`](#function-unf_stpheaddiameter) – Self Tapping Screw Head Clearance Diameter
+    - [`unf_stpHeadHeight`](#function-unf_stpheadheight) – Self Tapping Screw Head Height
+    - [`unf_stpDefaultLength`](#function-unf_stpdefaultlength) – Self Tapping Screw Default Length
+    - [`unf_stpMinorDiameter`](#function-unf_stpminordiameter) – Self Tapping Screw Minor Diameter
+    - [`unf_stpClearanceDiameter`](#function-unf_stpclearancediameter) – Self Tapping Screw Clearance Hole Diameter
+    - [`unf_stpPitch`](#function-unf_stppitch) – Self Tapping Screw Thread Pitch
+    - [`unf_stpEngagement`](#function-unf_stpengagement) – Self Tapping Screw Recommended Engagement
+    - [`unf_defaultNozzle`](#function-unf_defaultnozzle) – Printer Nozzle Diameter
+    - [`unf_stpDefaultPilotId`](#function-unf_stpdefaultpilotid) – Default Star Pilot Inner Diameter Percentage
+    - [`unf_stpDefaultPilotOd`](#function-unf_stpdefaultpilotod) – Default Star Pilot Outer Diameter Percentage
+    - [`unf_stpPilotId`](#function-unf_stppilotid) – Self Tapping Screw Star Pilot Inner Diameter
+    - [`unf_stpPilotOd`](#function-unf_stppilotod) – Self Tapping Screw Star Pilot Outer Diameter
+    - [`unf_stpPilotDiameter`](#function-unf_stppilotdiameter) – Self Tapping Screw Round Pilot Diameter
+    - [`unf_stpStarPoints`](#function-unf_stpstarpoints) – Self Tapping Screw Star Pilot Point Count
+    - [`unf_stpPilot`](#module-unf_stppilot) – Self Tapping Screw Pilot Hole
     - [`unf_stp`](#module-unf_stp) – Self Tapping Screw
 
-7. [Section: Heatset Inserts - unf\_hst\_*](#section-heatset-inserts---unf_hst_)
-    - [`unf_hst_v`](#function-unf_hst_v) – Heatset Insert Vector
-    - [`unf_hst_diameter`](#function-unf_hst_diameter) – Heatset Insert Diameter
-    - [`unf_hst_length`](#function-unf_hst_length) – Heatset Insert Length
+7. [Section: Heatset Inserts - unf\_hst*](#section-heatset-inserts---unf_hst)
+    - [`unf_hstV`](#function-unf_hstv) – Heatset Insert Vector
+    - [`unf_hstDiameter`](#function-unf_hstdiameter) – Heatset Insert Diameter
+    - [`unf_hstLength`](#function-unf_hstlength) – Heatset Insert Length
     - [`unf_hst`](#module-unf_hst) – Heatset Insert
 
-8. [Section: Hex Nut - unf\_nut\_*](#section-hex-nut---unf_nut_)
-    - [`unf_nut_v`](#function-unf_nut_v) – hex-nut vector
-    - [`unf_nut_diameter`](#function-unf_nut_diameter) – Hex Nut Clearance Diameter
-    - [`unf_nut_small_d`](#function-unf_nut_small_d) – Hex Nut distance across flats
-    - [`unf_nut_height`](#function-unf_nut_height) – Hex Nut Height
+8. [Section: Hex Nut - unf\_nut*](#section-hex-nut---unf_nut)
+    - [`unf_nutV`](#function-unf_nutv) – hex-nut vector
+    - [`unf_nutDiameter`](#function-unf_nutdiameter) – Hex Nut Clearance Diameter
+    - [`unf_nutSmallD`](#function-unf_nutsmalld) – Hex Nut distance across flats
+    - [`unf_nutHeight`](#function-unf_nutheight) – Hex Nut Height
     - [`unf_nut`](#module-unf_nut) – Hex Nut
 
-9. [Section: Square Nut - unf\_sqr\_*](#section-square-nut---unf_sqr_)
-    - [`unf_sqr_v`](#function-unf_sqr_v) – Square Nut Vector
-    - [`unf_sqr_length`](#function-unf_sqr_length) – Square Nut Side Length
-    - [`unf_sqr_height`](#function-unf_sqr_height) – Square Nut Height / Thickness
+9. [Section: Square Nut - unf\_sqr*](#section-square-nut---unf_sqr)
+    - [`unf_sqrV`](#function-unf_sqrv) – Square Nut Vector
+    - [`unf_sqrLength`](#function-unf_sqrlength) – Square Nut Side Length
+    - [`unf_sqrHeight`](#function-unf_sqrheight) – Square Nut Height / Thickness
     - [`unf_sqr`](#module-unf_sqr) – Square Nut
 
-10. [Section: Washer unf\_wsh\_*](#section-washer-unf_wsh_)
-    - [`unf_wsh_v`](#function-unf_wsh_v) – Washer Vector
-    - [`unf_wsh_diameter`](#function-unf_wsh_diameter) – Washer Clearance Diameter
-    - [`unf_wsh_height`](#function-unf_wsh_height) – Washer Thickness (height lying flat)
+10. [Section: Washer unf\_wsh*](#section-washer-unf_wsh)
+    - [`unf_wshV`](#function-unf_wshv) – Washer Vector
+    - [`unf_wshDiameter`](#function-unf_wshdiameter) – Washer Clearance Diameter
+    - [`unf_wshHeight`](#function-unf_wshheight) – Washer Thickness (height lying flat)
     - [`unf_wsh`](#module-unf_wsh) – Washer
 
 11. [Section: Pillar](#section-pillar)
-    - [`unf_pillar_pos`](#module-unf_pillar_pos) – Render the positive part of a fastener pillar
-    - [`unf_pillar_neg`](#module-unf_pillar_neg) – Render the negative part of a fastener pillar
+    - [`unf_pillarPos`](#module-unf_pillarpos) – Render the positive part of a fastener pillar
+    - [`unf_pillarNeg`](#module-unf_pillarneg) – Render the negative part of a fastener pillar
     - [`unf_pillar`](#module-unf_pillar) – Render a fastener pillar
 
 12. [Section: Licensing](#section-licensing)
 
 
-### Function: unf\_fnr\_type
+### Function: unf\_fnrType
 
 **Synopsis:** Fastener Type
 
 **Usage:** 
 
-- unf_fnr_type(fastener_vector)
+- unf_fnrType(fastener_vector)
 
 **Description:** 
 
@@ -132,13 +132,13 @@ Takes a vector describing a fastener and returns a string representing the faste
 
 ---
 
-### Function: unf\_fnr\_size
+### Function: unf\_fnrSize
 
 **Synopsis:** Fastener Size
 
 **Usage:** 
 
-- unf_fnr_size(fastener_size_or_vector)
+- unf_fnrSize(fastener_size_or_vector)
 
 **Description:** 
 
@@ -154,13 +154,13 @@ Of course this isnt't doing much when it is passed the string. This is done so t
 
 ---
 
-### Function: unf\_fnr\_diameter
+### Function: unf\_fnrDiameter
 
 **Synopsis:** Fastener Clearance Diameter
 
 **Usage:** 
 
-- unf_fnr_diameter(fastener_size_or_vector)
+- unf_fnrDiameter(fastener_size_or_vector)
 
 **Description:** 
 
@@ -174,13 +174,13 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 ---
 
-### Function: unf\_fnr\_is\_st
+### Function: unf\_fnrIsSt
 
 **Synopsis:** Is this an ISO tapping screw size
 
 **Usage:** 
 
-- unf_fnr_is_st(size)
+- unf_fnrIsSt(size)
 
 **Description:** 
 
@@ -194,13 +194,13 @@ Returns true if the size string is an ISO tapping screw size such as "ST2.9".
 
 ---
 
-### Function: unf\_fnr\_st\_to\_m
+### Function: unf\_fnrStToM
 
 **Synopsis:** Convert an ISO tapping screw size to a metric size
 
 **Usage:** 
 
-- unf_fnr_st_to_m(size)
+- unf_fnrStToM(size)
 
 **Description:** 
 
@@ -214,13 +214,13 @@ Converts an ISO tapping screw size such as "ST2.9" to the metric size of the sam
 
 ---
 
-### Function: unf\_fnr\_shaft\_diameter
+### Function: unf\_fnrShaftDiameter
 
 **Synopsis:** Fastener Shaft Diameter
 
 **Usage:** 
 
-- unf_fnr_shaft_diameter(fastener_size_or_vector)
+- unf_fnrShaftDiameter(fastener_size_or_vector)
 
 **Description:** 
 
@@ -243,13 +243,13 @@ Takes a vector describing a fastener or a string representing the fastener size 
 
 **Usage:** 
 
-- unf_shaft(diameter, length, distorted, $unf_hdist_x, $unf_hdist_y, body_color)
+- unf_shaft(diameter, length, distorted, $unf_hdistX, $unf_hdistY, body_color)
 
 **Description:** 
 
 Render a fastener shaft hole, optionally with distortions to account for overhang sagging when 3d-printing.
 
-**Figure 2.1.1:** various values of unf\_hdist\_x and unf\_hdist\_y. (0, 0) or distorted=false would be a perfect circle.
+**Figure 2.1.1:** various values of unf\_hdistX and unf\_hdistY. (0, 0) or distorted=false would be a perfect circle.
 
 <img align="left" alt="unf\_shaft Figure 2.1.1" src="images/unfy_fasteners/figure_2_1_1.png" width="640" height="480">
 
@@ -266,26 +266,26 @@ Render a fastener shaft hole, optionally with distortions to account for overhan
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
-`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
-`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+`$unf_hdistX`        | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdistY`        | height of distortion as a percentage of the diameter (0-100)
 
 ---
 
-### Module: distortion\_test\_block
+### Module: unf\_distortionTestBlock
 
 **Synopsis:** Shaft Distortion Test Block
 
 **Usage:** 
 
-- distortion_test_block(diameter, depth, steps, min_spacing, min_dist_x, max_dist_x, min_dist_y, max_dist_y, include_control, body_color, subtraction_color)
+- unf_distortionTestBlock(diameter, depth, steps, min_spacing, min_dist_x, max_dist_x, min_dist_y, max_dist_y, include_control, body_color, subtraction_color)
 
 **Description:** 
 
-Render a block with a series of distorted bolt shafts with varying values of unf_hdist_x and unf_hdist_y for choosing the best values to use with a particular setup.
+Render a block with a series of distorted bolt shafts with varying values of unf_hdistX and unf_hdistY for choosing the best values to use with a particular setup.
 
 **Figure 2.2.1:** 
 
-<img align="left" alt="distortion\_test\_block Figure 2.2.1" src="images/unfy_fasteners/figure_2_2_1.png" width="640" height="480">
+<img align="left" alt="unf\_distortionTestBlock Figure 2.2.1" src="images/unfy_fasteners/figure_2_2_1.png" width="640" height="480">
 
 <br clear="all" />
 
@@ -297,16 +297,16 @@ Render a block with a series of distorted bolt shafts with varying values of unf
 `depth`              | thickness of the block
 `steps`              | number of rows, columns
 `min_spacing`        | minimum spacing between holes
-`min_dist_x`         | minimum unf_hdist_x to try
-`max_dist_x`         | maximum unf_hdist_x to try
-`min_dist_y`         | minimum unf_hdist_y to try
-`max_dist_y`         | maximum unf_hdist_y to try
+`min_dist_x`         | minimum unf_hdistX to try
+`max_dist_x`         | maximum unf_hdistX to try
+`min_dist_y`         | minimum unf_hdistY to try
+`max_dist_y`         | maximum unf_hdistY to try
 `body_color`         | color of the block
 `subtraction_color`  | color of the surfaces cut into the block by the test holes
 
 ---
 
-## Section: Cap Bolts - unf\_cap\_*
+## Section: Cap Bolts - unf\_cap*
 
 The vector representing a cap bolt will consist of, in order:
 * name
@@ -315,13 +315,13 @@ The vector representing a cap bolt will consist of, in order:
 * head_height
 * default_length
 
-### Function: unf\_cap\_v
+### Function: unf\_capV
 
 **Synopsis:** Cap Head Bolt Vector
 
 **Usage:** 
 
-- unf_cap_v(size_or_vector)
+- unf_capV(size_or_vector)
 
 **Description:** 
 
@@ -335,13 +335,13 @@ Retrieve a vector representing the dimensions of a cap-head bolt given the size.
 
 ---
 
-### Function: unf\_cap\_head\_diameter
+### Function: unf\_capHeadDiameter
 
 **Synopsis:** Cap Head Bolt Clearance Diameter
 
 **Usage:** 
 
-- unf_cap_head_diameter(size_or_vector)
+- unf_capHeadDiameter(size_or_vector)
 
 **Description:** 
 
@@ -351,17 +351,17 @@ Retrieve the diameter in mm of the head of a cap-head bolt given the size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_cap_v() vector itself
+`size`               | size as a string or the unf_capV() vector itself
 
 ---
 
-### Function: unf\_cap\_head\_height
+### Function: unf\_capHeadHeight
 
 **Synopsis:** Cap Head Bolt Head Height
 
 **Usage:** 
 
-- unf_cap_head_height(size_or_vector)
+- unf_capHeadHeight(size_or_vector)
 
 **Description:** 
 
@@ -371,17 +371,17 @@ Retrieve the height or thickness in mm of the head of a cap-head bolt given the 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_cap_v() vector itself
+`size`               | size as a string or the unf_capV() vector itself
 
 ---
 
-### Function: unf\_cap\_default\_length
+### Function: unf\_capDefaultLength
 
 **Synopsis:** Cap Head Bolt Default Length
 
 **Usage:** 
 
-- unf_cap_default_length(size_or_vector)
+- unf_capDefaultLength(size_or_vector)
 
 **Description:** 
 
@@ -391,7 +391,7 @@ Retrieve a default length for a cap head bolt given it's size. Probably not very
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_cap_v() vector itself
+`size`               | size as a string or the unf_capV() vector itself
 
 ---
 
@@ -401,7 +401,7 @@ Retrieve a default length for a cap head bolt given it's size. Probably not very
 
 **Usage:** 
 
-- unf_cap(size, length, head_ext, distorted, $unf_hdist_x, $unf_hdist_y, body_color)
+- unf_cap(size, length, head_ext, distorted, $unf_hdistX, $unf_hdistY, body_color)
 
 **Description:** 
 
@@ -417,7 +417,7 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_cap_v() vector.
+`size`               | string representing the size or the unf_capV() vector.
 `length`             | length in mm
 `head_ext`           | length in mm to recess the head beyond just it's thickness
 `distorted`          | true/false, should the bolt hole be distorted
@@ -425,12 +425,12 @@ Render a negative for a shaft and/or head-recess for a cap-head bolt. Note, the 
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
-`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
-`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+`$unf_hdistX`        | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdistY`        | height of distortion as a percentage of the diameter (0-100)
 
 ---
 
-## Section: Countersunk Bolts - unf\_csk\_*
+## Section: Countersunk Bolts - unf\_csk*
 
 The vector representing a countersunk bolt will consist of, in order:
 * name
@@ -439,13 +439,13 @@ The vector representing a countersunk bolt will consist of, in order:
 * head_height
 * default_length
 
-### Function: unf\_csk\_v
+### Function: unf\_cskV
 
 **Synopsis:** Counter Sunk Bolt Vector
 
 **Usage:** 
 
-- unf_csk_v(size_or_vector)
+- unf_cskV(size_or_vector)
 
 **Description:** 
 
@@ -459,13 +459,13 @@ Retrieve a vector representing the dimensions of a countersunk bolt given the si
 
 ---
 
-### Function: unf\_csk\_head\_diameter
+### Function: unf\_cskHeadDiameter
 
 **Synopsis:** Countersunk Head Clearance Diameter
 
 **Usage:** 
 
-- unf_csk_head_diameter(size_or_vector)
+- unf_cskHeadDiameter(size_or_vector)
 
 **Description:** 
 
@@ -475,17 +475,17 @@ Retrieve the diameter in mm of the head of a countersunk bolt given the size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_csk_v() vector itself
+`size`               | size as a string or the unf_cskV() vector itself
 
 ---
 
-### Function: unf\_csk\_head\_height
+### Function: unf\_cskHeadHeight
 
 **Synopsis:** Countersunk Head Height
 
 **Usage:** 
 
-- unf_csk_head_height(size_or_vector)
+- unf_cskHeadHeight(size_or_vector)
 
 **Description:** 
 
@@ -495,17 +495,17 @@ Retrieve the height or thickness in mm of the head of a countersunk bolt given t
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_csk_v() vector itself
+`size`               | size as a string or the unf_cskV() vector itself
 
 ---
 
-### Function: unf\_csk\_default\_length
+### Function: unf\_cskDefaultLength
 
 **Synopsis:** Countersunk Bolt Default Length
 
 **Usage:** 
 
-- unf_csk_default_length(size_or_vector)
+- unf_cskDefaultLength(size_or_vector)
 
 **Description:** 
 
@@ -515,7 +515,7 @@ Retrieve a default length for a countersunk bolt given it's size. Probably not v
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_csk_v() vector itself
+`size`               | size as a string or the unf_cskV() vector itself
 
 ---
 
@@ -541,7 +541,7 @@ Render a negative for a shaft and/or head-recess for a countersunk bolt.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_csk_v() vector.
+`size`               | string representing the size or the unf_cskV() vector.
 `length`             | length in mm
 `head_ext`           | length in mm to recess the head beyond just it's thickness
 `distorted`          | true/false, should the bolt hole be distorted
@@ -549,12 +549,12 @@ Render a negative for a shaft and/or head-recess for a countersunk bolt.
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
-`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
-`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+`$unf_hdistX`        | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdistY`        | height of distortion as a percentage of the diameter (0-100)
 
 ---
 
-## Section: Hex Head Bolts - unf\_hex\_*
+## Section: Hex Head Bolts - unf\_hex*
 
 The vector representing a hex head bolt will consist of, in order:
 * name
@@ -563,13 +563,13 @@ The vector representing a hex head bolt will consist of, in order:
 * head_height
 * default_length
 
-### Function: unf\_hex\_v
+### Function: unf\_hexV
 
 **Synopsis:** Hex Head Bolt Vector
 
 **Usage:** 
 
-- unf_hex_v(size_or_vector)
+- unf_hexV(size_or_vector)
 
 **Description:** 
 
@@ -583,13 +583,13 @@ Retrieve a vector representing the dimensions of a hex-head bolt given the size.
 
 ---
 
-### Function: unf\_hex\_head\_diameter
+### Function: unf\_hexHeadDiameter
 
 **Synopsis:** Hex Head Bolt Clearance Diameter
 
 **Usage:** 
 
-- unf_hex_head_diameter(size_or_vector)
+- unf_hexHeadDiameter(size_or_vector)
 
 **Description:** 
 
@@ -599,17 +599,17 @@ Retrieve the diameter in mm of the head of a hex-head bolt given the size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_hex_v() vector itself
+`size`               | size as a string or the unf_hexV() vector itself
 
 ---
 
-### Function: unf\_hex\_head\_height
+### Function: unf\_hexHeadHeight
 
 **Synopsis:** Hex Head Height
 
 **Usage:** 
 
-- unf_hex_head_height(size_or_vector)
+- unf_hexHeadHeight(size_or_vector)
 
 **Description:** 
 
@@ -619,17 +619,17 @@ Retrieve the height or thickness in mm of the head of a hex-head bolt given the 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_hex_v() vector itself
+`size`               | size as a string or the unf_hexV() vector itself
 
 ---
 
-### Function: unf\_hex\_default\_length
+### Function: unf\_hexDefaultLength
 
 **Synopsis:** Hex Head Bolt Default Length
 
 **Usage:** 
 
-- unf_hex_default_length(size_or_vector)
+- unf_hexDefaultLength(size_or_vector)
 
 **Description:** 
 
@@ -639,7 +639,7 @@ Retrieve a default length for a hex head bolt given it's size. Probably not very
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_hex_v() vector itself
+`size`               | size as a string or the unf_hexV() vector itself
 
 ---
 
@@ -665,7 +665,7 @@ Render a negative for a shaft and/or head-recess for a hex-head bolt.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_hex_v() vector.
+`size`               | string representing the size or the unf_hexV() vector.
 `length`             | length in mm
 `head_ext`           | length in mm to recess the head beyond just it's thickness
 `distorted`          | true/false, should the bolt hole be distorted
@@ -673,16 +673,16 @@ Render a negative for a shaft and/or head-recess for a hex-head bolt.
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
-`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
-`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+`$unf_hdistX`        | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdistY`        | height of distortion as a percentage of the diameter (0-100)
 
 ---
 
-## Section: Self Tapping Screws - unf\_stp\_*
+## Section: Self Tapping Screws - unf\_stp*
 
 Self tapping screws for plastic. These need two different holes. The part being clamped gets a clearance hole, just wide enough for the screw to slide in and out without the threads biting, plus a recess for the head. The part being screwed into gets a pilot hole, narrow enough that the threads cut into the plastic and hold tight but not so narrow that the plastic splits.
 
-Pilot holes may be star shaped rather than round. The plastic displaced by the threads then has somewhere to go between the points instead of pushing outward on the surrounding wall. The points are spaced according to $unf_nozzle so they are not so fine that they just print smooth. The inner and outer diameters of the star are set as a percentage of the thread depth above the root (minor) diameter by $unf_stp_pilot_id and $unf_stp_pilot_od. A round pilot hole is made at the average of the two.
+Pilot holes may be star shaped rather than round. The plastic displaced by the threads then has somewhere to go between the points instead of pushing outward on the surrounding wall. The points are spaced according to $unf_nozzle so they are not so fine that they just print smooth. The inner and outer diameters of the star are set as a percentage of the thread depth above the root (minor) diameter by $unf_stpPilotId and $unf_stpPilotOd. A round pilot hole is made at the average of the two.
 
 Metric sizes ("M3", "ST2.9", etc...) use ISO 1478 thread dimensions, ISO 273 fine clearance holes and ISO 7049, 7050, 7051, 1481, 1479, 7053, 7380-1 and 7380-2 head dimensions. Numbered and inch sizes ("#6", "1/4"", etc...) use ASME B18.6.4 and B18.6.3 dimensions and ASME close fit clearance holes. Head styles which have no ISO standard use the ASME dimensions for metric sizes too, flange_button has no ASME standard so it uses the ISO dimensions for all sizes. Sizes not in the tables are interpolated by diameter. None of these have been verified against real screws yet.
 
@@ -713,13 +713,13 @@ The vector representing a self tapping screw will consist of, in order:
 * clearance_diameter
 * pitch
 
-### Function: unf\_stp\_v
+### Function: unf\_stpV
 
 **Synopsis:** Self Tapping Screw Vector
 
 **Usage:** 
 
-- unf_stp_v(size_or_vector, [head])
+- unf_stpV(size_or_vector, [head])
 
 **Description:** 
 
@@ -734,13 +734,13 @@ Retrieve a vector representing the dimensions of a self tapping screw given the 
 
 ---
 
-### Function: unf\_stp\_head\_style
+### Function: unf\_stpHeadStyle
 
 **Synopsis:** Self Tapping Screw Head Style
 
 **Usage:** 
 
-- unf_stp_head_style(head_or_vector)
+- unf_stpHeadStyle(head_or_vector)
 
 **Description:** 
 
@@ -750,17 +750,17 @@ Takes a vector describing a self tapping screw or a head style name and returns 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | head style as a string or the unf_stp_v() vector itself
+`in`                 | head style as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_head\_shape
+### Function: unf\_stpHeadShape
 
 **Synopsis:** Self Tapping Screw Head Shape
 
 **Usage:** 
 
-- unf_stp_head_shape(head_or_vector)
+- unf_stpHeadShape(head_or_vector)
 
 **Description:** 
 
@@ -770,17 +770,17 @@ Takes a vector describing a self tapping screw or a head style name and returns 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | head style as a string or the unf_stp_v() vector itself
+`in`                 | head style as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_is\_imperial
+### Function: unf\_stpIsImperial
 
 **Synopsis:** Is this a numbered or inch size
 
 **Usage:** 
 
-- unf_stp_is_imperial(size)
+- unf_stpIsImperial(size)
 
 **Description:** 
 
@@ -794,13 +794,13 @@ Returns true if the size string is a numbered ("#6") or inch ("1/4"") size, whic
 
 ---
 
-### Function: unf\_stp\_inch
+### Function: unf\_stpInch
 
 **Synopsis:** Convert a table in inches to mm
 
 **Usage:** 
 
-- unf_stp_inch(table)
+- unf_stpInch(table)
 
 **Description:** 
 
@@ -814,13 +814,13 @@ Multiplies every value in a table of rows by 25.4. Lets the ASME tables be writt
 
 ---
 
-### Function: unf\_stp\_lookup
+### Function: unf\_stpLookup
 
 **Synopsis:** Self Tapping Screw Table Lookup
 
 **Usage:** 
 
-- unf_stp_lookup(size, iso, asme, [col])
+- unf_stpLookup(size, iso, asme, [col])
 
 **Description:** 
 
@@ -837,13 +837,13 @@ Look up a dimension by thread diameter from the ISO table for metric sizes or th
 
 ---
 
-### Function: unf\_stp\_head\_table
+### Function: unf\_stpHeadTable
 
 **Synopsis:** Self Tapping Screw Head Table
 
 **Usage:** 
 
-- unf_stp_head_table(head, imperial)
+- unf_stpHeadTable(head, imperial)
 
 **Description:** 
 
@@ -858,13 +858,13 @@ Returns a table of head dimensions for a head style. Each row is [thread diamete
 
 ---
 
-### Function: unf\_stp\_head\_diameter
+### Function: unf\_stpHeadDiameter
 
 **Synopsis:** Self Tapping Screw Head Clearance Diameter
 
 **Usage:** 
 
-- unf_stp_head_diameter(size_or_vector, [head])
+- unf_stpHeadDiameter(size_or_vector, [head])
 
 **Description:** 
 
@@ -874,18 +874,18 @@ Retrieve the diameter in mm of the head of a self tapping screw given the size a
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 `head`               | head style ("pan")
 
 ---
 
-### Function: unf\_stp\_head\_height
+### Function: unf\_stpHeadHeight
 
 **Synopsis:** Self Tapping Screw Head Height
 
 **Usage:** 
 
-- unf_stp_head_height(size_or_vector, [head])
+- unf_stpHeadHeight(size_or_vector, [head])
 
 **Description:** 
 
@@ -895,18 +895,18 @@ Retrieve the height or thickness in mm of the head of a self tapping screw given
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 `head`               | head style ("pan")
 
 ---
 
-### Function: unf\_stp\_default\_length
+### Function: unf\_stpDefaultLength
 
 **Synopsis:** Self Tapping Screw Default Length
 
 **Usage:** 
 
-- unf_stp_default_length(size_or_vector)
+- unf_stpDefaultLength(size_or_vector)
 
 **Description:** 
 
@@ -916,17 +916,17 @@ Retrieve a default length for a self tapping screw given it's size. Probably not
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_minor\_diameter
+### Function: unf\_stpMinorDiameter
 
 **Synopsis:** Self Tapping Screw Minor Diameter
 
 **Usage:** 
 
-- unf_stp_minor_diameter(size_or_vector)
+- unf_stpMinorDiameter(size_or_vector)
 
 **Description:** 
 
@@ -936,17 +936,17 @@ Retrieve the minor (root) diameter in mm of the threads of a self tapping screw 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_clearance\_diameter
+### Function: unf\_stpClearanceDiameter
 
 **Synopsis:** Self Tapping Screw Clearance Hole Diameter
 
 **Usage:** 
 
-- unf_stp_clearance_diameter(size_or_vector)
+- unf_stpClearanceDiameter(size_or_vector)
 
 **Description:** 
 
@@ -956,17 +956,17 @@ Retrieve the diameter in mm of a hole a self tapping screw will slide through wi
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_pitch
+### Function: unf\_stpPitch
 
 **Synopsis:** Self Tapping Screw Thread Pitch
 
 **Usage:** 
 
-- unf_stp_pitch(size_or_vector)
+- unf_stpPitch(size_or_vector)
 
 **Description:** 
 
@@ -976,17 +976,17 @@ Retrieve the thread pitch in mm of a self tapping screw given the size. Used to 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_stp\_engagement
+### Function: unf\_stpEngagement
 
 **Synopsis:** Self Tapping Screw Recommended Engagement
 
 **Usage:** 
 
-- unf_stp_engagement(size_or_vector)
+- unf_stpEngagement(size_or_vector)
 
 **Description:** 
 
@@ -996,17 +996,17 @@ Retrieve a recommended depth in mm of thread engagement into plastic, twice the 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
+`in`                 | size as a string or the unf_stpV() vector itself
 
 ---
 
-### Function: unf\_default\_nozzle
+### Function: unf\_defaultNozzle
 
 **Synopsis:** Printer Nozzle Diameter
 
 **Usage:** 
 
-- unf_default_nozzle()
+- unf_defaultNozzle()
 
 **Description:** 
 
@@ -1014,41 +1014,41 @@ Returns $unf_nozzle if it is set, otherwise 0.4.
 
 ---
 
-### Function: unf\_stp\_default\_pilot\_id
+### Function: unf\_stpDefaultPilotId
 
 **Synopsis:** Default Star Pilot Inner Diameter Percentage
 
 **Usage:** 
 
-- unf_stp_default_pilot_id()
+- unf_stpDefaultPilotId()
 
 **Description:** 
 
-Returns $unf_stp_pilot_id if it is set, otherwise 0, the root of the threads.
+Returns $unf_stpPilotId if it is set, otherwise 0, the root of the threads.
 
 ---
 
-### Function: unf\_stp\_default\_pilot\_od
+### Function: unf\_stpDefaultPilotOd
 
 **Synopsis:** Default Star Pilot Outer Diameter Percentage
 
 **Usage:** 
 
-- unf_stp_default_pilot_od()
+- unf_stpDefaultPilotOd()
 
 **Description:** 
 
-Returns $unf_stp_pilot_od if it is set, otherwise 50, half way up the threads.
+Returns $unf_stpPilotOd if it is set, otherwise 50, half way up the threads.
 
 ---
 
-### Function: unf\_stp\_pilot\_id
+### Function: unf\_stpPilotId
 
 **Synopsis:** Self Tapping Screw Star Pilot Inner Diameter
 
 **Usage:** 
 
-- unf_stp_pilot_id(size_or_vector, [id_percent])
+- unf_stpPilotId(size_or_vector, [id_percent])
 
 **Description:** 
 
@@ -1058,18 +1058,18 @@ Retrieve the inner diameter in mm, the dips between the points, of a star shaped
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
-`id_percent`         | percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
+`in`                 | size as a string or the unf_stpV() vector itself
+`id_percent`         | percentage of the thread depth above the minor diameter ($unf_stpPilotId)
 
 ---
 
-### Function: unf\_stp\_pilot\_od
+### Function: unf\_stpPilotOd
 
 **Synopsis:** Self Tapping Screw Star Pilot Outer Diameter
 
 **Usage:** 
 
-- unf_stp_pilot_od(size_or_vector, [od_percent])
+- unf_stpPilotOd(size_or_vector, [od_percent])
 
 **Description:** 
 
@@ -1079,18 +1079,18 @@ Retrieve the outer diameter in mm, the points, of a star shaped pilot hole.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
-`od_percent`         | percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+`in`                 | size as a string or the unf_stpV() vector itself
+`od_percent`         | percentage of the thread depth above the minor diameter ($unf_stpPilotOd)
 
 ---
 
-### Function: unf\_stp\_pilot\_diameter
+### Function: unf\_stpPilotDiameter
 
 **Synopsis:** Self Tapping Screw Round Pilot Diameter
 
 **Usage:** 
 
-- unf_stp_pilot_diameter(size_or_vector, [id_percent], [od_percent])
+- unf_stpPilotDiameter(size_or_vector, [id_percent], [od_percent])
 
 **Description:** 
 
@@ -1100,19 +1100,19 @@ Retrieve the diameter in mm of a round pilot hole, the average of the star inner
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
-`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
-`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+`in`                 | size as a string or the unf_stpV() vector itself
+`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotId)
+`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotOd)
 
 ---
 
-### Function: unf\_stp\_star\_points
+### Function: unf\_stpStarPoints
 
 **Synopsis:** Self Tapping Screw Star Pilot Point Count
 
 **Usage:** 
 
-- unf_stp_star_points(size_or_vector, [od_percent])
+- unf_stpStarPoints(size_or_vector, [od_percent])
 
 **Description:** 
 
@@ -1122,8 +1122,8 @@ Retrieve the number of points for a star shaped pilot hole. Points are spaced at
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`in`                 | size as a string or the unf_stp_v() vector itself
-`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+`in`                 | size as a string or the unf_stpV() vector itself
+`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotOd)
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
@@ -1131,13 +1131,13 @@ Retrieve the number of points for a star shaped pilot hole. Points are spaced at
 
 ---
 
-### Module: unf\_stp\_pilot
+### Module: unf\_stpPilot
 
 **Synopsis:** Self Tapping Screw Pilot Hole
 
 **Usage:** 
 
-- unf_stp_pilot(size, length, star, chamfer, tip, ext, id_percent, od_percent, body_color)
+- unf_stpPilot(size, length, star, chamfer, tip, ext, id_percent, od_percent, body_color)
 
 **Description:** 
 
@@ -1145,7 +1145,7 @@ Render a negative for the pilot hole a self tapping screw threads into. The hole
 
 **Figure 6.22.1:** note - the ext area is semi-transparent.
 
-<img align="left" alt="unf\_stp\_pilot Figure 6.22.1" src="images/unfy_fasteners/figure_6_22_1.png" width="320" height="240">
+<img align="left" alt="unf\_stpPilot Figure 6.22.1" src="images/unfy_fasteners/figure_6_22_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -1153,21 +1153,21 @@ Render a negative for the pilot hole a self tapping screw threads into. The hole
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_stp_v() vector.
-`length`             | depth in mm of thread engagement, defaults to unf_stp_engagement()
+`size`               | string representing the size or the unf_stpV() vector.
+`length`             | depth in mm of thread engagement, defaults to unf_stpEngagement()
 `star`               | true/false, star shaped or round pilot hole
 `chamfer`            | true/false, chamfer the mouth of the hole out to the thread diameter so the plastic doesn't bulge up around the screw
 `tip`                | true/false, deepen the hole by two thread pitches to leave room for the tip of the screw
 `ext`                | length in mm to extend the hole above the origin
-`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
-`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotId)
+`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotOd)
 `body_color`         | color of the cut surfaces
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
 `$unf_nozzle`        | printer nozzle diameter in mm, sets the spacing of the star points
-`$unf_stp_pilot_id`  | default for id_percent
-`$unf_stp_pilot_od`  | default for od_percent
+`$unf_stpPilotId`    | default for id_percent
+`$unf_stpPilotOd`    | default for od_percent
 
 ---
 
@@ -1199,7 +1199,7 @@ Render a negative for a head recess, clearance hole and optionally a pilot hole 
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_stp_v() vector.
+`size`               | string representing the size or the unf_stpV() vector.
 `head`               | head style, ignored if size is a vector ("pan")
 `length`             | length in mm beyond the head
 `clearance_length`   | length in mm of clearance hole before the pilot hole begins, -1 for no pilot hole
@@ -1208,21 +1208,21 @@ Render a negative for a head recess, clearance hole and optionally a pilot hole 
 `chamfer`            | true/false, chamfer the mouth of the pilot hole
 `tip`                | true/false, deepen the pilot hole by two thread pitches to leave room for the tip of the screw
 `distorted`          | true/false, should the clearance hole be distorted, the pilot hole never is
-`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_id)
-`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stp_pilot_od)
+`id_percent`         | star inner diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotId)
+`od_percent`         | star outer diameter as a percentage of the thread depth above the minor diameter ($unf_stpPilotOd)
 `body_color`         | color in which to render the screw if rendered as a positive, color of the cut surfaces if rendering as a negative.
 
 <abbr title="These args must be used by name, ie: name=value">By&nbsp;Name</abbr> | What it does
 -------------------- | ------------
-`$unf_hdist_x`       | width of distortion as a percentage of the diameter (0-100)
-`$unf_hdist_y`       | height of distortion as a percentage of the diameter (0-100)
+`$unf_hdistX`        | width of distortion as a percentage of the diameter (0-100)
+`$unf_hdistY`        | height of distortion as a percentage of the diameter (0-100)
 `$unf_nozzle`        | printer nozzle diameter in mm, sets the spacing of the star points
-`$unf_stp_pilot_id`  | default for id_percent
-`$unf_stp_pilot_od`  | default for od_percent
+`$unf_stpPilotId`    | default for id_percent
+`$unf_stpPilotOd`    | default for od_percent
 
 ---
 
-## Section: Heatset Inserts - unf\_hst\_*
+## Section: Heatset Inserts - unf\_hst*
 
 The vector representing a heatset insert will contain, in order:
 * name
@@ -1232,13 +1232,13 @@ The vector representing a heatset insert will contain, in order:
 
 note - these are pilot hole dimensions, not dimensions of the actual insert
 
-### Function: unf\_hst\_v
+### Function: unf\_hstV
 
 **Synopsis:** Heatset Insert Vector
 
 **Usage:** 
 
-- unf_hst_v(size_or_vector)
+- unf_hstV(size_or_vector)
 
 **Description:** 
 
@@ -1252,13 +1252,13 @@ Retrieve a vector representing the dimensions of a heatset insert given the size
 
 ---
 
-### Function: unf\_hst\_diameter
+### Function: unf\_hstDiameter
 
 **Synopsis:** Heatset Insert Diameter
 
 **Usage:** 
 
-- unf_hst_diameter(size_or_vector)
+- unf_hstDiameter(size_or_vector)
 
 **Description:** 
 
@@ -1268,17 +1268,17 @@ Retrieve the diameter in mm of the hole for a heatset insert given the size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_hst_v() vector itself
+`size`               | size as a string or the unf_hstV() vector itself
 
 ---
 
-### Function: unf\_hst\_length
+### Function: unf\_hstLength
 
 **Synopsis:** Heatset Insert Length
 
 **Usage:** 
 
-- unf_hst_length(size_or_vector, [length])
+- unf_hstLength(size_or_vector, [length])
 
 **Description:** 
 
@@ -1288,7 +1288,7 @@ Retrieve the length in mm of the hole for a heatset insert given the size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_hst_v() vector itself
+`size`               | size as a string or the unf_hstV() vector itself
 `length`             | "small", "medium" or "large", or a number to just return that number ("medium")
 
 ---
@@ -1315,7 +1315,7 @@ Render a negative for a heatset-insert hole.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_hst_v() vector.
+`size`               | string representing the size or the unf_hstV() vector.
 `opening_taper_percent` | enlarge the opening with a taper for ease of insertion.
 `length`             | Heatset inserts for the same bolt size do come in a variety of lenghts. Fortunately, because when using them one is melting into the plastic it is not necessary to be 100% accurate. For this field use one of small, medium or large to get holes for smaller to larger heatset inserts respectively.
 `head_ext`           | length in mm to recess the head beyond just it's thickness
@@ -1325,20 +1325,20 @@ Render a negative for a heatset-insert hole.
 
 ---
 
-## Section: Hex Nut - unf\_nut\_*
+## Section: Hex Nut - unf\_nut*
 
 The vector representing a hex nut will contain, in order:
 * name
 * nut_diameter
 * height
 
-### Function: unf\_nut\_v
+### Function: unf\_nutV
 
 **Synopsis:** hex-nut vector
 
 **Usage:** 
 
-- unf_nut_v(size_or_vector)
+- unf_nutV(size_or_vector)
 
 **Description:** 
 
@@ -1352,13 +1352,13 @@ Retrieve a vector representing the dimensions of a hex-nut bolt given the size. 
 
 ---
 
-### Function: unf\_nut\_diameter
+### Function: unf\_nutDiameter
 
 **Synopsis:** Hex Nut Clearance Diameter
 
 **Usage:** 
 
-- unf_nut_diameter(size)
+- unf_nutDiameter(size)
 
 **Description:** 
 
@@ -1366,13 +1366,13 @@ Takes a fastener size or a hex nut vector and returns the clearance diameter
 
 ---
 
-### Function: unf\_nut\_small\_d
+### Function: unf\_nutSmallD
 
 **Synopsis:** Hex Nut distance across flats
 
 **Usage:** 
 
-- unf_nut_small_d(size_or_vector)
+- unf_nutSmallD(size_or_vector)
 
 **Description:** 
 
@@ -1382,17 +1382,17 @@ Retrieve the distance across flats of a typical hex nut given the bolt size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_nut_v() vector itself
+`size`               | size as a string or the unf_nutV() vector itself
 
 ---
 
-### Function: unf\_nut\_height
+### Function: unf\_nutHeight
 
 **Synopsis:** Hex Nut Height
 
 **Usage:** 
 
-- unf_nut_height(size_or_vector)
+- unf_nutHeight(size_or_vector)
 
 **Description:** 
 
@@ -1402,7 +1402,7 @@ Retrieve the height (thickness) of a typical hex nut given the bolt size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_nut_v() vector itself
+`size`               | size as a string or the unf_nutV() vector itself
 
 ---
 
@@ -1428,13 +1428,13 @@ Render a negative for a hex nut hole.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_nut_v() vector.
+`size`               | string representing the size or the unf_nutV() vector.
 `ext`                | length in mm to recess the nut beyond just it's thickness
 `body_color`         | color in which to render the nut if rendered as a positive, color of the cut surfaces if rendering as a negative.
 
 ---
 
-## Section: Square Nut - unf\_sqr\_*
+## Section: Square Nut - unf\_sqr*
 
 The vector representing a square nut shall contain, in order:
 * name
@@ -1444,13 +1444,13 @@ The vector representing a square nut shall contain, in order:
 * height
 * side_length
 
-### Function: unf\_sqr\_v
+### Function: unf\_sqrV
 
 **Synopsis:** Square Nut Vector
 
 **Usage:** 
 
-- unf_sqr_v(size_or_vector)
+- unf_sqrV(size_or_vector)
 
 **Description:** 
 
@@ -1464,13 +1464,13 @@ Retrieve a vector representing the dimensions of a square nut given the size. Wi
 
 ---
 
-### Function: unf\_sqr\_length
+### Function: unf\_sqrLength
 
 **Synopsis:** Square Nut Side Length
 
 **Usage:** 
 
-- unf_sqr_length(size_or_vector)
+- unf_sqrLength(size_or_vector)
 
 **Description:** 
 
@@ -1480,17 +1480,17 @@ Retrieve the length of a side of a square nut.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_sqr_v() vector itself
+`size`               | size as a string or the unf_sqrV() vector itself
 
 ---
 
-### Function: unf\_sqr\_height
+### Function: unf\_sqrHeight
 
 **Synopsis:** Square Nut Height / Thickness
 
 **Usage:** 
 
-- unf_sqr_height(size_or_vector)
+- unf_sqrHeight(size_or_vector)
 
 **Description:** 
 
@@ -1500,7 +1500,7 @@ Retrieve the thickness of a square nut, it's height when lying flat.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_sqr_v() vector itself
+`size`               | size as a string or the unf_sqrV() vector itself
 
 ---
 
@@ -1526,26 +1526,26 @@ Render a negative for a square shaped nut
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_sqr_v() vector.
+`size`               | string representing the size or the unf_sqrV() vector.
 `ext`                | Extra height added to the negative for recessing the nut.
 `body_color`         | color in which to render the nut if rendered as a positive, color of the cut surfaces if rendering as a negative.
 
 ---
 
-## Section: Washer unf\_wsh\_*
+## Section: Washer unf\_wsh*
 
 The vector representing a washer will consist of, in order:
 * name
 * washer_diameter
 * height
 
-### Function: unf\_wsh\_v
+### Function: unf\_wshV
 
 **Synopsis:** Washer Vector
 
 **Usage:** 
 
-- unf_wsh_v(size_or_vector)
+- unf_wshV(size_or_vector)
 
 **Description:** 
 
@@ -1559,13 +1559,13 @@ Retrieve a vector representing the dimensions of a washer given the size. Will r
 
 ---
 
-### Function: unf\_wsh\_diameter
+### Function: unf\_wshDiameter
 
 **Synopsis:** Washer Clearance Diameter
 
 **Usage:** 
 
-- unf_wsh_diameter(size_or_vector)
+- unf_wshDiameter(size_or_vector)
 
 **Description:** 
 
@@ -1575,17 +1575,17 @@ Retrieve the outer diameter in mm of a washer given the bolt size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_wsh_v() vector itself
+`size`               | size as a string or the unf_wshV() vector itself
 
 ---
 
-### Function: unf\_wsh\_height
+### Function: unf\_wshHeight
 
 **Synopsis:** Washer Thickness (height lying flat)
 
 **Usage:** 
 
-- unf_wsh_height(size_or_vector)
+- unf_wshHeight(size_or_vector)
 
 **Description:** 
 
@@ -1595,7 +1595,7 @@ Retrieve the height or thickness in mm of a washer given the bolt size.
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | size as a string or the unf_wsh_v() vector itself
+`size`               | size as a string or the unf_wshV() vector itself
 
 ---
 
@@ -1621,7 +1621,7 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 <abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
 -------------------- | ------------
-`size`               | string representing the size or the unf_wsh_v() vector.
+`size`               | string representing the size or the unf_wshV() vector.
 `ext`                | length in mm to recess the washer beyond just it's thickness
 `body_color`         | color in which to render the washer if rendered as a positive, color of the cut surfaces if rendering as a negative.
 
@@ -1630,13 +1630,13 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 ## Section: Pillar
 
 
-### Module: unf\_pillar\_pos
+### Module: unf\_pillarPos
 
 **Synopsis:** Render the positive part of a fastener pillar
 
 **Usage:** 
 
-- unf_pillar_pos(fastener, bolt, heatset_length, length, slope, wall, body_color)
+- unf_pillarPos(fastener, bolt, heatset_length, length, slope, wall, body_color)
 
 **Description:** 
 
@@ -1644,7 +1644,7 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 **Figure 11.1.1:** 
 
-<img align="left" alt="unf\_pillar\_pos Figure 11.1.1" src="images/unfy_fasteners/figure_11_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_pillarPos Figure 11.1.1" src="images/unfy_fasteners/figure_11_1_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -1662,13 +1662,13 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 ---
 
-### Module: unf\_pillar\_neg
+### Module: unf\_pillarNeg
 
 **Synopsis:** Render the negative part of a fastener pillar
 
 **Usage:** 
 
-- unf_pillar_neg(fastener, bolt, length, heatset_length, wall, ext, body_color)
+- unf_pillarNeg(fastener, bolt, length, heatset_length, wall, ext, body_color)
 
 **Description:** 
 
@@ -1676,13 +1676,13 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 **Figure 11.2.1:** Heatset Insert
 
-<img align="left" alt="unf\_pillar\_neg Figure 11.2.1" src="images/unfy_fasteners/figure_11_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_pillarNeg Figure 11.2.1" src="images/unfy_fasteners/figure_11_2_1.png" width="320" height="240">
 
 <br clear="all" />
 
 **Figure 11.2.2:** Hexnut
 
-<img align="left" alt="unf\_pillar\_neg Figure 11.2.2" src="images/unfy_fasteners/figure_11_2_2.png" width="320" height="240">
+<img align="left" alt="unf\_pillarNeg Figure 11.2.2" src="images/unfy_fasteners/figure_11_2_2.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -1706,7 +1706,7 @@ Render a negative for a washer. Does not include a bolt hole since it is only me
 
 **Usage:** 
 
-- unf_pillar_neg(fastener, heatset_length, bolt, length, slope, wall, body_color, subtraction_color)
+- unf_pillarNeg(fastener, heatset_length, bolt, length, slope, wall, body_color, subtraction_color)
 
 **Description:** 
 

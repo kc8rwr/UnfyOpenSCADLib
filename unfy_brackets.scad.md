@@ -10,16 +10,16 @@ unfy_brackets contains a collection of modules for generating brackets.
 
 ## File Contents
 
-- [`unf_simple_bracket`](#module-unf_simple_bracket)
+- [`unf_simpleBracket`](#module-unf_simplebracket)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_simple\_bracket
+### Module: unf\_simpleBracket
 
 **Usage:** 
 
-- unf_simple_bracket(&lt;args&gt;);
+- unf_simpleBracket(&lt;args&gt;);
 
 **Description:** 
 
@@ -40,13 +40,13 @@ Creates a simple bracket.
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="unf\_simple\_bracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_simpleBracket Figure 1.1.1" src="images/unfy_brackets/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" />
 
 **Figure 1.1.2:** bottom\_bolt\_position=22, bottom\_slot\_length=15
 
-<img align="left" alt="unf\_simple\_bracket Figure 1.1.2" src="images/unfy_brackets/figure_1_1_2.png" width="320" height="240">
+<img align="left" alt="unf\_simpleBracket Figure 1.1.2" src="images/unfy_brackets/figure_1_1_2.png" width="320" height="240">
 
 <br clear="all" />
 

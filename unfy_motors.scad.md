@@ -10,16 +10,16 @@ unfy_motors contains modules for working with motors and servos.
 
 ## File Contents
 
-- [`unf_servo_arm`](#module-unf_servo_arm)
+- [`unf_servoArm`](#module-unf_servoarm)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_servo\_arm
+### Module: unf\_servoArm
 
 **Usage:** 
 
-- unf_servo_arm(&lt;args&gt;);
+- unf_servoArm(&lt;args&gt;);
 
 **Description:** 
 
@@ -39,13 +39,13 @@ Creates the shape of a servo arm (horn) including the coupler which fits over th
 
 **Figure 1.1.1:** single arm
 
-<img align="left" alt="unf\_servo\_arm Figure 1.1.1" src="images/unfy_motors/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_servoArm Figure 1.1.1" src="images/unfy_motors/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" />
 
 **Figure 1.1.2:** sides=4
 
-<img align="left" alt="unf\_servo\_arm Figure 1.1.2" src="images/unfy_motors/figure_1_1_2.png" width="320" height="240">
+<img align="left" alt="unf\_servoArm Figure 1.1.2" src="images/unfy_motors/figure_1_1_2.png" width="320" height="240">
 
 <br clear="all" />
 

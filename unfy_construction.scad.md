@@ -14,24 +14,24 @@ This file was created with help from Claude.
 
 ## File Contents
 
-- [`unf_cnst_split`](#function-unf_cnst_split)
-- [`unf_cnst_text_block`](#module-unf_cnst_text_block)
-- [`unf_cnst_striped_board`](#module-unf_cnst_striped_board)
-- [`unf_construction_light`](#module-unf_construction_light)
-- [`unf_construction_sign`](#module-unf_construction_sign)
-- [`unf_construction_barricade`](#module-unf_construction_barricade)
-- [`unf_construction_barrel`](#module-unf_construction_barrel)
-- [`unf_construction_cone`](#module-unf_construction_cone)
-- [`unf_construction_scene`](#module-unf_construction_scene)
+- [`unf_cnstSplit`](#function-unf_cnstsplit)
+- [`unf_cnstTextBlock`](#module-unf_cnsttextblock)
+- [`unf_cnstStripedBoard`](#module-unf_cnststripedboard)
+- [`unf_constructionLight`](#module-unf_constructionlight)
+- [`unf_constructionSign`](#module-unf_constructionsign)
+- [`unf_constructionBarricade`](#module-unf_constructionbarricade)
+- [`unf_constructionBarrel`](#module-unf_constructionbarrel)
+- [`unf_constructionCone`](#module-unf_constructioncone)
+- [`unf_constructionScene`](#module-unf_constructionscene)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Function: unf\_cnst\_split
+### Function: unf\_cnstSplit
 
 **Usage:** 
 
-- lines = unf_cnst_split(str, sep);
+- lines = unf_cnstSplit(str, sep);
 
 **Description:** 
 
@@ -46,11 +46,11 @@ Splits a string into a list of strings on a single separator character. A list p
 
 ---
 
-### Module: unf\_cnst\_text\_block
+### Module: unf\_cnstTextBlock
 
 **Usage:** 
 
-- unf_cnst_text_block(&lt;args&gt;);
+- unf_cnstTextBlock(&lt;args&gt;);
 
 **Description:** 
 
@@ -66,11 +66,11 @@ Creates 2d, centered, multi-line text scaled to fit within the given width and h
 
 ---
 
-### Module: unf\_cnst\_striped\_board
+### Module: unf\_cnstStripedBoard
 
 **Usage:** 
 
-- unf_cnst_striped_board(&lt;args&gt;);
+- unf_cnstStripedBoard(&lt;args&gt;);
 
 **Description:** 
 
@@ -89,17 +89,17 @@ Creates a flat board with diagonal hazard stripes. The board lies in the XZ plan
 
 **Figure 1.3.1:** defaults
 
-<img align="left" alt="unf\_cnst\_striped\_board Figure 1.3.1" src="images/unfy_construction/figure_1_3_1.png" width="320" height="240">
+<img align="left" alt="unf\_cnstStripedBoard Figure 1.3.1" src="images/unfy_construction/figure_1_3_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_construction\_light
+### Module: unf\_constructionLight
 
 **Usage:** 
 
-- unf_construction_light(&lt;args&gt;);
+- unf_constructionLight(&lt;args&gt;);
 
 **Description:** 
 
@@ -115,17 +115,17 @@ Creates a barricade warning light: a housing with a domed lens facing forward (-
 
 **Figure 1.4.1:** defaults
 
-<img align="left" alt="unf\_construction\_light Figure 1.4.1" src="images/unfy_construction/figure_1_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionLight Figure 1.4.1" src="images/unfy_construction/figure_1_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_construction\_sign
+### Module: unf\_constructionSign
 
 **Usage:** 
 
-- unf_construction_sign(&lt;args&gt;);
+- unf_constructionSign(&lt;args&gt;);
 
 **Description:** 
 
@@ -148,23 +148,23 @@ Creates a road-work style sign with a message on a post and folding X base. The 
 
 **Figure 1.5.1:** defaults
 
-<img align="left" alt="unf\_construction\_sign Figure 1.5.1" src="images/unfy_construction/figure_1_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionSign Figure 1.5.1" src="images/unfy_construction/figure_1_5_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 **Figure 1.5.2:** rectangle, multi-line
 
-<img align="left" alt="unf\_construction\_sign Figure 1.5.2" src="images/unfy_construction/figure_1_5_2.png" width="320" height="240">
+<img align="left" alt="unf\_constructionSign Figure 1.5.2" src="images/unfy_construction/figure_1_5_2.png" width="320" height="240">
 
 <br clear="all" />
 
 ---
 
-### Module: unf\_construction\_barricade
+### Module: unf\_constructionBarricade
 
 **Usage:** 
 
-- unf_construction_barricade(&lt;args&gt;);
+- unf_constructionBarricade(&lt;args&gt;);
 
 **Description:** 
 
@@ -188,17 +188,17 @@ Creates a sawhorse style barricade: a striped board atop two A-frame leg sets, o
 
 **Figure 1.6.1:** defaults
 
-<img align="left" alt="unf\_construction\_barricade Figure 1.6.1" src="images/unfy_construction/figure_1_6_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionBarricade Figure 1.6.1" src="images/unfy_construction/figure_1_6_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_construction\_barrel
+### Module: unf\_constructionBarrel
 
 **Usage:** 
 
-- unf_construction_barrel(&lt;args&gt;);
+- unf_constructionBarrel(&lt;args&gt;);
 
 **Description:** 
 
@@ -220,17 +220,17 @@ Creates a traffic drum (barrel) with alternating reflective bands, a weighted ba
 
 **Figure 1.7.1:** defaults
 
-<img align="left" alt="unf\_construction\_barrel Figure 1.7.1" src="images/unfy_construction/figure_1_7_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionBarrel Figure 1.7.1" src="images/unfy_construction/figure_1_7_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_construction\_cone
+### Module: unf\_constructionCone
 
 **Usage:** 
 
-- unf_construction_cone(&lt;args&gt;);
+- unf_constructionCone(&lt;args&gt;);
 
 **Description:** 
 
@@ -247,17 +247,17 @@ Creates a traffic cone on a square base with a reflective collar. The origin is 
 
 **Figure 1.8.1:** defaults
 
-<img align="left" alt="unf\_construction\_cone Figure 1.8.1" src="images/unfy_construction/figure_1_8_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionCone Figure 1.8.1" src="images/unfy_construction/figure_1_8_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_construction\_scene
+### Module: unf\_constructionScene
 
 **Usage:** 
 
-- unf_construction_scene(&lt;args&gt;);
+- unf_constructionScene(&lt;args&gt;);
 
 **Description:** 
 
@@ -297,13 +297,13 @@ Creates a complete "under construction" scene. A sign stands behind a barricade 
 
 **Figure 1.9.1:** defaults
 
-<img align="left" alt="unf\_construction\_scene Figure 1.9.1" src="images/unfy_construction/figure_1_9_1.png" width="320" height="240">
+<img align="left" alt="unf\_constructionScene Figure 1.9.1" src="images/unfy_construction/figure_1_9_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 **Figure 1.9.2:** sign only, custom message
 
-<img align="left" alt="unf\_construction\_scene Figure 1.9.2" src="images/unfy_construction/figure_1_9_2.png" width="320" height="240">
+<img align="left" alt="unf\_constructionScene Figure 1.9.2" src="images/unfy_construction/figure_1_9_2.png" width="320" height="240">
 
 <br clear="all" />
 

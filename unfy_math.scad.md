@@ -11,33 +11,33 @@ unfy_math contains math functions for rounding, angles, regular polygons, circle
 ## File Contents
 
 1. [Section: Basic Math](#section-basic-math)
-    - [`unf_INF`](#function-unf_inf) – Infinity
-    - [`unf_is_nan`](#function-unf_is_nan) – Test for NaN
+    - [`unf_inf`](#function-unf_inf) – Infinity
+    - [`unf_isNan`](#function-unf_isnan) – Test for NaN
     - [`unf_round`](#function-unf_round) – Round to any decimal place
     - [`unf_signum`](#function-unf_signum) – Sign of a number
-    - [`unf_normalize_angle`](#function-unf_normalize_angle) – Normalize an angle to [0, 360)
+    - [`unf_normalizeAngle`](#function-unf_normalizeangle) – Normalize an angle to [0, 360)
     - [`unf_quadratic`](#function-unf_quadratic) – Solve a quadratic equation
 
 2. [Section: Regular Polygons](#section-regular-polygons)
-    - [`unf_calc_polygon_diameter`](#function-unf_calc_polygon_diameter) – Regular polygon diameter from distance across flats
-    - [`unf_calc_polygon_interior_angle`](#function-unf_calc_polygon_interior_angle) – Regular polygon interior angle
-    - [`unf_calc_polygon_exterior_angle`](#function-unf_calc_polygon_exterior_angle) – Regular polygon exterior angle
-    - [`unf_calc_polygon_central_angle`](#function-unf_calc_polygon_central_angle) – Regular polygon central angle
+    - [`unf_calcPolygonDiameter`](#function-unf_calcpolygondiameter) – Regular polygon diameter from distance across flats
+    - [`unf_calcPolygonInteriorAngle`](#function-unf_calcpolygoninteriorangle) – Regular polygon interior angle
+    - [`unf_calcPolygonExteriorAngle`](#function-unf_calcpolygonexteriorangle) – Regular polygon exterior angle
+    - [`unf_calcPolygonCentralAngle`](#function-unf_calcpolygoncentralangle) – Regular polygon central angle
 
 3. [Section: Circles](#section-circles)
-    - [`unf_distance_to_bounding_circle`](#function-unf_distance_to_bounding_circle) – Distance from a point inside a circle to its edge
+    - [`unf_distanceToBoundingCircle`](#function-unf_distancetoboundingcircle) – Distance from a point inside a circle to its edge
 
 4. [Section: Curve Resolution](#section-curve-resolution)
-    - [`unf_effective_fn`](#function-unf_effective_fn) – Effective $fn
-    - [`unf_effective_fa`](#function-unf_effective_fa) – Effective $fa
-    - [`unf_effective_fs`](#function-unf_effective_fs) – Effective $fs
+    - [`unf_effectiveFn`](#function-unf_effectivefn) – Effective $fn
+    - [`unf_effectiveFa`](#function-unf_effectivefa) – Effective $fa
+    - [`unf_effectiveFs`](#function-unf_effectivefs) – Effective $fs
 
 5. [Section: Curves](#section-curves)
-    - [`unfy_bound_size2`](#function-unfy_bound_size2) – Bounding size of 2d points
-    - [`unfy_bezier`](#function-unfy_bezier) – Points along a bezier curve
-    - [`unf_cartesian_from_polar`](#function-unf_cartesian_from_polar) – Convert polar coordinates to cartesian
-    - [`unf_chord_distance`](#function-unf_chord_distance) – Chord length from distance to center
-    - [`unf_chord_angle`](#function-unf_chord_angle) – Chord length from angle
+    - [`unf_boundSize2`](#function-unf_boundsize2) – Bounding size of 2d points
+    - [`unf_bezier`](#function-unf_bezier) – Points along a bezier curve
+    - [`unf_cartesianFromPolar`](#function-unf_cartesianfrompolar) – Convert polar coordinates to cartesian
+    - [`unf_chordDistance`](#function-unf_chorddistance) – Chord length from distance to center
+    - [`unf_chordAngle`](#function-unf_chordangle) – Chord length from angle
 
 6. [Section: Licensing](#section-licensing)
 
@@ -45,13 +45,13 @@ unfy_math contains math functions for rounding, angles, regular polygons, circle
 ## Section: Basic Math
 
 
-### Function: unf\_INF
+### Function: unf\_inf
 
 **Synopsis:** Infinity
 
 **Usage:** 
 
-- unf_INF()
+- unf_inf()
 
 **Description:** 
 
@@ -59,13 +59,13 @@ Returns positive infinity. Adapted from https://forums.openscad.org/is-nan-td283
 
 ---
 
-### Function: unf\_is\_nan
+### Function: unf\_isNan
 
 **Synopsis:** Test for NaN
 
 **Usage:** 
 
-- unf_is_nan(x)
+- unf_isNan(x)
 
 **Description:** 
 
@@ -122,13 +122,13 @@ Returns -1 if x is negative, 0 if x is zero or 1 if x is positive.
 
 ---
 
-### Function: unf\_normalize\_angle
+### Function: unf\_normalizeAngle
 
 **Synopsis:** Normalize an angle to [0, 360)
 
 **Usage:** 
 
-- unf_normalize_angle(angle)
+- unf_normalizeAngle(angle)
 
 **Description:** 
 
@@ -167,13 +167,13 @@ Use the quadratic formula to solve the equation ax² + bx + c = 0. Returns a vec
 ## Section: Regular Polygons
 
 
-### Function: unf\_calc\_polygon\_diameter
+### Function: unf\_calcPolygonDiameter
 
 **Synopsis:** Regular polygon diameter from distance across flats
 
 **Usage:** 
 
-- unf_calc_polygon_diameter(f, n)
+- unf_calcPolygonDiameter(f, n)
 
 **Description:** 
 
@@ -188,13 +188,13 @@ Calculate the diameter of a regular polygon (the diameter of the circle passing 
 
 ---
 
-### Function: unf\_calc\_polygon\_interior\_angle
+### Function: unf\_calcPolygonInteriorAngle
 
 **Synopsis:** Regular polygon interior angle
 
 **Usage:** 
 
-- unf_calc_polygon_interior_angle(n)
+- unf_calcPolygonInteriorAngle(n)
 
 **Description:** 
 
@@ -208,13 +208,13 @@ Calculate the interior angles of a regular polygon given the number of sides.
 
 ---
 
-### Function: unf\_calc\_polygon\_exterior\_angle
+### Function: unf\_calcPolygonExteriorAngle
 
 **Synopsis:** Regular polygon exterior angle
 
 **Usage:** 
 
-- unf_calc_polygon_exterior_angle(n)
+- unf_calcPolygonExteriorAngle(n)
 
 **Description:** 
 
@@ -228,13 +228,13 @@ Calculate the exterior angles of a regular polygon given the number of sides.
 
 ---
 
-### Function: unf\_calc\_polygon\_central\_angle
+### Function: unf\_calcPolygonCentralAngle
 
 **Synopsis:** Regular polygon central angle
 
 **Usage:** 
 
-- unf_calc_polygon_central_angle(n)
+- unf_calcPolygonCentralAngle(n)
 
 **Description:** 
 
@@ -251,13 +251,13 @@ Calculate the central angle of a regular polygon (the angle between two adjacent
 ## Section: Circles
 
 
-### Function: unf\_distance\_to\_bounding\_circle
+### Function: unf\_distanceToBoundingCircle
 
 **Synopsis:** Distance from a point inside a circle to its edge
 
 **Usage:** 
 
-- unf_distance_to_bounding_circle(radius, point, angle, [focus])
+- unf_distanceToBoundingCircle(radius, point, angle, [focus])
 
 **Description:** 
 
@@ -282,13 +282,13 @@ Since which of $fa, $fs, $fn determines curve resolution varies depending on the
 
 Adapted from Post by MichaelAtOz https://openscad.rocklinux.narkive.com/jhqIIcOm/fn-fa-and-fs
 
-### Function: unf\_effective\_fn
+### Function: unf\_effectiveFn
 
 **Synopsis:** Effective $fn
 
 **Usage:** 
 
-- unf_effective_fn(radius, [angle])
+- unf_effectiveFn(radius, [angle])
 
 **Description:** 
 
@@ -303,13 +303,13 @@ Determine which of $fa, $fs or $fn currently takes precidence, calculate and ret
 
 ---
 
-### Function: unf\_effective\_fa
+### Function: unf\_effectiveFa
 
 **Synopsis:** Effective $fa
 
 **Usage:** 
 
-- unf_effective_fa(radius)
+- unf_effectiveFa(radius)
 
 **Description:** 
 
@@ -323,13 +323,13 @@ Determine which of $fa, $fs or $fn currently takes precidence, calculate and ret
 
 ---
 
-### Function: unf\_effective\_fs
+### Function: unf\_effectiveFs
 
 **Synopsis:** Effective $fs
 
 **Usage:** 
 
-- unf_effective_fs(radius)
+- unf_effectiveFs(radius)
 
 **Description:** 
 
@@ -346,13 +346,13 @@ Determine which of $fa, $fs or $fn currently takes precidence, calculate and ret
 ## Section: Curves
 
 
-### Function: unfy\_bound\_size2
+### Function: unf\_boundSize2
 
 **Synopsis:** Bounding size of 2d points
 
 **Usage:** 
 
-- unfy_bound_size2(v)
+- unf_boundSize2(v)
 
 **Description:** 
 
@@ -366,13 +366,13 @@ Determine the bounding size of a vector of 2 dimensional vectors. Returns [width
 
 ---
 
-### Function: unfy\_bezier
+### Function: unf\_bezier
 
 **Synopsis:** Points along a bezier curve
 
 **Usage:** 
 
-- unfy_bezier(v)
+- unf_bezier(v)
 
 **Description:** 
 
@@ -386,13 +386,13 @@ Take a vector of control points, return a vector of points on the curve. Linear,
 
 ---
 
-### Function: unf\_cartesian\_from\_polar
+### Function: unf\_cartesianFromPolar
 
 **Synopsis:** Convert polar coordinates to cartesian
 
 **Usage:** 
 
-- unf_cartesian_from_polar([r], [theta])
+- unf_cartesianFromPolar([r], [theta])
 
 **Description:** 
 
@@ -407,13 +407,13 @@ Convert a polar coordinate to an [x, y] cartesian coordinate.
 
 ---
 
-### Function: unf\_chord\_distance
+### Function: unf\_chordDistance
 
 **Synopsis:** Chord length from distance to center
 
 **Usage:** 
 
-- unf_chord_distance([r], [d])
+- unf_chordDistance([r], [d])
 
 **Description:** 
 
@@ -428,13 +428,13 @@ Returns the length of a chord given it's distance from the vertex and the radius
 
 ---
 
-### Function: unf\_chord\_angle
+### Function: unf\_chordAngle
 
 **Synopsis:** Chord length from angle
 
 **Usage:** 
 
-- unf_chord_angle([r], [a])
+- unf_chordAngle([r], [a])
 
 **Description:** 
 

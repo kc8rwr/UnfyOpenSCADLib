@@ -10,16 +10,16 @@ unfy_powerboxes contains modules for generating boxes for power inlets and fuse 
 
 ## File Contents
 
-- [`unf_mounted_power_socket_box`](#module-unf_mounted_power_socket_box)
+- [`unf_mountedPowerSocketBox`](#module-unf_mountedpowersocketbox)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_mounted\_power\_socket\_box
+### Module: unf\_mountedPowerSocketBox
 
 **Usage:** 
 
-- unf_mounted_power_socket_box(&lt;args&gt;);
+- unf_mountedPowerSocketBox(&lt;args&gt;);
 
 **Description:** 
 
@@ -41,7 +41,7 @@ Creates a box with an IEC C14 power inlet socket, a fuse holder hole and cable c
 `fuse_holder_hole_diameter` | diameter of the hole for the fuse holder (12)
 `fuse_holder_outer_diameter` | outer diameter of the fuse holder, for spacing (14)
 `fuse_holder_spacing` | space around the fuse holder (4)
-`fuse_holder_hole_shape` | shape of the fuse holder hole, "circle", "d" or "doubled", see unf_DHole() (circle)
+`fuse_holder_hole_shape` | shape of the fuse holder hole, "circle", "d" or "doubled", see unf_dHole() (circle)
 `fuse_holder_flat_width` | for a "d" shaped hole the distance from the flat to the opposite side, for a "doubled" the distance between flats (5)
 `fuse_holder_rotation` | rotation of the fuse holder hole (0)
 `support_skin`       | thickness of support skin, 0 for none (0.6)
@@ -49,7 +49,7 @@ Creates a box with an IEC C14 power inlet socket, a fuse holder hole and cable c
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="unf\_mounted\_power\_socket\_box Figure 1.1.1" src="images/unfy_powerboxes/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_mountedPowerSocketBox Figure 1.1.1" src="images/unfy_powerboxes/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" />
 

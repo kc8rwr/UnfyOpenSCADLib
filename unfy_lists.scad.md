@@ -24,7 +24,7 @@ unfy_lists.scad contains functions for working with lists and strings within Ope
 - [`unf_stToNum`](#function-unf_sttonum) – convert a numeric string to a number
 - [`unf_ordToLower`](#function-unf_ordtolower) – Convert a character represented as a unicode number to lowercase
 - [`unf_ordToUpper`](#function-unf_ordtoupper) – Convert a character represented as a unicode number to uppercase
-- [`unf_matrix_sort`](#function-unf_matrix_sort) – Sort a 2-dimensional matrix
+- [`unf_matrixSort`](#function-unf_matrixsort) – Sort a 2-dimensional matrix
 - [`unf_enbox`](#module-unf_enbox) – Place a box around something
 
 2. [Section: Licensing](#section-licensing)
@@ -294,7 +294,7 @@ Converts a number representing a unicode character to the number representing it
 
 ---
 
-### Function: unf\_matrix\_sort
+### Function: unf\_matrixSort
 
 **Synopsis:** Sort a 2-dimensional matrix
 

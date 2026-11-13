@@ -10,16 +10,16 @@ unfy_switchboxes contains modules for generating boxes for switches.
 
 ## File Contents
 
-- [`unf_mounted_power_switch_box`](#module-unf_mounted_power_switch_box)
+- [`unf_mountedPowerSwitchBox`](#module-unf_mountedpowerswitchbox)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_mounted\_power\_switch\_box
+### Module: unf\_mountedPowerSwitchBox
 
 **Usage:** 
 
-- unf_mounted_power_switch_box(&lt;args&gt;);
+- unf_mountedPowerSwitchBox(&lt;args&gt;);
 
 **Description:** 
 
@@ -32,7 +32,7 @@ Creates a box for a pop-in power switch. The switch is held in an angled face on
 `angle`              | angle of the switch face (45)
 `corner`             | radius of rounded corners (5)
 `edge`               | radius of rounded edges (2)
-`device`             | name of the pop-in switch, see unf_Popin() in cutouts/unfy_popins.scad (RLEIL_R2)
+`device`             | name of the pop-in switch, see unf_popin() in cutouts/unfy_popins.scad (RLEIL_R2)
 `device_space_z`     | space around the switch along its length (4)
 `device_space_y`     | space around the switch along its width (4)
 `fastener_spacing`   | distance between the mounting bolts (100)
@@ -47,7 +47,7 @@ Creates a box for a pop-in power switch. The switch is held in an angled face on
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="unf\_mounted\_power\_switch\_box Figure 1.1.1" src="images/unfy_switchboxes/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_mountedPowerSwitchBox Figure 1.1.1" src="images/unfy_switchboxes/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 

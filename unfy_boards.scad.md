@@ -11,10 +11,10 @@ unfy_boards contains a collection of modules for generating common maker PCBs, m
 ## File Contents
 
 1. [Section: Boards](#section-boards)
-    - [`rak19007`](#module-rak19007)
+    - [`unf_rak19007`](#module-unf_rak19007)
 
 2. [Section: Standoffs](#section-standoffs)
-    - [`standoff`](#module-standoff)
+    - [`unf_standoff`](#module-unf_standoff)
 
 3. [Section: Licensing](#section-licensing)
 
@@ -22,11 +22,11 @@ unfy_boards contains a collection of modules for generating common maker PCBs, m
 ## Section: Boards
 
 
-### Module: rak19007
+### Module: unf\_rak19007
 
 **Usage:** 
 
-- rak19007(&lt;args&gt;);
+- unf_rak19007(&lt;args&gt;);
 
 **Description:** 
 
@@ -44,7 +44,7 @@ Creates a mockup of a RAKwireless RAK19007 WisBlock base board, with its mountin
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="rak19007 Figure 1.1.1" src="images/unfy_boards/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_rak19007 Figure 1.1.1" src="images/unfy_boards/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -59,11 +59,11 @@ Creates a mockup of a RAKwireless RAK19007 WisBlock base board, with its mountin
 
 <br clear="all" /><br/>
 
-### Module: standoff
+### Module: unf\_standoff
 
 **Usage:** 
 
-- standoff(&lt;args&gt;);
+- unf_standoff(&lt;args&gt;);
 
 **Description:** 
 
@@ -83,7 +83,7 @@ Creates a standoff for mounting a board. Render once with positive=true to creat
 
 **Figure 2.2.1:** defaults, cut away to show the hole
 
-<img align="left" alt="standoff Figure 2.2.1" src="images/unfy_boards/figure_2_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_standoff Figure 2.2.1" src="images/unfy_boards/figure_2_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 

@@ -8,17 +8,17 @@ unfy_cablemanagement contains a collection of modules for generating clips and s
 
 ## File Contents
 
-- [`unf_cableClip_Positive`](#module-unf_cableclip_positive)
-- [`unf_cableClip_Negative`](#module-unf_cableclip_negative)
+- [`unf_cableClipPositive`](#module-unf_cableclippositive)
+- [`unf_cableClipNegative`](#module-unf_cableclipnegative)
 - [`unf_cableClip`](#module-unf_cableclip)
 - [`unf_clipInStrainRelief`](#module-unf_clipinstrainrelief)
 
 
-### Module: unf\_cableClip\_Positive
+### Module: unf\_cableClipPositive
 
 **Usage:** 
 
-- unf_cableClip_Positive(&lt;args&gt;);
+- unf_cableClipPositive(&lt;args&gt;);
 
 **Description:** 
 
@@ -42,17 +42,17 @@ Just the positive part of a cable clip.
 
 **Figure 1.1.1:** 
 
-<img align="left" alt="unf\_cableClip\_Positive Figure 1.1.1" src="images/unfy_cablemanagement/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_cableClipPositive Figure 1.1.1" src="images/unfy_cablemanagement/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_cableClip\_Negative
+### Module: unf\_cableClipNegative
 
 **Usage:** 
 
-- unf_cableClip_Negative(&lt;args&gt;);
+- unf_cableClipNegative(&lt;args&gt;);
 
 **Description:** 
 
@@ -71,7 +71,7 @@ What is useful here is that if rendered in the same location as the positive par
 
 **Figure 1.2.1:** 
 
-<img align="left" alt="unf\_cableClip\_Negative Figure 1.2.1" src="images/unfy_cablemanagement/figure_1_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_cableClipNegative Figure 1.2.1" src="images/unfy_cablemanagement/figure_1_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -85,7 +85,7 @@ What is useful here is that if rendered in the same location as the positive par
 
 **Description:** 
 
-Operator module that uses unf_cableClip_Positive() and unf_cableClip_Negative() to place a cable clip on and a cable hole through the child object(s).
+Operator module that uses unf_cableClipPositive() and unf_cableClipNegative() to place a cable clip on and a cable hole through the child object(s).
 
 **Arguments:** 
 

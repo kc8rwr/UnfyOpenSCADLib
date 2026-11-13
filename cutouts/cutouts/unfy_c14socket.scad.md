@@ -10,21 +10,21 @@ unfy_c14socket contains modules for creating a cutout and mount for a panel moun
 
 ## File Contents
 
-- [`unf_C14Socket_Positive`](#module-unf_c14socket_positive)
-- [`unf_C14Socket_Negative`](#module-unf_c14socket_negative)
-- [`unf_C14Cape`](#module-unf_c14cape)
-- [`unf_C14Body`](#module-unf_c14body)
-- [`unf_C14Socket`](#module-unf_c14socket)
-- [`unf_c14_size`](#function-unf_c14_size) – C14 Socket Size
+- [`unf_c14SocketPositive`](#module-unf_c14socketpositive)
+- [`unf_c14SocketNegative`](#module-unf_c14socketnegative)
+- [`unf_c14Cape`](#module-unf_c14cape)
+- [`unf_c14Body`](#module-unf_c14body)
+- [`unf_c14Socket`](#module-unf_c14socket)
+- [`unf_c14Size`](#function-unf_c14size) – C14 Socket Size
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_C14Socket\_Positive
+### Module: unf\_c14SocketPositive
 
 **Usage:** 
 
-- unf_C14Socket_Positive(&lt;args&gt;);
+- unf_c14SocketPositive(&lt;args&gt;);
 
 **Description:** 
 
@@ -47,17 +47,17 @@ Just the positive part of a C14 socket mount. This is the pillars which hold the
 
 **Figure 1.1.1:** fastener="Heatset"
 
-<img align="left" alt="unf\_C14Socket\_Positive Figure 1.1.1" src="images/unfy_c14socket/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_c14SocketPositive Figure 1.1.1" src="images/unfy_c14socket/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_C14Socket\_Negative
+### Module: unf\_c14SocketNegative
 
 **Usage:** 
 
-- unf_C14Socket_Negative(&lt;args&gt;);
+- unf_c14SocketNegative(&lt;args&gt;);
 
 **Description:** 
 
@@ -73,17 +73,17 @@ Just the negative part of a C14 socket mount. This is the cutout for the socket 
 
 **Figure 1.2.1:** defaults
 
-<img align="left" alt="unf\_C14Socket\_Negative Figure 1.2.1" src="images/unfy_c14socket/figure_1_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_c14SocketNegative Figure 1.2.1" src="images/unfy_c14socket/figure_1_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_C14Cape
+### Module: unf\_c14Cape
 
 **Usage:** 
 
-- unf_C14Cape(&lt;args&gt;);
+- unf_c14Cape(&lt;args&gt;);
 
 **Description:** 
 
@@ -97,17 +97,17 @@ The shape of the flange (cape) around the front of a C14 socket, including the e
 
 **Figure 1.3.1:** defaults
 
-<img align="left" alt="unf\_C14Cape Figure 1.3.1" src="images/unfy_c14socket/figure_1_3_1.png" width="320" height="240">
+<img align="left" alt="unf\_c14Cape Figure 1.3.1" src="images/unfy_c14socket/figure_1_3_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_C14Body
+### Module: unf\_c14Body
 
 **Usage:** 
 
-- unf_C14Body(&lt;args&gt;);
+- unf_c14Body(&lt;args&gt;);
 
 **Description:** 
 
@@ -121,21 +121,21 @@ The shape of the body of a C14 socket, behind the flange. Used for cutting the h
 
 **Figure 1.4.1:** defaults
 
-<img align="left" alt="unf\_C14Body Figure 1.4.1" src="images/unfy_c14socket/figure_1_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_c14Body Figure 1.4.1" src="images/unfy_c14socket/figure_1_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_C14Socket
+### Module: unf\_c14Socket
 
 **Usage:** 
 
-- unf_C14Socket(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
+- unf_c14Socket(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
 
 **Description:** 
 
-Operator module that uses unf_C14Socket_Positive() and unf_C14Socket_Negative() to cut a C14 socket hole through the child object(s) and add any mounting pillars.
+Operator module that uses unf_c14SocketPositive() and unf_c14SocketNegative() to cut a C14 socket hole through the child object(s) and add any mounting pillars.
 
 **Arguments:** 
 
@@ -157,19 +157,19 @@ Operator module that uses unf_C14Socket_Positive() and unf_C14Socket_Negative() 
 
 **Figure 1.5.1:** fastener="Heatset"
 
-<img align="left" alt="unf\_C14Socket Figure 1.5.1" src="images/unfy_c14socket/figure_1_5_1.png" width="320" height="240">
+<img align="left" alt="unf\_c14Socket Figure 1.5.1" src="images/unfy_c14socket/figure_1_5_1.png" width="320" height="240">
 
 <br clear="all" />
 
 ---
 
-### Function: unf\_c14\_size
+### Function: unf\_c14Size
 
 **Synopsis:** C14 Socket Size
 
 **Usage:** 
 
-- unf_c14_size()
+- unf_c14Size()
 
 **Description:** 
 

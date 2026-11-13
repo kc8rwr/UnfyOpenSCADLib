@@ -11,24 +11,24 @@ unfy_popins contains modules for creating cutouts and mounts for simple rectangu
 ## File Contents
 
 1. [Section: Custom Pop-ins](#section-custom-pop-ins)
-    - [`unf_PopinCustom_Negative`](#module-unf_popincustom_negative)
-    - [`unf_PopinCustom_Positive`](#module-unf_popincustom_positive)
+    - [`unf_popinCustomNegative`](#module-unf_popincustomnegative)
+    - [`unf_popinCustomPositive`](#module-unf_popincustompositive)
 
 2. [Section: Pop-ins by Name](#section-pop-ins-by-name)
-    - [`unf_Popin_Positive`](#module-unf_popin_positive)
-    - [`unf_Popin_Negative`](#module-unf_popin_negative)
-    - [`unf_Popin_Dims`](#function-unf_popin_dims) – Pop-in Dimensions by Name
-    - [`unf_Popin`](#module-unf_popin)
+    - [`unf_popinPositive`](#module-unf_popinpositive)
+    - [`unf_popinNegative`](#module-unf_popinnegative)
+    - [`unf_popinDims`](#function-unf_popindims) – Pop-in Dimensions by Name
+    - [`unf_popin`](#module-unf_popin)
 
 3. [Section: Switches](#section-switches)
-    - [`unf_rleil_rl2_popin`](#module-unf_rleil_rl2_popin)
-    - [`unf_rleil_rl2_cutout`](#module-unf_rleil_rl2_cutout)
-    - [`unf_rleil_r2_dims`](#function-unf_rleil_r2_dims) – RLEIL RL2 Dimensions
+    - [`unf_rleilRl2Popin`](#module-unf_rleilrl2popin)
+    - [`unf_rleilRl2Cutout`](#module-unf_rleilrl2cutout)
+    - [`unf_rleilR2Dims`](#function-unf_rleilr2dims) – RLEIL RL2 Dimensions
 
 4. [Section: Meters](#section-meters)
-    - [`unf_yb4835va_cutout`](#module-unf_yb4835va_cutout)
-    - [`unf_yb4835va_popin`](#module-unf_yb4835va_popin)
-    - [`unf_yb4835va_dims`](#function-unf_yb4835va_dims) – YB4835VA Dimensions
+    - [`unf_yb4835vaCutout`](#module-unf_yb4835vacutout)
+    - [`unf_yb4835vaPopin`](#module-unf_yb4835vapopin)
+    - [`unf_yb4835vaDims`](#function-unf_yb4835vadims) – YB4835VA Dimensions
 
 5. [Section: Licensing](#section-licensing)
 
@@ -37,15 +37,15 @@ unfy_popins contains modules for creating cutouts and mounts for simple rectangu
 
 Modules for pop-ins of any size. These are used by the named parts below, and may be used directly for parts which are not yet included.
 
-### Module: unf\_PopinCustom\_Negative
+### Module: unf\_popinCustomNegative
 
 **Usage:** 
 
-- unf_PopinCustom_Negative(&lt;args&gt;);
+- unf_popinCustomNegative(&lt;args&gt;);
 
 **Description:** 
 
-The cutout for a pop-in part of any size. The cutout is the size of the opening plus the ridge on each side, it is partially filled back in by unf_PopinCustom_Positive().
+The cutout for a pop-in part of any size. The cutout is the size of the opening plus the ridge on each side, it is partially filled back in by unf_popinCustomPositive().
 
 **Arguments:** 
 
@@ -58,17 +58,17 @@ The cutout for a pop-in part of any size. The cutout is the size of the opening 
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="unf\_PopinCustom\_Negative Figure 1.1.1" src="images/unfy_popins/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_popinCustomNegative Figure 1.1.1" src="images/unfy_popins/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_PopinCustom\_Positive
+### Module: unf\_popinCustomPositive
 
 **Usage:** 
 
-- unf_PopinCustom_Positive(&lt;args&gt;);
+- unf_popinCustomPositive(&lt;args&gt;);
 
 **Description:** 
 
@@ -88,7 +88,7 @@ The positive part for a pop-in part of any size. This is a ledge around the open
 
 **Figure 1.2.1:** defaults
 
-<img align="left" alt="unf\_PopinCustom\_Positive Figure 1.2.1" src="images/unfy_popins/figure_1_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_popinCustomPositive Figure 1.2.1" src="images/unfy_popins/figure_1_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -97,11 +97,11 @@ The positive part for a pop-in part of any size. This is a ledge around the open
 ## Section: Pop-ins by Name
 
 
-### Module: unf\_Popin\_Positive
+### Module: unf\_popinPositive
 
 **Usage:** 
 
-- unf_Popin_Positive(device, &lt;args&gt;);
+- unf_popinPositive(device, &lt;args&gt;);
 
 **Description:** 
 
@@ -122,17 +122,17 @@ Call a popin switch module by name.
 
 **Figure 2.1.1:** device="RLEIL\_R2"
 
-<img align="left" alt="unf\_Popin\_Positive Figure 2.1.1" src="images/unfy_popins/figure_2_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_popinPositive Figure 2.1.1" src="images/unfy_popins/figure_2_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Module: unf\_Popin\_Negative
+### Module: unf\_popinNegative
 
 **Usage:** 
 
-- unf_Popin_Negative(device, &lt;args&gt;);
+- unf_popinNegative(device, &lt;args&gt;);
 
 **Description:** 
 
@@ -150,19 +150,19 @@ Call a popin switch cutout module by name.
 
 **Figure 2.2.1:** device="RLEIL\_R2"
 
-<img align="left" alt="unf\_Popin\_Negative Figure 2.2.1" src="images/unfy_popins/figure_2_2_1.png" width="320" height="240">
+<img align="left" alt="unf\_popinNegative Figure 2.2.1" src="images/unfy_popins/figure_2_2_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 ---
 
-### Function: unf\_Popin\_Dims
+### Function: unf\_popinDims
 
 **Synopsis:** Pop-in Dimensions by Name
 
 **Usage:** 
 
-- unf_Popin_Dims(device)
+- unf_popinDims(device)
 
 **Description:** 
 
@@ -176,15 +176,15 @@ Get a popin switch's dimensions by name. Returns [0, 0] for an unknown part.
 
 ---
 
-### Module: unf\_Popin
+### Module: unf\_popin
 
 **Usage:** 
 
-- unf_Popin(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
+- unf_popin(&lt;args&gt;){<br/>&nbsp;&nbsp;&nbsp;child_stuff();<br/>}
 
 **Description:** 
 
-Operator module that uses unf_Popin_Positive() and unf_Popin_Negative() to cut out and build up a popin by name on the child object(s).
+Operator module that uses unf_popinPositive() and unf_popinNegative() to cut out and build up a popin by name on the child object(s).
 
 **Arguments:** 
 
@@ -201,7 +201,7 @@ Operator module that uses unf_Popin_Positive() and unf_Popin_Negative() to cut o
 
 **Figure 2.4.1:** device="RLEIL\_R2"
 
-<img align="left" alt="unf\_Popin Figure 2.4.1" src="images/unfy_popins/figure_2_4_1.png" width="320" height="240">
+<img align="left" alt="unf\_popin Figure 2.4.1" src="images/unfy_popins/figure_2_4_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -210,11 +210,11 @@ Operator module that uses unf_Popin_Positive() and unf_Popin_Negative() to cut o
 ## Section: Switches
 
 
-### Module: unf\_rleil\_rl2\_popin
+### Module: unf\_rleilRl2Popin
 
 **Usage:** 
 
-- unf_rleil_rl2_popin(&lt;args&gt;);
+- unf_rleilRl2Popin(&lt;args&gt;);
 
 **Description:** 
 
@@ -231,11 +231,11 @@ The positive part for a RLEIL RL2 series Rocker Switch.
 
 ---
 
-### Module: unf\_rleil\_rl2\_cutout
+### Module: unf\_rleilRl2Cutout
 
 **Usage:** 
 
-- unf_rleil_rl2_cutout(&lt;args&gt;);
+- unf_rleilRl2Cutout(&lt;args&gt;);
 
 **Description:** 
 
@@ -249,13 +249,13 @@ The cutout for a RLEIL RL2 series Rocker Switch.
 
 ---
 
-### Function: unf\_rleil\_r2\_dims
+### Function: unf\_rleilR2Dims
 
 **Synopsis:** RLEIL RL2 Dimensions
 
 **Usage:** 
 
-- unf_rleil_r2_dims()
+- unf_rleilR2Dims()
 
 **Description:** 
 
@@ -266,11 +266,11 @@ Returns the [x, y, z] dimensions of a RLEIL RL2 series Rocker Switch.
 ## Section: Meters
 
 
-### Module: unf\_yb4835va\_cutout
+### Module: unf\_yb4835vaCutout
 
 **Usage:** 
 
-- unf_yb4835va_cutout(&lt;args&gt;);
+- unf_yb4835vaCutout(&lt;args&gt;);
 
 **Description:** 
 
@@ -284,11 +284,11 @@ The cutout for a YB4835VA Digital Volt/Amp Panel Meter.
 
 ---
 
-### Module: unf\_yb4835va\_popin
+### Module: unf\_yb4835vaPopin
 
 **Usage:** 
 
-- unf_yb4835va_popin(&lt;args&gt;);
+- unf_yb4835vaPopin(&lt;args&gt;);
 
 **Description:** 
 
@@ -305,13 +305,13 @@ The positive part for a YB4835VA Digital Volt/Amp Panel Meter.
 
 ---
 
-### Function: unf\_yb4835va\_dims
+### Function: unf\_yb4835vaDims
 
 **Synopsis:** YB4835VA Dimensions
 
 **Usage:** 
 
-- unf_yb4835va_dims()
+- unf_yb4835vaDims()
 
 **Description:** 
 

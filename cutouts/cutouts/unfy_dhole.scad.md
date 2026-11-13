@@ -10,16 +10,16 @@ unfy_dhole contains a module for creating D, double-D and round holes for mounti
 
 ## File Contents
 
-- [`unf_DHole`](#module-unf_dhole)
+- [`unf_dHole`](#module-unf_dhole)
 
 2. [Section: Licensing](#section-licensing)
 
 
-### Module: unf\_DHole
+### Module: unf\_dHole
 
 **Usage:** 
 
-- unf_DHole(&lt;args&gt;);
+- unf_dHole(&lt;args&gt;);
 
 **Description:** 
 
@@ -38,19 +38,19 @@ Reason for circle (which could obviously be done without this) is to make easy u
 
 **Figure 1.1.1:** defaults
 
-<img align="left" alt="unf\_DHole Figure 1.1.1" src="images/unfy_dhole/figure_1_1_1.png" width="320" height="240">
+<img align="left" alt="unf\_dHole Figure 1.1.1" src="images/unfy_dhole/figure_1_1_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 **Figure 1.1.2:** shape="DoubleD", flat\_width=8
 
-<img align="left" alt="unf\_DHole Figure 1.1.2" src="images/unfy_dhole/figure_1_1_2.png" width="320" height="240">
+<img align="left" alt="unf\_dHole Figure 1.1.2" src="images/unfy_dhole/figure_1_1_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
 **Figure 1.1.3:** shape="circle"
 
-<img align="left" alt="unf\_DHole Figure 1.1.3" src="images/unfy_dhole/figure_1_1_3.png" width="320" height="240">
+<img align="left" alt="unf\_dHole Figure 1.1.3" src="images/unfy_dhole/figure_1_1_3.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
