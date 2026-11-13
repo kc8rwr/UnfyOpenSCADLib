@@ -15,6 +15,7 @@ unfy_shapes contains a collection of modules for generating geometric shapes wit
 - [`unf_roundedCylinder`](#module-unf_roundedcylinder)
 - [`unf_oval`](#module-unf_oval)
 - [`unf_star`](#module-unf_star)
+- [`unf_tube`](#module-unf_tube)
 - [`unf_bezierWedge2d`](#module-unf_bezierwedge2d)
 - [`unf_bezierWedge3d`](#module-unf_bezierwedge3d)
 - [`unf_bezier_frustrum`](#module-unf_bezier_frustrum)
@@ -209,6 +210,41 @@ Draws a 2d star centered on the origin with its first point straight up along th
 
 ---
 
+### Module: unf\_tube
+
+**Usage:** 
+
+- unf_tube(<args>);
+
+**Description:** 
+
+Creates a hollow cylinder standing on the origin along the z axis, od wide with an id wide opening through its length.
+
+The opening may be given directly as id or by the wall thickness w, in which case id = od - (2 * w). If both are given they must agree. If neither is given the wall is 1.245 thick. Where that leaves no opening, the wall being half of od or more, a solid cylinder od wide is made instead.
+
+**Arguments:** 
+
+<abbr title="These args can be used by position or by name.">By&nbsp;Position</abbr> | What it does
+-------------------- | ------------
+`od`                 | outer diameter (15.875)
+`id`                 | inner diameter, 0 to use w or the default wall (0)
+`w`                  | wall thickness, only used when id is 0 (0)
+`l`                  | length (50)
+
+**Figure 1.6.1:** defaults
+
+<img align="left" alt="unf\_tube Figure 1.6.1" src="images/unfy_shapes/figure_1_6_1.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+**Figure 1.6.2:** custom
+
+<img align="left" alt="unf\_tube Figure 1.6.2" src="images/unfy_shapes/figure_1_6_2.png" width="320" height="240">
+
+<br clear="all" /><br/>
+
+---
+
 ### Module: unf\_bezierWedge2d
 
 **Usage:** 
@@ -226,15 +262,15 @@ Sort of a right-triangle but the hypotenuse is a bezier curve pulled in rather t
 `size`               | a 2d vector [x, y] or a single number ([5, 15])
 `v`                  | a vector to affect the shape of the bezier curve (false)
 
-**Figure 1.6.1:** defaults
+**Figure 1.7.1:** defaults
 
-<img align="left" alt="unf\_bezierWedge2d Figure 1.6.1" src="images/unfy_shapes/figure_1_6_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge2d Figure 1.7.1" src="images/unfy_shapes/figure_1_7_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
-**Figure 1.6.2:** custom
+**Figure 1.7.2:** custom
 
-<img align="left" alt="unf\_bezierWedge2d Figure 1.6.2" src="images/unfy_shapes/figure_1_6_2.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge2d Figure 1.7.2" src="images/unfy_shapes/figure_1_7_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -257,15 +293,15 @@ A 3-dimensional wedge shape, fits inside a right-angle with a bezier curve along
 `size`               | a 3d vector [x, y, z] or a single number ([5, 15, 15])
 `rounded_edges`      | vector or number for edge rounding ([1, 1])
 
-**Figure 1.7.1:** defaults
+**Figure 1.8.1:** defaults
 
-<img align="left" alt="unf\_bezierWedge3d Figure 1.7.1" src="images/unfy_shapes/figure_1_7_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge3d Figure 1.8.1" src="images/unfy_shapes/figure_1_8_1.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
-**Figure 1.7.2:** custom
+**Figure 1.8.2:** custom
 
-<img align="left" alt="unf\_bezierWedge3d Figure 1.7.2" src="images/unfy_shapes/figure_1_7_2.png" width="320" height="240">
+<img align="left" alt="unf\_bezierWedge3d Figure 1.8.2" src="images/unfy_shapes/figure_1_8_2.png" width="320" height="240">
 
 <br clear="all" /><br/>
 
@@ -297,9 +333,9 @@ Creates a 3D frustum shaped object transitioning via bezier curves with optional
 `control_pinch_pct`  | pinch percentage for bezier control point (50)
 `length`             | total length along z axis (300)
 
-**Figure 1.8.1:** defaults
+**Figure 1.9.1:** defaults
 
-<img align="left" alt="unf\_bezier\_frustrum Figure 1.8.1" src="images/unfy_shapes/figure_1_8_1.png" width="320" height="240">
+<img align="left" alt="unf\_bezier\_frustrum Figure 1.9.1" src="images/unfy_shapes/figure_1_9_1.png" width="320" height="240">
 
 <br clear="all" />
 
@@ -325,9 +361,9 @@ Creates a mounting tab with an integrated bolt hole, washer recess, and reinforc
 `washer_v`           | washer definition vector for the recess
 `wall`               | wall thickness parameter
 
-**Figure 1.9.1:** sample
+**Figure 1.10.1:** sample
 
-<img align="left" alt="unf\_mount\_tab Figure 1.9.1" src="images/unfy_shapes/figure_1_9_1.png" width="320" height="240">
+<img align="left" alt="unf\_mount\_tab Figure 1.10.1" src="images/unfy_shapes/figure_1_10_1.png" width="320" height="240">
 
 <br clear="all" />
 
