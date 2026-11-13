@@ -77,7 +77,7 @@ parm_dist_include_control = true;
 
 /* [Self Tapping Screws] */
 //head style
-parm_stp_head = "pan"; // ["pan", "csk", "raised_csk", "cheese", "button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]
+parm_stp_head = "pan"; // ["pan", "csk", "raised_csk", "cheese", "button", "flange_button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]
 
 //pilot test block, number of holes in each row
 parm_stp_pilot_steps = 4;
@@ -902,7 +902,7 @@ module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false, body_
 //   .
 //   Pilot holes may be star shaped rather than round. The plastic displaced by the threads then has somewhere to go between the points instead of pushing outward on the surrounding wall. The points are spaced according to $unf_nozzle so they are not so fine that they just print smooth. The inner and outer diameters of the star are set as a percentage of the thread depth above the root (minor) diameter by $unf_stp_pilot_id and $unf_stp_pilot_od. A round pilot hole is made at the average of the two.
 //   .
-//   Metric sizes ("M3", "ST2.9", etc...) use ISO 1478 thread dimensions, ISO 273 fine clearance holes and ISO 7049, 7050, 7051, 1481, 1479, 7053 and 7380 head dimensions. Numbered and inch sizes ("#6", "1/4"", etc...) use ASME B18.6.4 and B18.6.3 dimensions and ASME close fit clearance holes. Head styles which have no ISO standard use the ASME dimensions for metric sizes too. Sizes not in the tables are interpolated by diameter. None of these have been verified against real screws yet.
+//   Metric sizes ("M3", "ST2.9", etc...) use ISO 1478 thread dimensions, ISO 273 fine clearance holes and ISO 7049, 7050, 7051, 1481, 1479, 7053, 7380-1 and 7380-2 head dimensions. Numbered and inch sizes ("#6", "1/4"", etc...) use ASME B18.6.4 and B18.6.3 dimensions and ASME close fit clearance holes. Head styles which have no ISO standard use the ASME dimensions for metric sizes too, flange_button has no ASME standard so it uses the ISO dimensions for all sizes. Sizes not in the tables are interpolated by diameter. None of these have been verified against real screws yet.
 //   .
 //   Available head styles, in the negative these are all rendered as either a cylinder or a cone. Self tapping screws turn as they are driven so even hex heads get a round recess.
 //   * "pan"
@@ -910,6 +910,7 @@ module unf_hex(size = "m3", length = -1, head_ext = -1, distorted = false, body_
 //   * "raised_csk" (or "oval", "raised_countersunk")
 //   * "cheese" (or "fillister")
 //   * "button"
+//   * "flange_button" (or "flanged_button") - button head with a built in washer
 //   * "round"
 //   * "truss"
 //   * "binding"
@@ -968,11 +969,13 @@ function unf_stp_head_style(in="pan") = is_list(in) ? in[6] : (
 		  h = ("flat" == lower || "countersunk" == lower) ? "csk" : (
 			  ("oval" == lower || "raised_countersunk" == lower) ? "raised_csk" : (
 				  "fillister" == lower ? "cheese" : (
-					  "modified_truss" == lower ? "wafer" : lower
+					  "modified_truss" == lower ? "wafer" : (
+						  "flanged_button" == lower ? "flange_button" : lower
+					  )
 				  )
 			  )
 		  ))
-	assert(0 < len([for (s = ["pan", "csk", "raised_csk", "cheese", "button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]) if (s == h) s]), str("unknown self tapping screw head style: ", in))
+	assert(0 < len([for (s = ["pan", "csk", "raised_csk", "cheese", "button", "flange_button", "round", "truss", "binding", "wafer", "hex", "hex_washer"]) if (s == h) s]), str("unknown self tapping screw head style: ", in))
 	h
 );
 
@@ -1085,6 +1088,7 @@ function unf_stp_head_table(head="pan", imperial=false) = let (head = unf_stp_he
 			 [0.3125, 0.641, 0.168], // 5/16"
 			 [0.375, 0.769, 0.201]]) : ( // 3/8"
 		"wafer" == head ? unf_stp_head_table("wafer", false) : (
+		"flange_button" == head ? unf_stp_head_table("flange_button", false) : ( // no ASME standard, use ISO
 		"hex" == head ? unf_stp_inch(
 			[[0.086, 0.144, 0.050], // #2, 1/8" across flats
 			 [0.112, 0.217, 0.060], // #4, 3/16" across flats
@@ -1115,7 +1119,7 @@ function unf_stp_head_table(head="pan", imperial=false) = let (head = unf_stp_he
 			 [0.242, 0.492, 0.175], // #14
 			 [0.3125, 0.615, 0.218], // 5/16"
 			 [0.375, 0.740, 0.261]]) // 3/8"
-		))))))))
+		)))))))))
 	) : (
 		("csk" == head || "raised_csk" == head) ? // ISO 7050, ISO 7051
 			[[2.2, 4.4, 1.1],
@@ -1137,7 +1141,15 @@ function unf_stp_head_table(head="pan", imperial=false) = let (head = unf_stp_he
 			 [6.3, 12.0, 3.6],
 			 [8, 16.0, 4.8],
 			 [9.5, 20.0, 6.0]] : (
-		"button" == head ? // ISO 7380
+		"flange_button" == head ? // ISO 7380-2, flange diameter
+			[[3, 6.9, 1.65],
+			 [4, 9.4, 2.2],
+			 [5, 11.8, 2.75],
+			 [6, 13.6, 3.3],
+			 [8, 17.8, 4.4],
+			 [10, 21.9, 5.5],
+			 [12, 26.0, 6.6]] : (
+		"button" == head ? // ISO 7380-1
 			[[3, 5.7, 1.65],
 			 [4, 7.6, 2.2],
 			 [5, 9.5, 2.75],
@@ -1176,7 +1188,7 @@ function unf_stp_head_table(head="pan", imperial=false) = let (head = unf_stp_he
 			 [8, 16.0, 6.0],
 			 [9.5, 20.0, 7.5]] : (
 		unf_stp_head_table(head, true) // no ISO standard, use ASME
-		)))))))
+		))))))))
 	)
 );
 
