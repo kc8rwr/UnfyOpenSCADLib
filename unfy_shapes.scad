@@ -10,7 +10,7 @@
 use <unfy_fasteners.scad>
 use <unfy_math.scad>
 
-test_shape="unf_roundedCuboid"; //["unf_roundedRectangle", "unf_roundedCuboid", "unf_roundedCylinder", "oval", "star", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
+test_shape="unf_roundedCuboid"; //["unf_roundedRectangle", "unf_roundedCuboid", "unf_roundedCylinder", "oval", "star", "tube", "bezier_wedge_2d", "bezier_wedge_3d", "bezier_frustrum"]
 
 $fn = $preview ? 36 : 360;
 $over = 0.1;
@@ -42,6 +42,14 @@ oval_ydiameter = 10;
 star_od = 20;
 star_id = 10;
 star_p = 5; //[2:1:24]
+
+/* [ Tube ] */
+tube_od = 15.875;
+//0 to use the wall thickness or the default
+tube_id = 0;
+//0 to use the inner diameter or the default
+tube_w = 0;
+tube_l = 50;
 
 /* [ Bezier Wedge 2d] */
 bez2d_size=[5, 15];
@@ -469,6 +477,49 @@ module unf_star(od=20, id=10, p=5){
 	    [r * cos(angle), r * sin(angle)] ]);
 }
 
+// Module: unf_tube
+// Usage:
+//   unf_tube(<args>);
+// Description:
+//   Creates a hollow cylinder standing on the origin along the z axis, od wide with an id wide opening through its length.
+//   .
+//   The opening may be given directly as id or by the wall thickness w, in which case id = od - (2 * w). If both are given they must agree. If neither is given the wall is 1.245 thick. Where that leaves no opening, the wall being half of od or more, a solid cylinder od wide is made instead.
+// Arguments:
+//   ---
+//   od = outer diameter (15.875)
+//   id = inner diameter, 0 to use w or the default wall (0)
+//   w = wall thickness, only used when id is 0 (0)
+//   l = length (50)
+// Figure(Spin;VPD=140;VPT=[0, 0, 25];NoAxes): defaults
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_tube();
+// Figure(Spin;VPD=120;NoAxes): custom
+//   $over = 0.1;
+//   $fn = 36;
+//   use <unfy_shapes.scad>;
+//   unf_tube(od=30, w=2, l=20);
+module unf_tube(od=15.875, id=0, w=0, l=50){
+  assert(is_num(od) && 0 < od, "od must be a positive number");
+  assert(is_num(id) && 0 <= id, "id must be a number, 0 or more");
+  assert(is_num(w) && 0 <= w, "w must be a number, 0 or more");
+  assert(is_num(l) && 0 < l, "l must be a positive number");
+  assert(0 == id || 0 == w || abs(od - (2 * w) - id) < 0.001, str("id (", id, ") and w (", w, ") disagree, with an od of ", od, " a wall of ", w, " makes an id of ", od - (2 * w)));
+
+  let (id = 0 < id ? id : od - (2 * (0 < w ? w : 1.245))){
+    assert(id < od, str("id (", id, ") must be smaller than od (", od, ")"));
+    difference(){
+      cylinder(d=od, h=l);
+      if (0 < id){
+	translate([0, 0, -$over]){
+	  cylinder(d=id, h=l + (2 * $over));
+	}
+      }
+    }
+  }
+}
+
 // Module: unf_bezierWedge2d
 // Usage:
 //   unf_bezierWedge2d(<args>);
@@ -713,6 +764,10 @@ if ("oval" == test_shape){
 
 if ("star" == test_shape){
   unf_star(od=star_od, id=star_id, p=star_p);
+}
+
+if ("tube" == test_shape){
+  unf_tube(od=tube_od, id=tube_id, w=tube_w, l=tube_l);
 }
 
 if ("bezier_wedge_2d" == test_shape){
