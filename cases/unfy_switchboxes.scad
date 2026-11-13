@@ -149,7 +149,7 @@ module unf_mountedPowerSwitchBox(angle=45, corner=5, edge=2, device="RLEIL_R2", 
       //base support skin
       if (0 < support_skin){
 	color(support_color){
-	  translate([max(wall, edge)+support_skin, (base.y/2)-((face.y-(2*wall))/2), 0]){
+	  translate([max(wall, edge)+support_skin, (base.y/2)-((face.y-(2*wall))/2)-support_skin, 0]){
 	    cube([base.x-(2*(max(wall, edge)+support_skin)), support_skin, base.z-wall]);
 	  }
 	  translate([max(wall, edge)+support_skin, (base.y/2)+((face.y-(2*wall))/2), 0]){
